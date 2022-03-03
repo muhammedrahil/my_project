@@ -1,0 +1,53 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>Untitled Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="row">
+  <div class="col-md-12 ">
+        <div class="container ">
+<h2 class="text-center mt-5 pl-3 font-weight-bold" style="font-weight: bold">Target</h2>
+  <table class="table mt-5">
+    <tr>
+
+      <th scope="col">Employee name </th>
+      <th scope="col">Ecode</th>
+      <th scope="col">branch</th>
+      <th scope="col">Target</th>
+    </tr>
+    {% for i in val%}
+    <tr>
+      <td>&nbsp;{{i[1]}}</td>
+      <td>&nbsp;{{i[2]}}</td>
+      <td>&nbsp;{{i[3]}}</td>
+      <td>&nbsp;{{i[6]}}</td>
+
+      <td>
+      <a href="/updateEmployeestarget?id={{i[5]}}"  class="btn btn-primary">update Target</a>
+         </td>
+
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+</div>
+    </div>
+    </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
