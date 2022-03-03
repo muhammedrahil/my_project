@@ -3,16 +3,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</head>
+  <style type="">
+    body {
+  background-image: url("{{url_for('static',filename='logo.png')}}");
 
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 500px 500px;
+
+}
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body>
-<div >
+<div class="row">
+    <div class="col-md-12 m-auto">
+        <div class="container mt-5 pl-5">
+  <h2 class="text-center mt-5 pl-3 font-weight-bold" style="color: #632343;">Employees</h2>
+
   <table class="table mt-5">
     <tr>
-      <th scope="col">Employee Name </th>
-      <th scope="col">E-code</th>
-      <th scope="col">Branch </th>
+      <th scope="col" style="color: #632343;">Employee Name </th>
+      <th scope="col" style="color: #632343;">E-code</th>
+      <th scope="col" style="color: #632343;">Branch </th>
     </tr>
      {% for i in val%}
     <tr>

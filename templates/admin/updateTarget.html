@@ -4,6 +4,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style type="">
+    body {
+  background-image: url("{{url_for('static',filename='logo.png')}}");
+
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 500px 500px;
+
+}
+</style>
 </head>
 
 <body>
@@ -12,14 +23,14 @@
   <div class="row">
     <div class="col-md-6 m-auto">
         <div class="container mt-5 pl-5">
-<h2 class="text-center font-weight-bold">update {{val[1]}} Target</h2>
+<h2 class="text-center font-weight-bold" style="color: #632343;">update {{val[1]}} Target</h2>
                 <div class="form-group">
                     <br><br><br>
                     <input type="number" class="form-control"  name="number" value="{{val[6]}}">
                 </div>
 
 
-                <button type="submit" class="btn btn-primary float-right">update</button>
+                <button type="submit" class="btn float-right" style="background-color:#632343;"> <span style="color: white;">Update </span></button>
             </form>
         </div>
     </div>

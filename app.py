@@ -12,6 +12,7 @@ def login():
     return render_template("admin/login.html")
 
 
+
 @app.route("/getLogin", methods=['post'])
 def getLogin():
     uname = request.form['uname']
@@ -31,6 +32,7 @@ def getLogin():
 
 @app.route("/logout")
 def logout():
+    session.clear()
     return redirect('/')
 
 

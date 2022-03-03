@@ -4,7 +4,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
 
+<style type="">
+    body {
+  background-image: url("{{url_for('static',filename='logo.png')}}");
 
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 500px 500px;
+
+}
+</style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
@@ -12,20 +22,20 @@
   <div class="row">
     <div class="col-md-6 m-auto">
         <div class="container mt-5 pl-5">
-            <h2 class="text-center font-weight-bold">Leave Status</h2>
+            <h2 class="text-center font-weight-bold"style="color: #632343;">Leave Status</h2>
             <form action="">
 
 <ul class="list-group mt-5 pt-5">
 
-    <li class="list-group-item"> <span class="text-center font-weight-bold">Employee Name : </span>   {{val[1]}}</li>
-  <li class="list-group-item"><span class="text-center font-weight-bold">Employee Ecode   : </span>{{val[2]}}</li>
-  <li class="list-group-item"><span class="text-center font-weight-bold">Employee branch  :</span> {{val[3]}}</li>
-    <li class="list-group-item"><span class="text-center font-weight-bold">Date           :</span> {{val[9]}}</li>
-        <li class="list-group-item"><span class="text-center font-weight-bold">Expair Date           :</span> {{val[10]}}</li>
-  <li class="list-group-item"><span class="text-center font-weight-bold">Leave Status     : </span>{{val[7]}}</li>
+    <li class="list-group-item"> <span class="text-center font-weight-bold"style="color: #632343;">Employee Name : </span>   {{val[1]}}</li>
+  <li class="list-group-item"><span class="text-center font-weight-bold"style="color: #632343;">Employee Ecode   : </span>{{val[2]}}</li>
+  <li class="list-group-item"><span class="text-center font-weight-bold"style="color: #632343;">Employee branch  :</span> {{val[3]}}</li>
+    <li class="list-group-item"><span class="text-center font-weight-bold"style="color: #632343;">Date           :</span> {{val[9]}}</li>
+        <li class="list-group-item"><span class="text-center font-weight-bold"style="color: #632343;">Expair Date           :</span> {{val[10]}}</li>
+  <li class="list-group-item"><span class="text-center font-weight-bold"style="color: #632343;">Leave Status     : </span>{{val[7]}}</li>
 
 </ul><br>
-                <input type="button" id="create_pdf"  onclick="window.print();" value="Generate PDF" class="btn btn-primary float-right">
+                <input type="button" id="create_pdf"  onclick="window.print();" value="Generate PDF"  class="btn btn-primary float-right">
    </form>
 
     </div>

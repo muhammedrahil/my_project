@@ -3,7 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
+<style type="">
+    body {
+  background-image: url("{{url_for('static',filename='logo.png')}}");
 
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 500px 500px;
+
+}
+</style>
 <script type="text/javascript">
 function CheckColors(val){
  var element=document.getElementById('color');
@@ -21,20 +31,20 @@ function CheckColors(val){
   <div class="row">
     <div class="col-md-6 m-auto">
         <div class="container mt-5 pl-5">
-            <h2 class="text-center font-weight-bold">leave</h2>
-             <label class="font-weight-bold">date</label><br>
+            <h2 class="text-center font-weight-bold"style="color: #632343;">leave</h2>
+             <label class="font-weight-bold" style="color: #632343;">date</label><br>
  <input type="date" class="form-control" name="date"   ></input><br>
-             <label class="font-weight-bold">expair date</label><br>
+             <label class="font-weight-bold" style="color: #632343;">expair date</label><br>
              <input type="date" class="form-control" name="expdate"   ></input><br>
 
   <select name="reason" class="form-select col-md-12" onchange='CheckColors(this.value);'>
-    <option value="medical">medical</option>
-    <option value="marraige">marraige</option>
-    <option value="others">others</option>
+    <option value="medical" style="color: #632343;">medical</option>
+    <option value="marraige" style="color: #632343;">marraige</option>
+    <option value="others" style="color: #632343;">others</option>
   </select>
    <br><br>
  <input type="text" class="form-control" name="discription" placeholder="enter your reason" id="color" style="display:none;" ></input>
-                 <br><br><br><button type="submit" onclick="" name="submit" class="btn btn-primary float-right">Submit</button>
+                 <br><br><br><button type="submit" onclick="" name="submit" class="btn  float-right" style="background-color:#632343;"> <span style="color: white;">Submit</span></button>
             </form>
         </div>
     </div>
