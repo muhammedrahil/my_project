@@ -1,16 +1,23 @@
+from dbconnection import *
 from flask import *
-
+import functools
 
 app = Flask(__name__)
 app.secret_key = "key"
 
-from dbconnection import *
+
+def login_required(func):
+    @functools.wraps(func)
+    def secure_function():
+        if "lid" not in session:
+            return redirect("/")
+        return func()
+    return secure_function
 
 
 @app.route("/")
 def login():
     return render_template("admin/login.html")
-
 
 
 @app.route("/getLogin", methods=['post'])
@@ -23,55 +30,63 @@ def getLogin():
     if result is None:
         return '''<script>alert ("invalid");window.location="/"</script>'''
     elif result[3] == 'admin':
+        session['lid'] = True
         return '''<script>alert("login successfull");window.location="/admins"</script>'''
     elif result[3] == "employee":
+        # session['lid']=True
         return '''<script>alert("login successfull");window.location="/employee"</script>'''
     else:
         return '''<script>alert("invalid");window.location="/"</script>'''
 
 
 @app.route("/logout")
+@login_required
 def logout():
     session.clear()
     return redirect('/')
 
 
 @app.route("/admins")
+@login_required
 def admins():
-    return render_template("admin/admins.html")
-
+    if(session['lid']):
+        return render_template("admin/admins.html")
+    else:
+        return redirect('/')
 
 
 @app.route("/addEmployee")
 def addEmployee():
     return render_template("admin/addEmployee.html")
 
-@app.route("/GetaddEmployee" ,methods=['post'])
+
+@app.route("/GetaddEmployee", methods=['post'])
 def GetaddEmployee():
     ename = request.form['ename']
     ecode = request.form['ecode']
     branch = request.form['branch']
     logqry = "INSERT INTO login VALUES (NULL,%s,%s,'employee')"
-    logval=(ename,ecode)
-    lid=iud(logqry,logval)
-    qry="INSERT INTO `employee` VALUES (NULL,%s,%s,%s,%s)"
-    val=(ename,ecode,branch,str(lid))
-    iud(qry,val)
+    logval = (ename, ecode)
+    lid = iud(logqry, logval)
+    qry = "INSERT INTO `employee` VALUES (NULL,%s,%s,%s,%s)"
+    val = (ename, ecode, branch, str(lid))
+    iud(qry, val)
     return '''<script>alert("added successfully");window.location="/admins"</script>'''
+
 
 @app.route("/ViewEmployee")
 def ViewEmployee():
-    qry="SELECT * FROM `employee`"
-    res =select(qry)
+    qry = "SELECT * FROM `employee`"
+    res = select(qry)
     return render_template("admin/viewEmployee.html", val=res)
+
 
 @app.route("/DeleteEmployee")
 def DeleteEmployee():
-    id=request.args.get('id')
-    qry="DELETE FROM `employee` WHERE `loginid`=%s "
-    iud(qry,id)
+    id = request.args.get('id')
+    qry = "DELETE FROM `employee` WHERE `loginid`=%s "
+    iud(qry, id)
     return '''<script>alert("delete succussfull");window.location="/ViewEmployee"</script>'''
-
 
 
 @app.route("/employee")
@@ -79,21 +94,21 @@ def employee():
     return render_template("employee/employee.html")
 
 
-
 @app.route("/SearchEmployee")
 def SearchEmployee():
     qry = "SELECT * FROM `employee`"
     res = select(qry)
-    return render_template("employee/SearchEmployye.html",val=res)
+    return render_template("employee/SearchEmployye.html", val=res)
 
-@app.route("/getvalSearchEmployee",methods=['post'])
+
+@app.route("/getvalSearchEmployee", methods=['post'])
 def getvalSearchEmployee():
     ename = request.form['ename']
     ecode = request.form['ecode']
     branch = request.form['branch']
-    qry="SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s"
-    val=(ename,ecode,branch)
-    result=selectone(qry,val)
+    qry = "SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s"
+    val = (ename, ecode, branch)
+    result = selectone(qry, val)
     if result is None:
         return '''<script>alert ("invalid");window.location="/SearchEmployee"</script>'''
     elif result[8] == "employee":
@@ -107,71 +122,75 @@ def getvalSearchEmployee():
 def leaveRequest():
     return render_template("employee/leaveRequest.html")
 
-@app.route("/GetLeaveRequest",methods=['post'])
+
+@app.route("/GetLeaveRequest", methods=['post'])
 def GetLeaveRequest():
-    LRid=session['eid']
+    LRid = session['eid']
     reason = request.form['reason']
     date = request.form['date']
     expdate = request.form['expdate']
     print(reason)
-    if(reason=='others'):
-        reason=request.form['discription']
+    if(reason == 'others'):
+        reason = request.form['discription']
     qry = "INSERT INTO `leaverequest` VALUES (NULL,%s,'pending',%s,%s,%s)"
-    val = (reason,LRid,date,expdate)
+    val = (reason, LRid, date, expdate)
     iud(qry, val)
     return '''<script>alert("leave reaquest succussfull");window.location="/employee"</script>'''
 
+
 @app.route("/ViewReaqusetEmployee")
 def ViewReaqusetEmployee():
-    qry="SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`emp_id`=`leaverequest`.`emp_id` WHERE `leaverequest`.`status`='pending'"
-    res =select(qry)
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`emp_id`=`leaverequest`.`emp_id` WHERE `leaverequest`.`status`='pending'"
+    res = select(qry)
     return render_template("admin/viewLeaveRequest.html", val=res)
+
 
 @app.route("/AcceptReaqusetEmployee")
 def AcceptReaqusetEmployee():
     accept = "accept"
     id = request.args.get('id')
     session['id'] = id
-    qry="update`leaverequest` set `status`=%s WHERE LRid =%s"
+    qry = "update`leaverequest` set `status`=%s WHERE LRid =%s"
     val = (accept, session['id'])
-    iud(qry,val)
+    iud(qry, val)
     return '''<script>alert("accept successfully");window.location="/ViewReaqusetEmployee"</script>'''
+
 
 @app.route("/rejectReaqusetEmployee")
 def rejectReaqusetEmployee():
     reject = "reject"
     id = request.args.get('id')
     session['id'] = id
-    qry="update`leaverequest` set `status`=%s WHERE LRid =%s"
+    qry = "update`leaverequest` set `status`=%s WHERE LRid =%s"
     val = (reject, session['id'])
-    iud(qry,val)
+    iud(qry, val)
     return '''<script>alert("reject successfully");window.location="/ViewReaqusetEmployee"</script>'''
-
-
-
 
 
 @app.route("/SetEmployeestarget")
 def SetEmployeestarget():
     qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid`"
     res = select(qry)
-    return render_template("admin/setTarget.html",val=res )
+    return render_template("admin/setTarget.html", val=res)
+
 
 @app.route("/SettargetEmployees")
 def SettargetEmployees():
     id = request.args.get('id')
     session['id'] = id
     qry = "SELECT * FROM `employee` WHERE emp_id=%s"
-    res = selectone(qry,id)
-    return render_template("admin/target.html",val=res )
+    res = selectone(qry, id)
+    return render_template("admin/target.html", val=res)
 
-@app.route("/GettargetEmployees",methods=['post'])
+
+@app.route("/GettargetEmployees", methods=['post'])
 def GettargetEmployees():
     number = request.form['number']
-    qry="INSERT INTO `target` VALUES (NULL,%s,%s)"
-    val=(number,session['id'])
-    iud(qry,val)
+    qry = "INSERT INTO `target` VALUES (NULL,%s,%s)"
+    val = (number, session['id'])
+    iud(qry, val)
     return '''<script>alert("Target successfully Set");window.location="/viewupdatetargetEmployees"</script>'''
+
 
 @app.route("/viewupdatetargetEmployees")
 def viewupdatetargetEmployees():
@@ -179,20 +198,22 @@ def viewupdatetargetEmployees():
     res = select(qry)
     return render_template("admin/ViewtargetEmp.html", val=res)
 
+
 @app.route("/updateEmployeestarget")
 def updateEmployeestarget():
     id = request.args.get('id')
     session['tid'] = id
     qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`emp_id`=`target`.`emp_id`where employee.emp_id=%s "
-    res = selectone(qry,id)
-    return render_template("admin/updateTarget.html",val=res )
+    res = selectone(qry, id)
+    return render_template("admin/updateTarget.html", val=res)
 
-@app.route("/GetupdatetargetEmployees",methods=['post'])
+
+@app.route("/GetupdatetargetEmployees", methods=['post'])
 def GetupdatetargetEmployees():
     number = request.form['number']
     qry = "update target set target=%s WHERE trid =%s"
-    val=(number,session['tid'])
-    iud(qry,val)
+    val = (number, session['tid'])
+    iud(qry, val)
     return '''<script>alert("Target successfully Set");window.location="/viewupdatetargetEmployees"</script>'''
 
 
@@ -200,16 +221,17 @@ def GetupdatetargetEmployees():
 def SearchTargetEmployeeView():
     qry = "SELECT * FROM `employee`"
     res = select(qry)
-    return render_template("employee/SearchTargetEmployeeView.html",val=res )
+    return render_template("employee/SearchTargetEmployeeView.html", val=res)
 
-@app.route("/getvalTargetSearchEmployee",methods=['post'])
+
+@app.route("/getvalTargetSearchEmployee", methods=['post'])
 def getvalTargetSearchEmployee():
     ename = request.form['ename']
     ecode = request.form['ecode']
     branch = request.form['branch']
-    qry="SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s"
-    val=(ename,ecode,branch)
-    result=selectone(qry,val)
+    qry = "SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s"
+    val = (ename, ecode, branch)
+    result = selectone(qry, val)
     if result is None:
         return '''<script>alert ("invalid");window.location="/SearchEmployee"</script>'''
     elif result[8] == "employee":
@@ -218,26 +240,29 @@ def getvalTargetSearchEmployee():
     else:
         return '''<script>alert("invalid request");window.location="/SearchEmployee"</script>'''
 
+
 @app.route("/ViewEmployeeTargetList")
 def ViewEmployeeTargetList():
     qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`emp_id`=%s"
-    res = selectone(qry,session['rid'] )
-    return render_template("employee/ViewEmployeeTargetList.html",val=res )
+    res = selectone(qry, session['rid'])
+    return render_template("employee/ViewEmployeeTargetList.html", val=res)
+
 
 @app.route("/ViewLeaveRequestPage")
 def ViewLeaveRequestPage():
     qry = "SELECT * FROM `employee`"
     res = select(qry)
-    return render_template("employee/ViewLeaveRequest.html",val=res )
+    return render_template("employee/ViewLeaveRequest.html", val=res)
 
-@app.route("/GetViewLeaveRequestPage",methods=['post'])
+
+@app.route("/GetViewLeaveRequestPage", methods=['post'])
 def GetViewLeaveRequestPage():
     ename = request.form['ename']
     ecode = request.form['ecode']
     branch = request.form['branch']
-    qry="SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s"
-    val=(ename,ecode,branch)
-    result=selectone(qry,val)
+    qry = "SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s"
+    val = (ename, ecode, branch)
+    result = selectone(qry, val)
     if result is None:
         return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
     elif result[8] == "employee":
@@ -246,18 +271,20 @@ def GetViewLeaveRequestPage():
     else:
         return '''<script>alert("invalid request");window.location="/ViewLeaveRequestPage"</script>'''
 
+
 @app.route("/viewLeaveRequestPage")
 def viewLeaveRequestPage():
     qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`emp_id`=`leaverequest`.`emp_id`WHERE `leaverequest`.`status`='accept' OR `leaverequest`.`status`='reject' "
     res = select(qry)
-    return render_template("employee/viewLeaveRequestPage.html",val=res )
+    return render_template("employee/viewLeaveRequestPage.html", val=res)
+
 
 @app.route("/StatusviewLeaveRequest")
 def StatusviewLeaveRequest():
     id = request.args.get('id')
     qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `leaverequest`.`LRid`=%s WHERE `leaverequest`.`status`='accept' OR `leaverequest`.`status`='reject'"
     res = selectone(qry, id)
-    return render_template("employee/ViewEmployeeLeaveList.html",val=res )
+    return render_template("employee/ViewEmployeeLeaveList.html", val=res)
 
 
 if __name__ == "__main__":

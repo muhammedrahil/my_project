@@ -14,7 +14,8 @@
 
 }
 </style>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title>Untitled Document</title>
@@ -23,32 +24,33 @@
 </head>
 
 <body>
-<div class="row">
-  <div class="col-md-12 m-auto ">
-        <div class="container mt-5 pl-5 ">
-<h2 class="text-center  font-weight-bold" style="color: #632343;">Target</h2>
-  <table class="table mt-5">
-    <tr>
+  <div class="row">
+    <div class="col-md-12 m-auto ">
+      <div class="container mt-5 pl-5 ">
+        <h2 class="text-center  font-weight-bold" style="color: #632343;">Target</h2>
+        <table class="table mt-5">
+          <tr>
 
-      <th scope="col" style="color: #632343;">Employee name </th>
-      <th scope="col" style="color: #632343;">Ecode</th>
-      <th scope="col" style="color: #632343;">branch</th>
-    </tr>
-    {% for i in val%}
-    <tr>
-      <td>&nbsp;{{i[5]}}</td>
-      <td>&nbsp;{{i[6]}}</td>
-      <td>&nbsp;{{i[7]}}</td>
-      <td>
-      <a href="/SettargetEmployees?id={{i[4]}}"  class="btn "style="background-color:#632343;"> <span style="color: white;">Set Target</span></button>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+            <th scope="col" style="color: #632343;">Employee name </th>
+            <th scope="col" style="color: #632343;">Ecode</th>
+            <th scope="col" style="color: #632343;">branch</th>
+          </tr>
+          {% for i in val%}
+          <tr>
+            <td>&nbsp;{{i[5]}}</td>
+            <td>&nbsp;{{i[6]}}</td>
+            <td>&nbsp;{{i[7]}}</td>
+            <td>
+              <a href="/SettargetEmployees?id={{i[4]}}" class="btn " style="background-color:#632343;"> <span
+                  style="color: white;">Set Target</span></button>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
   </div>
-</div>
-    </div>
-    </div>
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
