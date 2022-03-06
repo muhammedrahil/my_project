@@ -5,6 +5,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title>Untitled Document</title>
+
   <style type="">
     body {
   background-image: url("{{url_for('static',filename='logo.png')}}");
@@ -16,7 +17,6 @@
 
 }
 </style>
-
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
@@ -26,26 +26,32 @@
   <div class="row">
     <div class="col-md-6 m-auto">
       <div class="container mt-5 pl-5">
-        <h2 class="text-center font-weight-bold" style="color: #632343;">Employee Target</h2>
+        <h2 class="text-center font-weight-bold" style="color: #632343;">Pyment Status</h2>
+        <form action="">
 
-        <ul class="list-group mt-5 pt-5">
+          <ul class="list-group mt-5 pt-5">
 
-          <li class="list-group-item"> <span class="text-center font-weight-bold" style="color: #632343;">Employee Name
-              : </span> {{val[1]}}</li>
-          <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">Employee Ecode
-              : </span>{{val[2]}}</li>
-          <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">Employee branch
-              :</span> {{val[3]}}</li>
-          <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">Employee Target
-              : </span>{{val[6]}}</li>
-              <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">Employee Achive Target
-                : </span>{{val[8]}}</li>
+            <li class="list-group-item"> <span class="text-center font-weight-bold" style="color: #632343;">Employee
+                Name : </span> {{val[1]}}</li>
+            <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">Employee
+                Ecode : </span>{{val[2]}}</li>
+            <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">Employee
+                branch :</span> {{val[3]}}</li>
+            <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">catogary :</span>
+              {{val[6]}}</li>
+            <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">pyment 
+                :</span> {{val[7]}}</li>
+            <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">pyment Status
+                : </span>{{val[9]}}</li>
 
-        </ul>
+          </ul><br>
+          <input type="button" id="create_pdf" onclick="window.print();" value="Generate PDF"
+            class="btn btn-primary float-right">
+        </form>
 
       </div>
     </div>
-    </form>
+
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

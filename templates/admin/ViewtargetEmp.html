@@ -35,6 +35,7 @@
             <th scope="col" style="color: #632343;">Ecode</th>
             <th scope="col" style="color: #632343;">branch</th>
             <th scope="col" style="color: #632343;">Target</th>
+            <th scope="col" style="color: #632343;">Achive Target</th>
           </tr>
           {% for i in val%}
           <tr>
@@ -42,10 +43,15 @@
             <td>&nbsp;{{i[2]}}</td>
             <td>&nbsp;{{i[3]}}</td>
             <td>&nbsp;{{i[6]}}</td>
+            <td>&nbsp;{{i[8]}}</td>
 
             <td>
               <a href="/updateEmployeestarget?id={{i[5]}}" class="btn " style="background-color:#632343;"> <span
                   style="color: white;">Update Target </span></button>
+            </td>
+            <td>
+              <a href="/AchiveEmployeestarget?id={{i[5]}}" class="btn " style="background-color:#632343;"> <span
+                  style="color: white;"> achive Target </span></button>
             </td>
 
           </tr>
