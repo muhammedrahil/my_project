@@ -1,61 +1,36 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+{% extends '/employee/employee.html' %}
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-  <title>Untitled Document</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-  <style type="">
-    body {
-  background-image: url("{{url_for('static',filename='logo.png')}}");
+{% block content %}
 
-  height: 500px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 500px 500px;
+<div class="row">
+  <div class="col-md-12 m-auto">
+    <div class="container mt-5 pt-5">
+      <table class="table mt-5 pt-5">
+        <tr>
 
-}
-</style>
-</head>
-
-<body>
-
-
-  <table class="table mt-5">
-    <tr>
-
-      <th scope="col" style="color: #632343;">Employee name </th>
-      <th scope="col" style="color: #632343;">Ecode</th>
-      <th scope="col" style="color: #632343;">branch</th>
-      <th scope="col" style="color: #632343;">catogary</th>
-      <th scope="col" style="color: #632343;">pyment</th>
-    </tr>
-    {% for i in val%}
-    <tr>
-      <td>&nbsp;{{i[1]}}</td>
-      <td>&nbsp;{{i[2]}}</td>
-      <td>&nbsp;{{i[3]}}</td>
-      <td>&nbsp;{{i[6]}}</td>
-      <td>&nbsp;{{i[7]}}</td>
-      <td>
-        <a href="/StatusviewlistPymentListseployee?id={{i[5]}}" class="btn  " style="background-color:#632343;"> <span
-            style="color: white;">Status</span></a>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+          <th scope="col" style="color: #632343;">Employee name </th>
+          <th scope="col" style="color: #632343;">Ecode</th>
+          <th scope="col" style="color: #632343;">branch</th>
+          <th scope="col" style="color: #632343;">catogary</th>
+          <th scope="col" style="color: #632343;">pyment</th>
+        </tr>
+        {% for i in val%}
+        <tr>
+          <td>&nbsp;{{i[1]}}</td>
+          <td>&nbsp;{{i[2]}}</td>
+          <td>&nbsp;{{i[3]}}</td>
+          <td>&nbsp;{{i[6]}}</td>
+          <td>&nbsp;{{i[7]}}</td>
+          <td>
+            <a href="/StatusviewlistPymentListseployee?id={{i[5]}}" class="btn  " style="background-color:#632343;">
+              <span style="color: white;">Status</span></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
   </div>
+</div>
+</div>
 
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-</body>
+{% endblock %}
