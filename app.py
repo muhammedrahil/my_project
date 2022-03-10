@@ -96,10 +96,13 @@ def DeleteEmployee():
     iud(qry, id)
     return '''<script>alert("delete succussfull");window.location="/ViewEmployee"</script>'''
 
+@app.route("/employeepage")
+def employeepage():
+    return render_template("employee/employee.html")
 
 @app.route("/employee")
 def employee():
-    return render_template("employee/employee.html")
+    return redirect('/employeepage')
 
 
 @app.route("/SearchEmployee")
@@ -125,10 +128,13 @@ def getvalSearchEmployee():
     else:
         return '''<script>alert("invalid request");window.location="/SearchEmployee"</script>'''
 
+@app.route("/leaveRequestPage")
+def leaveRequestPage():
+    return render_template("employee/leaveRequest.html")
 
 @app.route("/leaveRequest")
 def leaveRequest():
-    return render_template("employee/leaveRequest.html")
+    return redirect('/leaveRequestPage')
 
 
 @app.route("/GetLeaveRequest", methods=['post'])
