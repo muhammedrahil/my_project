@@ -1,0 +1,170 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>E Contract</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+  
+    <!-- Favicons -->
+    <link href="../static/img/favicon.png" rel="icon">
+    <link href="../static/img/apple-touch-icon.png" rel="apple-touch-icon">
+  
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
+  
+    <!-- Bootstrap CSS File -->
+    <link href="../static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  
+    <!-- Libraries CSS Files -->
+    <link href="../static/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../static/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="../static/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="../static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+  
+    <!-- Main Stylesheet File -->
+    <link href="../static/css/style_copy.css" rel="stylesheet">
+    
+    <!-- <style type="">
+      .logo {
+background-image: url("{{url_for('static',filename='main.png')}}");
+
+background-position: center;
+background-repeat: no-repeat;
+background-size: 5px 5px;
+
+
+}
+</style> -->
+  
+  </head>
+  
+  <body>
+  
+    <!--==========================
+      Header
+    ============================-->
+    <header id="header">
+      <div class="container-fluid">
+  
+        <div id="logo" class="pull-left">
+          <h1><a href="#intro" class="scrollto">E Contract</a></h1>
+         
+        </div>
+  
+
+        <nav id="nav-menu-container">
+          <ul class="nav-menu">
+            <li class="menu"><a href="/employee">Home</a></li>
+            <li><a  href="/SearchEmployee">Leave Request</a></li>
+            <li><a href="/SearchPymentPage">Payment</a></li>
+            <li><a  href="/SearchTargetEmployeeView">Target</a></li>
+            <li><a href="/ViewLeaveRequestPage"> Leave Status</a></li>
+            <li><a href="/SearchViewPayment"> Pyment Status</a></li>
+            <li><a  href="logout"  onclick="return confirm('Are you sure?')" role="button">logout</a></li>
+  
+  
+
+          </ul>
+        </nav>
+      </div>
+    </header><!-- #header -->
+  
+    <!--==========================
+      Intro Section
+    ============================-->
+    <section id="intro">
+      <div class="intro-container">
+        <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
+  
+          <ol class="carousel-indicators"></ol>
+  
+          <div class="carousel-inner" role="listbox">
+  
+            <div class="carousel-item active">
+              <div class="carousel-background"><img src="../static/img/sarvaybanner19.jpg" alt=""></div>
+              <div class="carousel-container">
+                <div class="carousel-content">
+                 
+  
+                </div>
+              </div>
+            </div>
+  
+         
+  
+        </div>
+      </div>
+    </section><!-- #intro -->
+  
+    <main id="main">
+  
+ 
+      <section id="featured-services">
+        <div class="container">
+
+  
+          </div>
+        </div>
+      </section>
+  
+      <!--==========================
+        About Us Section
+      ============================-->
+      <section id="about"class="logo" >
+        <div class="container" >
+          <div align="center" >
+  {% block content %} {% endblock %}
+          </div>
+        </div>
+      </section><!-- #about -->
+  
+  
+  
+    </main>
+  
+    <!--==========================
+      Footer
+    ============================-->
+    <footer id="footer">
+
+
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong>DUBAI GOLD</strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+        
+          Designed by <a href="">DUBAI GOLD</a>
+        </div>
+      </div>
+    </footer>
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  
+  
+    <!-- JavaScript Libraries -->
+    <script src="../static/lib/jquery/jquery.min.js"></script>
+    <script src="../static/lib/jquery/jquery-migrate.min.js"></script>
+    <script src="../static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/lib/easing/easing.min.js"></script>
+    <script src="../static/lib/superfish/hoverIntent.js"></script>
+    <script src="../static/lib/superfish/superfish.min.js"></script>
+    <script src="../static/lib/wow/wow.min.js"></script>
+    <script src="../static/lib/waypoints/waypoints.min.js"></script>
+    <script src="../static/lib/counterup/counterup.min.js"></script>
+    <script src="../static/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../static/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="../static/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="../static/lib/touchSwipe/jquery.touchSwipe.min.js"></script>
+  
+    <script src="contactform/contactform.js"></script>
+  
+    <!-- Template Main Javascript File -->
+    <script src="../static/js/main.js"></script>
+  
+  </body>
+  </html>
+  

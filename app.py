@@ -53,7 +53,7 @@ def logout():
 # @login_required
 def admins():
     # if(session['lid']):
-    return render_template("admin/admins.html")
+    return render_template("admin/home.html")
     # else:
     #     return redirect('/')
 
@@ -65,7 +65,7 @@ def addEmployee():
 
 @app.route("/manager")
 def manager():
-    return render_template("maneger/maneger.html")
+    return render_template("maneger/home.html")
 
 
 @app.route("/GetaddEmployee", methods=['post'])
@@ -98,7 +98,7 @@ def DeleteEmployee():
 
 @app.route("/employeepage")
 def employeepage():
-    return render_template("employee/employee.html")
+    return render_template("employee/home.html")
 
 @app.route("/employee")
 def employee():

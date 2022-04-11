@@ -1,7 +1,9 @@
+{% extends '/employee/layout.html' %}
 
-  {% extends '/employee/employee.html' %}
-
-  {% block content %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 m-auto">
+      <div class="container ">
   
   <script type="text/javascript">
     function CheckColors(val) {
@@ -16,10 +18,8 @@
  
   <form id="form1" name="form1" method="post" action="/GetLeaveRequest">
 
-    <div class="row">
-      <div class="col-md-6 m-auto">
-        <div class="container mt-5 pt-5">
-          <h2 class="text-center font-weight-bold pt-4" style="color: #632343;">leave</h2>
+
+          <h2 class="text-center font-weight-bold" style="color: #632343;">leave</h2>
           <label class="font-weight-bold" style="color: #632343;">date</label><br>
           <input type="date" class="form-control" required name="date"></input><br>
           <label class="font-weight-bold" style="color: #632343;">expair date</label><br>

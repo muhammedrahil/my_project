@@ -1,11 +1,12 @@
-{% extends '/admin/admins.html' %}
+{% extends '/admin/layout.html' %}
 
 {% block content %}
+  <div class="row logo">
+    <div class="col-md-12 m-auto">
+      <div class="container ">
   <form id="form1" name="form1" method="post" action="/GetaddEmployee">
 
-    <div class="row">
-      <div class="col-md-6 m-auto">
-        <div class="container mt-5 pt-5">
+   
           <h2 class="text-center font-weight-bold pt-4 style="color: #632343;">Add Employee</h2>
           <div class="form-group">
             <label for="" class="font-weight-bold" style="color: #632343;">employee name</label>
