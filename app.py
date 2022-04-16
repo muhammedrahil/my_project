@@ -12,7 +12,7 @@ app.secret_key = "key"
 #     def secure_function():
 #         if "lid" not in session:
 #             return redirect("/")
-#         return func()
+#         return func() 
 #     return secure_function
 
 
@@ -32,9 +32,10 @@ def getLogin():
         return '''<script>alert ("invalid");window.location="/"</script>'''
     elif result[3] == 'admin':
         session['lid'] = True
-        return '''<script>alert("login successfull");window.location="/admins"</script>'''
+        return '''<script>alert("admin login successfully");window.location="/admins"</script>'''
     elif result[3] == 'manager':
-        return '''<script>alert("login successfull");window.location="/manager"</script>'''
+        session['mid'] = True
+        return '''<script>alert(" maneger login successfully");window.location="/admins"</script>'''
     elif result[3] == "employee":
         # session['lid']=True
         return '''<script>alert("login successfull");window.location="/employee"</script>'''
@@ -62,10 +63,6 @@ def admins():
 def addEmployee():
     return render_template("admin/addEmployee.html")
 
-
-@app.route("/manager")
-def manager():
-    return render_template("maneger/home.html")
 
 
 @app.route("/GetaddEmployee", methods=['post'])
@@ -123,7 +120,7 @@ def getvalSearchEmployee():
     if result is None:
         return '''<script>alert ("invalid");window.location="/SearchEmployee"</script>'''
     elif result[8] == "employee":
-        session['eid'] = result[0]
+        session['eid'] = result[4]
         return '''<script>alert("leave request");window.location="/leaveRequest"</script>'''
     else:
         return '''<script>alert("invalid request");window.location="/SearchEmployee"</script>'''
@@ -154,7 +151,7 @@ def GetLeaveRequest():
 
 @app.route("/ViewReaqusetEmployee")
 def ViewReaqusetEmployee():
-    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`emp_id`=`leaverequest`.`emp_id` WHERE `leaverequest`.`status`='pending'"
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='pending'"
     res = select(qry)
     return render_template("admin/viewLeaveRequest.html", val=res)
 
@@ -192,7 +189,7 @@ def SetEmployeestarget():
 def SettargetEmployees():
     id = request.args.get('id')
     session['id'] = id
-    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`emp_id`=`target`.`emp_id`WHERE employee.emp_id=%s"
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`loginid`=`target`.`lg_id` WHERE `employee`.`loginid`=%s"
     res = selectone(qry, id)
     print(res)
     if(res == None):
@@ -212,7 +209,7 @@ def GettargetEmployees():
 
 @app.route("/viewupdatetargetEmployees")
 def viewupdatetargetEmployees():
-    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`emp_id`=`target`.`emp_id` "
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` "
     res = select(qry)
     return render_template("admin/ViewtargetEmp.html", val=res)
 
@@ -221,7 +218,7 @@ def viewupdatetargetEmployees():
 def updateEmployeestarget():
     id = request.args.get('id')
     session['tid'] = id
-    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`emp_id`=`target`.`emp_id`where `target`. `trid`=%s "
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` where `target`. `trid`=%s "
     res = selectone(qry, id)
     return render_template("admin/updateTarget.html", val=res)
 
@@ -239,7 +236,7 @@ def GetupdatetargetEmployees():
 def AchiveEmployeestarget():
     id = request.args.get('id')
     session['tid'] = id
-    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`emp_id`=`target`.`emp_id`where `target`. `trid`=%s "
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` where `target`. `trid`=%s "
     res = selectone(qry, id)
     return render_template("admin/Achive.html", val=res)
 
@@ -271,7 +268,7 @@ def getvalTargetSearchEmployee():
     if result is None:
         return '''<script>alert ("invalid");window.location="/SearchEmployee"</script>'''
     elif result[8] == "employee":
-        session['rid'] = result[0]
+        session['rid'] = result[4]
         return '''<script>alert("thanks");window.location="/ViewEmployeeTargetList"</script>'''
     else:
         return '''<script>alert("invalid request");window.location="/SearchEmployee"</script>'''
@@ -279,7 +276,7 @@ def getvalTargetSearchEmployee():
 
 @app.route("/ViewEmployeeTargetList")
 def ViewEmployeeTargetList():
-    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`emp_id`=%s"
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`loginid`=`target`.`lg_id` WHERE `employee`.`loginid`=%s"
     res = selectone(qry, session['rid'])
     return render_template("employee/ViewEmployeeTargetList.html", val=res)
 
@@ -302,7 +299,7 @@ def GetViewLeaveRequestPage():
     if result is None:
         return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
     elif result[8] == "employee":
-        session['rid'] = result[0]
+        session['rid'] = result[4]
         return '''<script>alert("thanks");window.location="/viewLeaveRequestPage"</script>'''
     else:
         return '''<script>alert("invalid request");window.location="/ViewLeaveRequestPage"</script>'''
@@ -310,15 +307,15 @@ def GetViewLeaveRequestPage():
 
 @app.route("/viewLeaveRequestPage")
 def viewLeaveRequestPage():
-    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`emp_id`=`leaverequest`.`emp_id`WHERE `leaverequest`.`status`='accept' OR `leaverequest`.`status`='reject' "
-    res = select(qry)
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE  `employee`.`loginid`= %s "
+    res = selectall(qry,session['rid'])
     return render_template("employee/viewLeaveRequestPage.html", val=res)
 
 
 @app.route("/StatusviewLeaveRequest")
 def StatusviewLeaveRequest():
     id = request.args.get('id')
-    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `leaverequest`.`LRid`=%s WHERE `leaverequest`.`status`='accept' OR `leaverequest`.`status`='reject'"
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `leaverequest`.`LRid`=%s "
     res = selectone(qry, id)
     return render_template("employee/ViewEmployeeLeaveList.html", val=res)
 
@@ -367,8 +364,9 @@ def GetPymentPage():
 
 @app.route("/BranchEmployeePymentPage")
 def BranchEmployeePymentPage():
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`emp_id`=`pyment`.`emp_id` WHERE`pyment`.`status`='pending'"
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending'"
     res = select(qry)
+    print(res)
     return render_template("maneger/viewPymentEmployee.html", val=res)
 
 @app.route("/AcceptBranchEmployeePymentPage")
@@ -425,21 +423,21 @@ def GetSearchViewPayment():
     if result is None:
         return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
     elif result[8] == "employee":
-        session['rid'] = result[0]
+        session['rid'] = result[4]
         return '''<script>alert("thanks");window.location="/listPymentListseployee"</script>'''
     else:
         return '''<script>alert("invalid request");window.location="/ViewLeaveRequestPage"</script>'''\
 
 @app.route("/listPymentListseployee")
 def listPymentListseployee():
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`emp_id`=`pyment`.`emp_id`WHERE `pyment`.`status`='accept' OR `pyment`.`status`='reject'  "
-    res = select(qry)
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE `employee`.`loginid`=%s "
+    res = selectall(qry,session['rid'])
     return render_template("employee/listPymentListseployee.html", val=res)
 
 @app.route("/StatusviewlistPymentListseployee")
 def StatusviewlistPymentListseployee():
     id = request.args.get('id')
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `pyment`.`pid`=%sWHERE `pyment`.`status`='accept' OR `pyment`.`status`='reject' "
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `pyment`.`pid`=%s WHERE `pyment`.`status`='accept' OR `pyment`.`status`='reject'OR `pyment`.`status`='pending' "
     res = selectone(qry, id)
     return render_template("employee/SearchViewPaymentList.html", val=res)    
 
