@@ -97,6 +97,12 @@ def DeleteEmployee():
 def employeepage():
     return render_template("employee/home.html")
 
+
+@app.route("/about")
+def about():
+    return render_template("temp/about.html")
+
+
 @app.route("/employee")
 def employee():
     return redirect('/employeepage')
@@ -125,9 +131,11 @@ def getvalSearchEmployee():
     else:
         return '''<script>alert("invalid request");window.location="/SearchEmployee"</script>'''
 
+
 @app.route("/leaveRequestPage")
 def leaveRequestPage():
     return render_template("employee/leaveRequest.html")
+    
 
 @app.route("/leaveRequest")
 def leaveRequest():
@@ -338,7 +346,7 @@ def GetSearchPymentPage():
     if result is None:
         return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
     elif result[8] == "employee":
-        session['rid'] = result[0]
+        session['rid'] = result[4]
         return '''<script>alert("thanks");window.location="/PymentPage"</script>'''
     else:
         return '''<script>alert("invalid request");window.location="/ViewLeaveRequestPage"</script>'''
