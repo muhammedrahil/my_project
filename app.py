@@ -29,7 +29,7 @@ def getLogin():
     vals = (uname, pwd)
     result = selectone(qry, vals)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/"</script>'''
+        return '''<script>alert ("Invalid User Name OR Password");window.location="/"</script>'''
     elif result[3] == 'admin':
         session['lid'] = True
         return '''<script>alert("admin login successfully");window.location="/admins"</script>'''
@@ -76,7 +76,7 @@ def GetaddEmployee():
     qry = "INSERT INTO `employee` VALUES (NULL,%s,%s,%s,%s)"
     val = (ename, ecode, branch, str(lid))
     iud(qry, val)
-    return '''<script>alert("added successfully");window.location="/admins"</script>'''
+    return '''<script>alert("New Employee added successfully");window.location="/admins"</script>'''
 
 
 @app.route("/ViewEmployee")
@@ -84,6 +84,13 @@ def ViewEmployee():
     qry = "SELECT * FROM `employee`"
     res = select(qry)
     return render_template("admin/viewEmployee.html", val=res)
+
+@app.route("/Search_branch", methods=['post'])
+def Search_branch():
+    branch = request.form['branch']
+    qry = "SELECT * FROM `employee` WHERE `branch`=%s"
+    res = selectall(qry,branch)
+    return render_template("admin/SearchViewEmployee.html", val=res)
 
 
 @app.route("/DeleteEmployee")
@@ -124,12 +131,12 @@ def getvalSearchEmployee():
     val = (ename, ecode, branch)
     result = selectone(qry, val)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/SearchEmployee"</script>'''
+        return '''<script>alert ("Invalid ");window.location="/SearchEmployee"</script>'''
     elif result[8] == "employee":
         session['eid'] = result[4]
-        return '''<script>alert("leave request");window.location="/leaveRequest"</script>'''
+        return '''<script>alert("Thank you,Please Request Your Leave");window.location="/leaveRequest"</script>'''
     else:
-        return '''<script>alert("invalid request");window.location="/SearchEmployee"</script>'''
+        return '''<script>alert("invalid ");window.location="/SearchEmployee"</script>'''
 
 
 @app.route("/leaveRequestPage")
@@ -163,6 +170,13 @@ def ViewReaqusetEmployee():
     res = select(qry)
     return render_template("admin/viewLeaveRequest.html", val=res)
 
+@app.route("/Search_branch_Leave", methods=['post'])
+def Search_branch_Leave():
+    branch = request.form['branch']
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='pending' AND `employee`.`branch`=%s"
+    res = selectall(qry,branch)
+    return render_template("admin/Search_branch_Leave.html", val=res)
+
 
 @app.route("/AcceptReaqusetEmployee")
 def AcceptReaqusetEmployee():
@@ -192,6 +206,12 @@ def SetEmployeestarget():
     res = select(qry)
     return render_template("admin/setTarget.html", val=res)
 
+@app.route("/Search_branch_SetTarget", methods=['post'])
+def Search_branch_SetTarget():
+    branch = request.form['branch']
+    qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`branch`=%s"
+    res = selectall(qry,branch)
+    return render_template("admin/Search_branch_SetTarget.html", val=res)
 
 @app.route("/SettargetEmployees")
 def SettargetEmployees():
@@ -203,7 +223,7 @@ def SettargetEmployees():
     if(res == None):
         return render_template("admin/target.html", val=res)
     else:
-        return '''<script>alert("already set ,update employee target");window.location="/SetEmployeestarget"</script>'''
+        return '''<script>alert("already set ,Please update employee target");window.location="/viewupdatetargetEmployees"</script>'''
 
 
 @app.route("/GettargetEmployees", methods=['post'])
@@ -212,7 +232,7 @@ def GettargetEmployees():
     qry = "INSERT INTO `target` VALUES (NULL,%s,%s,%s)"
     val = (number, session['id'], 00)
     iud(qry, val)
-    return '''<script>alert("Target successfully Set");window.location="/viewupdatetargetEmployees"</script>'''
+    return '''<script>alert("Target successfully ");window.location="/viewupdatetargetEmployees"</script>'''
 
 
 @app.route("/viewupdatetargetEmployees")
@@ -221,6 +241,12 @@ def viewupdatetargetEmployees():
     res = select(qry)
     return render_template("admin/ViewtargetEmp.html", val=res)
 
+@app.route("/Search_viewupdatetargetEmployees", methods=['post'])
+def Search_viewupdatetargetEmployees():
+    branch = request.form['branch']
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s"
+    res = selectall(qry,branch)
+    return render_template("admin/Search_viewupdatetargetEmployees.html", val=res)
 
 @app.route("/updateEmployeestarget")
 def updateEmployeestarget():
@@ -237,7 +263,7 @@ def GetupdatetargetEmployees():
     qry = "update target set target=%s WHERE trid =%s"
     val = (number, session['tid'])
     iud(qry, val)
-    return '''<script>alert("Target successfully Set");window.location="/viewupdatetargetEmployees"</script>'''
+    return '''<script>alert("Update Target successfully ");window.location="/viewupdatetargetEmployees"</script>'''
 
 
 @app.route("/AchiveEmployeestarget")
@@ -255,7 +281,7 @@ def GetAchiveEmployeestarget():
     qry = "UPDATE target SET `achive`=%s WHERE trid =%s"
     val = (number, session['tid'])
     iud(qry, val)
-    return '''<script>alert(" achive Target successfully Set");window.location="/viewupdatetargetEmployees"</script>'''
+    return '''<script>alert(" achive Target successfully ");window.location="/viewupdatetargetEmployees"</script>'''
 
 
 @app.route("/SearchTargetEmployeeView")
@@ -277,9 +303,9 @@ def getvalTargetSearchEmployee():
         return '''<script>alert ("invalid");window.location="/SearchEmployee"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
-        return '''<script>alert("thanks");window.location="/ViewEmployeeTargetList"</script>'''
+        return '''<script>alert("Thank you , Please View Your Target And Achive Target ");window.location="/ViewEmployeeTargetList"</script>'''
     else:
-        return '''<script>alert("invalid request");window.location="/SearchEmployee"</script>'''
+        return '''<script>alert("invalid ");window.location="/SearchEmployee"</script>'''
 
 
 @app.route("/ViewEmployeeTargetList")
@@ -308,9 +334,9 @@ def GetViewLeaveRequestPage():
         return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
-        return '''<script>alert("thanks");window.location="/viewLeaveRequestPage"</script>'''
+        return '''<script>alert("Thank you,Please View Your Leave Request Status");window.location="/viewLeaveRequestPage"</script>'''
     else:
-        return '''<script>alert("invalid request");window.location="/ViewLeaveRequestPage"</script>'''
+        return '''<script>alert("invalid ");window.location="/ViewLeaveRequestPage"</script>'''
 
 
 @app.route("/viewLeaveRequestPage")
@@ -347,9 +373,9 @@ def GetSearchPymentPage():
         return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
-        return '''<script>alert("thanks");window.location="/PymentPage"</script>'''
+        return '''<script>alert("Thank you,Please Request Your Pyment");window.location="/PymentPage"</script>'''
     else:
-        return '''<script>alert("invalid request");window.location="/ViewLeaveRequestPage"</script>'''
+        return '''<script>alert("invalid ");window.location="/ViewLeaveRequestPage"</script>'''
 
 
 
@@ -367,7 +393,7 @@ def GetPymentPage():
     qry="INSERT INTO `pyment` VALUES (NULL,%s,%s,%s,'pending')"
     val=(PymentOption,pyment,session['rid'])
     iud(qry,val)
-    return '''<script>alert(" succesfully");window.location="/employee"</script>'''
+    return '''<script>alert("Pyment Request Succesfully");window.location="/employee"</script>'''
 
 
 @app.route("/BranchEmployeePymentPage")
@@ -376,6 +402,14 @@ def BranchEmployeePymentPage():
     res = select(qry)
     print(res)
     return render_template("maneger/viewPymentEmployee.html", val=res)
+
+@app.route("/Search_branch_Pyment",methods=['post'])
+def Search_branch_Pyment():
+    branch = request.form['branch']
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' AND `employee`.`branch`=%s"
+    res = selectall(qry,branch)
+    print(res)
+    return render_template("maneger/Search_branch_Pyment.html", val=res)
 
 @app.route("/AcceptBranchEmployeePymentPage")
 def AcceptBranchEmployeePymentPage():
@@ -432,9 +466,9 @@ def GetSearchViewPayment():
         return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
-        return '''<script>alert("thanks");window.location="/listPymentListseployee"</script>'''
+        return '''<script>alert("Thank you,Please View Your Pyment Status");window.location="/listPymentListseployee"</script>'''
     else:
-        return '''<script>alert("invalid request");window.location="/ViewLeaveRequestPage"</script>'''\
+        return '''<script>alert("invalid");window.location="/ViewLeaveRequestPage"</script>'''\
 
 @app.route("/listPymentListseployee")
 def listPymentListseployee():
