@@ -81,14 +81,14 @@ def GetaddEmployee():
 
 @app.route("/ViewEmployee")
 def ViewEmployee():
-    qry = "SELECT * FROM `employee`"
+    qry = "SELECT * FROM `employee` ORDER BY emp_id DESC"
     res = select(qry)
     return render_template("admin/viewEmployee.html", val=res)
 
 @app.route("/Search_branch", methods=['post'])
 def Search_branch():
     branch = request.form['branch']
-    qry = "SELECT * FROM `employee` WHERE `branch`=%s"
+    qry = "SELECT * FROM `employee` WHERE `branch`=%s ORDER BY `employee`.`emp_id` DESC"
     res = selectall(qry,branch)
     return render_template("admin/SearchViewEmployee.html", val=res)
 
@@ -166,14 +166,14 @@ def GetLeaveRequest():
 
 @app.route("/ViewReaqusetEmployee")
 def ViewReaqusetEmployee():
-    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='pending'"
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='pending'  ORDER BY `leaverequest`.`LRid` DESC"
     res = select(qry)
     return render_template("admin/viewLeaveRequest.html", val=res)
 
 @app.route("/Search_branch_Leave", methods=['post'])
 def Search_branch_Leave():
     branch = request.form['branch']
-    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='pending' AND `employee`.`branch`=%s"
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='pending' AND `employee`.`branch`=%s ORDER BY `leaverequest`.`LRid` DESC"
     res = selectall(qry,branch)
     return render_template("admin/Search_branch_Leave.html", val=res)
 
@@ -202,14 +202,14 @@ def rejectReaqusetEmployee():
 
 @app.route("/SetEmployeestarget")
 def SetEmployeestarget():
-    qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid`"
+    qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` ORDER BY `employee`.`emp_id` DESC"
     res = select(qry)
     return render_template("admin/setTarget.html", val=res)
 
 @app.route("/Search_branch_SetTarget", methods=['post'])
 def Search_branch_SetTarget():
     branch = request.form['branch']
-    qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`branch`=%s"
+    qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
     res = selectall(qry,branch)
     return render_template("admin/Search_branch_SetTarget.html", val=res)
 
@@ -237,14 +237,14 @@ def GettargetEmployees():
 
 @app.route("/viewupdatetargetEmployees")
 def viewupdatetargetEmployees():
-    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` "
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` ORDER BY `employee`.`emp_id` DESC"
     res = select(qry)
     return render_template("admin/ViewtargetEmp.html", val=res)
 
 @app.route("/Search_viewupdatetargetEmployees", methods=['post'])
 def Search_viewupdatetargetEmployees():
     branch = request.form['branch']
-    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s"
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
     res = selectall(qry,branch)
     return render_template("admin/Search_viewupdatetargetEmployees.html", val=res)
 
@@ -341,7 +341,7 @@ def GetViewLeaveRequestPage():
 
 @app.route("/viewLeaveRequestPage")
 def viewLeaveRequestPage():
-    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE  `employee`.`loginid`= %s "
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE  `employee`.`loginid`= %s ORDER BY `leaverequest`.`LRid` DESC"
     res = selectall(qry,session['rid'])
     return render_template("employee/viewLeaveRequestPage.html", val=res)
 
@@ -398,7 +398,7 @@ def GetPymentPage():
 
 @app.route("/BranchEmployeePymentPage")
 def BranchEmployeePymentPage():
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending'"
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' ORDER BY `pyment`.`pid` DESC"
     res = select(qry)
     print(res)
     return render_template("maneger/viewPymentEmployee.html", val=res)
@@ -406,7 +406,7 @@ def BranchEmployeePymentPage():
 @app.route("/Search_branch_Pyment",methods=['post'])
 def Search_branch_Pyment():
     branch = request.form['branch']
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' AND `employee`.`branch`=%s"
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' AND `employee`.`branch`=%s ORDER BY `pyment`.`pid` DESC"
     res = selectall(qry,branch)
     print(res)
     return render_template("maneger/Search_branch_Pyment.html", val=res)
@@ -472,7 +472,7 @@ def GetSearchViewPayment():
 
 @app.route("/listPymentListseployee")
 def listPymentListseployee():
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE `employee`.`loginid`=%s "
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE `employee`.`loginid`=%s ORDER BY `pyment`.`pid` DESC"
     res = selectall(qry,session['rid'])
     return render_template("employee/listPymentListseployee.html", val=res)
 

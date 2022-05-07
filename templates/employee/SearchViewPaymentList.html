@@ -28,6 +28,14 @@
       visibility: hidden !important; // To hide 
     }
   </style>
+  <script>
+    function pdfGanerator(){
+
+      alert('print two copy ');
+      window.print();
+
+    }
+  </script>
 
 </head>
 
@@ -63,7 +71,7 @@
               <b> pyment Status :</b> </span>{{val[9]}}</li>
 
         </ul><br>
-        <input type="button" onclick="window.print();" value="Generate PDF" class="btn btn-primary  float-right">
+        <input type="button" onclick="pdfGanerator();"  value="Generate PDF" class="btn btn-primary  float-right">
         <p class="text-center"><b>Manager Signature :</b></p>
       </div>
     </div>
