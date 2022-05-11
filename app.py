@@ -10,7 +10,7 @@ app.secret_key = "key"
 # def login_required(func):
 #     @functools.wraps(func)
 #     def secure_function():
-#         if "lid" not in session:
+#         if "lid"  not in session:
 #             return redirect("/")
 #         return func() 
 #     return secure_function
@@ -37,26 +37,22 @@ def getLogin():
         session['mid'] = True
         return '''<script>alert(" maneger login successfully");window.location="/admins"</script>'''
     elif result[3] == "employee":
-        # session['lid']=True
+        session['emid']=True
         return '''<script>alert("login successfull");window.location="/employee"</script>'''
     else:
         return '''<script>alert("invalid");window.location="/"</script>'''
 
 
 @app.route("/logout")
-# @login_required
 def logout():
     session.clear()
     return redirect('/')
 
 
 @app.route("/admins")
-# @login_required
 def admins():
-    # if(session['lid']):
     return render_template("admin/home.html")
-    # else:
-    #     return redirect('/')
+  
 
 
 @app.route("/addEmployee")
@@ -155,10 +151,9 @@ def GetLeaveRequest():
     reason = request.form['reason']
     date = request.form['date']
     expdate = request.form['expdate']
-    print(reason)
     if(reason == 'others'):
         reason = request.form['discription']
-    qry = "INSERT INTO `leaverequest` VALUES (NULL,%s,'pending',%s,%s,%s)"
+    qry = "INSERT INTO `leaverequest` VALUES (NULL,%s,'pending',%s,%s,%s,CURDATE())"
     val = (reason, LRid, date, expdate)
     iud(qry, val)
     return '''<script>alert("leave reaquest succussfull");window.location="/employee"</script>'''
@@ -187,6 +182,12 @@ def AcceptReaqusetEmployee():
     val = (accept, session['id'])
     iud(qry, val)
     return '''<script>alert("accept successfully");window.location="/ViewReaqusetEmployee"</script>'''
+
+@app.route("/accept_list_leave")
+def accept_list_leave():   
+    qry="SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='accept'  ORDER BY `leaverequest`.`LRid` DESC"
+    res = select(qry)
+    return render_template("admin/accept_list.html",val=res) 
 
 
 @app.route("/rejectReaqusetEmployee")
@@ -219,7 +220,6 @@ def SettargetEmployees():
     session['id'] = id
     qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`loginid`=`target`.`lg_id` WHERE `employee`.`loginid`=%s"
     res = selectone(qry, id)
-    print(res)
     if(res == None):
         return render_template("admin/target.html", val=res)
     else:
@@ -390,7 +390,9 @@ def PymentPage():
 def GetPymentPage():
     PymentOption = request.form['PymentOption']
     pyment = request.form['pyment']
-    qry="INSERT INTO `pyment` VALUES (NULL,%s,%s,%s,'pending')"
+    if (PymentOption == "others"):
+        PymentOption = request.form['discription']
+    qry="INSERT INTO `pyment` VALUES (NULL,%s,%s,%s,'pending',CURDATE())"
     val=(PymentOption,pyment,session['rid'])
     iud(qry,val)
     return '''<script>alert("Pyment Request Succesfully");window.location="/employee"</script>'''
@@ -400,7 +402,6 @@ def GetPymentPage():
 def BranchEmployeePymentPage():
     qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' ORDER BY `pyment`.`pid` DESC"
     res = select(qry)
-    print(res)
     return render_template("maneger/viewPymentEmployee.html", val=res)
 
 @app.route("/Search_branch_Pyment",methods=['post'])
@@ -408,7 +409,6 @@ def Search_branch_Pyment():
     branch = request.form['branch']
     qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' AND `employee`.`branch`=%s ORDER BY `pyment`.`pid` DESC"
     res = selectall(qry,branch)
-    print(res)
     return render_template("maneger/Search_branch_Pyment.html", val=res)
 
 @app.route("/AcceptBranchEmployeePymentPage")
@@ -482,6 +482,12 @@ def StatusviewlistPymentListseployee():
     qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `pyment`.`pid`=%s WHERE `pyment`.`status`='accept' OR `pyment`.`status`='reject'OR `pyment`.`status`='pending' "
     res = selectone(qry, id)
     return render_template("employee/SearchViewPaymentList.html", val=res)    
+
+@app.route("/accept_list")
+def accept_list():   
+    qry="SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='accept' ORDER BY `pyment`.`pid` DESC"
+    res = select(qry)
+    return render_template("maneger/accept_list.html",val=res) 
 
 if __name__ == "__main__":
     app.run(debug=True)

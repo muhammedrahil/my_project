@@ -12,34 +12,28 @@
           <option value="kochi">kochi</option>
         </select>
         <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
-        <a href="/accept_list" class="btn btn-primary float-right"> Accept list</a>
+        <a href="" class="btn btn-primary float-right"> Accept list</a>
 
 
       </form>
       <table class="table mt-5">
         <tr>
-          <th scope="col" style="color: #632343;">Date </th>
+            <th scope="col" style="color: #632343;">Date </th>
           <th scope="col" style="color: #632343;">Employee Name </th>
           <th scope="col" style="color: #632343;">E-code</th>
           <th scope="col" style="color: #632343;">Branch </th>
           <th scope="col" style="color: #632343;">Catogary</th>
-          <th scope="col" style="color: #632343;">Payment </th>
+          <th scope="col" style="color: #632343;">Pyment </th>
         </tr>
         {% for i in val%}
         <tr>
-          <td>{{i[10]}}</td>
+            <td>{{i[10]}}</td>
           <td>{{i[1]}}</td>
           <td>{{i[2]}}</td>
           <td>{{i[3]}}</td>
           <td>{{i[6]}}</td>
           <td>{{i[7]}}</td>
-          <td>&nbsp; <a href="/EditBranchEmployeePymentPage?id={{i[5]}}" class="btn btn-primary  ">Edit Payment</a>
-          </td>
-          <td>&nbsp; <a href="/AcceptBranchEmployeePymentPage?id={{i[5]}}" class="btn  "
-              style="background-color:#632343;"> <span style="color: white;"> accept </span></button>
-          </td>
-          <td>&nbsp; <a href="/rejectBranchEmployeePymentPage?id={{i[5]}}" class="btn btn-danger ">reject</a>
-          </td>
+          <!-- <td><a href="" class="btn btn-primary  ">Generate PDF</a></td> -->
 
         </tr>
         {% endfor %}

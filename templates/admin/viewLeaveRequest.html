@@ -14,19 +14,20 @@
           </select>
           <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
         </form>
-
+        <a href="/accept_list_leave" class="btn btn-primary float-right"> Accept list</a>
   <table class="table mt-4">
     <tr>
-
+      <th scope="col" style="color: #632343;">Date</th>
       <th scope="col" style="color: #632343;">Employee name </th>
       <th scope="col" style="color: #632343;">Ecode</th>
       <th scope="col" style="color: #632343;"> branch</th>
       <th scope="col" style="color: #632343;">reason</th>
-      <th scope="col" style="color: #632343;">Date</th>
-      <th scope="col" style="color: #632343;">Expair Date</th>
+      <th scope="col" style="color: #632343;">Leave Date</th>
+      <th scope="col" style="color: #632343;">Leave Expair Date</th>
     </tr>
     {% for i in val%}
     <tr>
+      <td>{{i[11]}}</td>
       <td>&nbsp;{{i[1]}}</td>
       <td>&nbsp;{{i[2]}}</td>
       <td>&nbsp;{{i[3]}}</td>
@@ -34,10 +35,11 @@
       <td>&nbsp;{{i[9]}}</td>
       <td>&nbsp;{{i[10]}}</td>
       <td>
-        <a href="/rejectReaqusetEmployee?id={{i[5]}}" onclick="return confirm('Are you sure?') "
-          class="btn btn-danger">Reject</a>
         <a href="/AcceptReaqusetEmployee?id={{i[5]}}" onclick="return confirm('Are you sure?') "
           class="btn btn-primary">Accept</a>
+        <a href="/rejectReaqusetEmployee?id={{i[5]}}" onclick="return confirm('Are you sure?') "
+          class="btn btn-danger">Reject</a>
+        
       </td>
     </tr>
     {% endfor %}

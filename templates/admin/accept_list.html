@@ -14,7 +14,6 @@
           </select>
           <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
         </form>
-        <a href="/accept_list_leave" class="btn btn-primary float-right"> Accept list</a>
   <table class="table mt-4">
     <tr>
       <th scope="col" style="color: #632343;">Date</th>
@@ -34,13 +33,6 @@
       <td>&nbsp;{{i[6]}}</td>
       <td>&nbsp;{{i[9]}}</td>
       <td>&nbsp;{{i[10]}}</td>
-      <td>
-        <a href="/AcceptReaqusetEmployee?id={{i[5]}}" onclick="return confirm('Are you sure?') "
-          class="btn btn-primary">Accept</a>
-        <a href="/rejectReaqusetEmployee?id={{i[5]}}" onclick="return confirm('Are you sure?') "
-          class="btn btn-danger">Reject</a>
-        
-      </td>
     </tr>
     {% endfor %}
   </table>
