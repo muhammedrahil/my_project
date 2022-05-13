@@ -6,14 +6,18 @@
       <div class="container ">
   <form id="form1" name="form1" method="post" action="/GetupdatetargetEmployees">
 
-          <h3 class="text-center font-weight-bold " style="color: #632343;">update {{val[1]}} Target</h3>
+          <h3 class="text-center font-weight-bold " style="color: #632343;">Update Target</h3>
           <div class="form-group">
-            <input type="number" class="form-control" name="number" value="{{val[6]}}">
+            <label class="font-weight-bold" style="color: #632343;">Gold</label>
+              <input type="number" class="form-control" required name="Gold"  value="{{val[6]}}">
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold" style="color: #632343;">Diamond</label>
+              <input type="number" class="form-control" required name="Diamond"  value="{{val[9]}}">
           </div>
 
-
           <button type="submit" class="btn float-right" style="background-color:#632343;"> <span
-              style="color: white;">Update </span></button>
+              style="color: white;">Update</span></button>
   </form>
   </div>
   </div>

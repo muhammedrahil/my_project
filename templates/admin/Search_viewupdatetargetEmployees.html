@@ -8,20 +8,23 @@
         <form action="/Search_viewupdatetargetEmployees" method="post">
           <label for="" class="font-weight-bold">Branch </label>
           <select class="form-select " aria-label="Default select example" name="branch">
-            <option value="malapuram">malapuram</option>
-            <option value="calicate">calicate</option>
-            <option value="kochi">kochi</option>
+            <option value="Valanchery">Valanchery</option>
+            <option value="Ramanatukara">Ramanatukara</option>
+            <option value="Perinthalmanna">Perinthalmanna</option>
+            <option value="Pattambi">Pattambi</option>
           </select>
           <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
         </form>
 
         <table class="table mt-5">
           <tr>
-            <th scope="col" style="color: #632343;">Employee name </th>
-            <th scope="col" style="color: #632343;">Ecode</th>
-            <th scope="col" style="color: #632343;">branch</th>
-            <th scope="col" style="color: #632343;">Target</th>
-            <th scope="col" style="color: #632343;">Achive Target</th>
+            <th scope="col" style="color: #632343;">Employee Name </th>
+            <th scope="col" style="color: #632343;">E-Code</th>
+            <th scope="col" style="color: #632343;">Branch</th>
+            <th scope="col" style="color: #632343;">Gold Target</th>
+            <th scope="col" style="color: #632343;">Diamond Target</th>
+            <th scope="col" style="color: #632343;">Gold Target Achived</th>
+            <th scope="col" style="color: #632343;">Diamond Target Achived</th>
           </tr>
           {% for i in val%}
           <tr>
@@ -29,15 +32,16 @@
             <td>&nbsp;{{i[2]}}</td>
             <td>&nbsp;{{i[3]}}</td>
             <td>&nbsp;{{i[6]}}</td>
+            <td>&nbsp;{{i[9]}}</td>
             <td>&nbsp;{{i[8]}}</td>
-
+            <td>&nbsp;{{i[10]}}</td>
             <td>
               <a href="/updateEmployeestarget?id={{i[5]}}" class="btn " style="background-color:#632343;"> <span
                   style="color: white;">Update Target </span></button>
             </td>
             <td>
               <a href="/AchiveEmployeestarget?id={{i[5]}}" class="btn " style="background-color:#632343;"> <span
-                  style="color: white;"> achive Target </span></button>
+                  style="color: white;"> Achive Target </span></button>
             </td>
 
           </tr>

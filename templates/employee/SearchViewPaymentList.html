@@ -25,17 +25,19 @@
     }
 
     #printBtn {
-      visibility: hidden !important; // To hide 
+      visibility: hidden !important; 
     }
   </style>
-  <script>
-    function pdfGanerator(){
 
-      alert('print two copy ');
-      window.print();
+ <script>
+  function pdfGanerator() {
+    document.getElementById('button').style.display = 'none';
+    alert('print two copy ');
+    window.print();
+    document.getElementById('button').style.display = 'block';
+  }
 
-    }
-  </script>
+</script>
 
 </head>
 
@@ -60,19 +62,19 @@
           <li class="list-group-item"> <span class="text-center font-weight-bold" style="color: #632343;">
               <b>Employee Name :</b> </span> {{val[1]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b>Employee Ecode : </b> </span>{{val[2]}}</li>
+              <b>Employee Code : </b> </span>{{val[2]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b> Employee branch :</b> </span> {{val[3]}}</li>
+              <b> Employee Branch :</b> </span> {{val[3]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b> catogary :</b> </span> {{val[6]}}</li>
+              <b> Catogary :</b> </span> {{val[6]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b>pyment :</b> </span> {{val[7]}}</li>
+              <b>Payment :</b> </span> {{val[7]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b> pyment Status :</b> </span>{{val[9]}}</li>
+              <b> Payment Status :</b> </span>{{val[9]}}</li>
 
         </ul><br>
-        <input type="button" onclick="pdfGanerator();"  value="Generate PDF" class="btn btn-primary  float-right">
-        <p class="text-center"><b>Manager Signature :</b></p>
+        <input type="button" onclick="pdfGanerator();"  value="Generate PDF" id="button" class="btn btn-primary  float-right">
+        <br><br><br><p class="text-center"><b>Manager Signature :</b></p>
       </div>
     </div>
 

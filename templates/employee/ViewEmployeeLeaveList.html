@@ -14,56 +14,63 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
 
-    <link href="../static/css/style_copy.css" rel="stylesheet">
-    <style>
-      body{
-        visibility: visible;
-        background-image: url(/static/logo.png);
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-      }
-      #printBtn {
-            visibility: hidden !important; // To hide 
-        }
-      
-    </style>
-    <script>
-      function pdfGanerator(){
-  
-        alert('print two copy ');
-        window.print();
-  
-      }
-    </script>
+  <link href="../static/css/style_copy.css" rel="stylesheet">
+  <style>
+    body {
+      visibility: visible;
+      background-image: url(/static/logo.png);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+  </style>
+  <style type="text/css" media="print">
+    @page {
+      size: auto;
+      /* auto is the initial value */
+      margin: 0;
+      /* this affects the margin in the printer settings */
+    }
+  </style>
+  <script>
+    function pdfGanerator() {
+      document.getElementById('button').style.display = 'none';
+      alert('print two copy ');
+      window.print();
+      document.getElementById('button').style.display = 'block';
+    }
+
+  </script>
 
 </head>
 
 <body>
-  
 
-  
+
+
   <div class="row">
     <div class="col-md-6 m-auto">
       <div class="container pt-5" id="dvContainer">
-        <header >
-    
+        <header>
+
           <div id="logo" class="pull-left text-center">
             <img src="/static/dgold.png" style="width: 100px;height: 100px;" alt="">
             <h1><b style="color: #632343;">DUBAI GOLD</b> </h1>
-            
+
           </div>
-      </header>
+        </header>
+
 
         <ul class="list-group mt-5 pt-5 ">
 
           <li class="list-group-item"> <span class="text-center font-weight-bold" style="color: #632343;">
               <b>Employee Name :</b> </span> {{val[1]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b>Employee Ecode :</b> </span>{{val[2]}}</li>
+              <b>Employee Code :</b> </span>{{val[2]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b>Employee branch :</b> </span> {{val[3]}}</li>
-          <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;"><b>Date :</b>
+              <b>Employee Branch :</b> </span> {{val[3]}}</li>
+          <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;"><b>Leave Date
+                :</b>
             </span>
             {{val[9]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;"><b>Expair
@@ -76,7 +83,9 @@
         </ul><br>
 
 
-        <input type="button"  onclick="pdfGanerator();" value="Generate PDF" class="btn btn-primary  float-right">
+        <input type="button" onclick="pdfGanerator();" value="Generate PDF" id="button"
+          class="btn btn-primary  float-right">
+        <br><br><br>
         <p class="text-center"><b>Manager Signature :</b></p>
       </div>
     </div>
