@@ -1,0 +1,22 @@
+{% extends '/employee/layout.html' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 m-auto">
+      <div class="container  ">
+
+        <table class="table mt-5  ">
+          <tr>
+            <th scope="col" style="color: #632343;">Memo Discription </th>
+          </tr>
+          {% for i in val%}
+          <tr>
+            <td>&nbsp;{{i[1]}}</td>   
+            <td><a href="/download_file?id={{i[0]}}" class="btn btn-primary">download</a></td>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div></div>
+      {% endblock %}

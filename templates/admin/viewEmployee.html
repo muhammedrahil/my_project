@@ -28,7 +28,7 @@
             <td>&nbsp;{{i[1]}}</td>
             <td>&nbsp;{{i[2]}}</td>
             <td>&nbsp;{{i[3]}}</td>
-            <td>&nbsp; <a href="/DeleteEmployee?id={{i[4]}}" class="btn btn-danger float-right mr-5">Remove Employee</a>
+            <td>&nbsp; <a href="/DeleteEmployee?id={{i[4]}}" class="btn btn-danger float-right mr-5" onclick="return confirm('Are you sure?')">Remove Employee</a>
             </td>
           </tr>
           {% endfor %}

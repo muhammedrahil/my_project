@@ -1,0 +1,23 @@
+{% extends '/admin/layout.html' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 m-auto">
+      <div class="container  ">
+
+        <table class="table mt-5  ">
+          <tr>
+            <th scope="col" style="color: #632343;">Memo Discription </th>
+          </tr>
+          {% for i in val%}
+          <tr>
+            <td>&nbsp;{{i[1]}}</td>   
+            <td><a href="/download_file?id={{i[0]}}">download</a></td>
+            <td>&nbsp; <a href="/Delete_memo?id={{i[0]}}" class="btn btn-danger float-right mr-5" onclick="return confirm('Are you sure?')">Remove Memo</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div></div>
+      {% endblock %}
