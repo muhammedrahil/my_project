@@ -4,6 +4,7 @@ from dbconnection import *
 from flask import *
 import functools
 from datetime import datetime
+import time
 import os
 
 app = Flask(__name__)
@@ -41,7 +42,7 @@ def getLogin():
         return '''<script>alert(" Maneger Login Successfully");window.location="/admins"</script>'''
     elif result[3] == "employee":
         session['emid'] = True
-        return '''<script>alert("Login SuccessfullY");window.location="/employee"</script>'''
+        return '''<script>alert("Login Successfully");window.location="/employee"</script>'''
     else:
         return '''<script>alert("invalid");window.location="/"</script>'''
 
@@ -183,7 +184,7 @@ def Search_branch_Leave():
 
 @ app.route("/AcceptReaqusetEmployee")
 def AcceptReaqusetEmployee():
-    accept = "accept"
+    accept = "Accept"
     id = request.args.get('id')
     session['id'] = id
     qry = "update`leaverequest` set `status`=%s WHERE LRid =%s"
@@ -201,7 +202,7 @@ def accept_list_leave():
 
 @ app.route("/rejectReaqusetEmployee")
 def rejectReaqusetEmployee():
-    reject = "reject"
+    reject = "Reject"
     id = request.args.get('id')
     session['id'] = id
     qry = "update`leaverequest` set `status`=%s WHERE LRid =%s"
@@ -365,7 +366,7 @@ def viewLeaveRequestPage():
 @ app.route("/StatusviewLeaveRequest")
 def StatusviewLeaveRequest():
     id = request.args.get('id')
-    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `leaverequest`.`LRid`=%s "
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id`WHERE`leaverequest`.`LRid`=%s"
     res = selectone(qry, id)
     return render_template("employee/ViewEmployeeLeaveList.html", val=res)
 
@@ -430,7 +431,7 @@ def Search_branch_Pyment():
 
 @ app.route("/AcceptBranchEmployeePymentPage")
 def AcceptBranchEmployeePymentPage():
-    accept = "accept"
+    accept = "Accept"
     id = request.args.get('id')
     qry = "update pyment set `status`=%s WHERE pid =%s"
     val = (accept, id)
@@ -440,7 +441,7 @@ def AcceptBranchEmployeePymentPage():
 
 @ app.route("/rejectBranchEmployeePymentPage")
 def rejectBranchEmployeePymentPage():
-    reject = "reject"
+    reject = "Reject"
     id = request.args.get('id')
     qry = "update pyment set `status`=%s WHERE pid =%s"
     val = (reject, id)
@@ -556,6 +557,9 @@ def write_file(data, filename):
     with open(filename, 'wb') as file:
         file.write(data)
 
+def Remove(filename):
+    time.sleep(3)
+    os.remove(filename)
 
 
 @app.route("/download_file")
@@ -567,12 +571,11 @@ def download_file():
     print("discription = ", res[1])
     file = res[2]
     filename = res[3]
-    print(filename)
-    print("Storing employee image and bio-data on disk \n")
     write_file(file, filename)
     return send_file(filename,
                      attachment_filename=filename,
                      as_attachment=True)
+                     
 
 
 @ app.route("/memo_list_employee")
