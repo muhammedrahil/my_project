@@ -11,13 +11,22 @@ app = Flask(__name__)
 app.secret_key = "key"
 
 
-# def login_required(func):
-#     @functools.wraps(func)
-#     def secure_function():
-#         if "lid"  not in session:
-#             return redirect("/")
-#         return func()
-#     return secure_function
+def login_required(func):
+    @functools.wraps(func)
+    def secure_function():
+        if "emid"  not in session:
+            return redirect("/")
+        return func()
+    return secure_function
+
+def director_and_manager_login_required(func):
+    @functools.wraps(func)
+    def secure_function():
+        if ("lid" or "mid")  not in session:
+            return redirect("/")
+        return func()
+    return secure_function
+
 
 
 @app.route("/")
@@ -42,7 +51,7 @@ def getLogin():
         return '''<script>alert(" Maneger Login Successfully");window.location="/admins"</script>'''
     elif result[3] == "employee":
         session['emid'] = True
-        return '''<script>alert("Login Successfully");window.location="/employee"</script>'''
+        return '''<script>alert("Login Successfully");window.location="/employeepage"</script>'''
     else:
         return '''<script>alert("invalid");window.location="/"</script>'''
 
@@ -56,6 +65,7 @@ def logout():
 @app.route("/admins")
 def admins():
     return render_template("admin/home.html")
+
 
 
 @app.route("/addEmployee")
@@ -101,18 +111,15 @@ def DeleteEmployee():
 
 
 @app.route("/employeepage")
+@login_required
 def employeepage():
     return render_template("employee/home.html")
 
 
 
 
-@app.route("/employee")
-def employee():
-    return redirect('/employeepage')
-
-
 @app.route("/SearchEmployee")
+@login_required
 def SearchEmployee():
     qry = "SELECT * FROM `employee`"
     res = select(qry)
@@ -131,19 +138,16 @@ def getvalSearchEmployee():
         return '''<script>alert ("Invalid ");window.location="/SearchEmployee"</script>'''
     elif result[8] == "employee":
         session['eid'] = result[4]
-        return '''<script>alert("Thank you,Please Request Your Leave");window.location="/leaveRequest"</script>'''
+        return '''<script>alert("Thank you,Please Request Your Leave");window.location="/leaveRequestPage"</script>'''
     else:
         return '''<script>alert("invalid ");window.location="/SearchEmployee"</script>'''
 
 
 @app.route("/leaveRequestPage")
+@login_required
 def leaveRequestPage():
     return render_template("employee/leaveRequest.html")
 
-
-@app.route("/leaveRequest")
-def leaveRequest():
-    return redirect('/leaveRequestPage')
 
 
 @app.route("/GetLeaveRequest", methods=['post'])
@@ -302,10 +306,9 @@ def GetAchiveEmployeestarget():
 
 
 @ app.route("/SearchTargetEmployeeView")
+@login_required
 def SearchTargetEmployeeView():
-    qry = "SELECT * FROM `employee`"
-    res = select(qry)
-    return render_template("employee/SearchTargetEmployeeView.html", val=res)
+    return render_template("employee/SearchTargetEmployeeView.html")
 
 
 @ app.route("/getvalTargetSearchEmployee", methods=['post'])
@@ -326,6 +329,7 @@ def getvalTargetSearchEmployee():
 
 
 @ app.route("/ViewEmployeeTargetList")
+@login_required
 def ViewEmployeeTargetList():
     qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`loginid`=`target`.`lg_id` WHERE `employee`.`loginid`=%s"
     res = selectone(qry, session['rid'])
@@ -333,10 +337,9 @@ def ViewEmployeeTargetList():
 
 
 @ app.route("/ViewLeaveRequestPage")
+@login_required
 def ViewLeaveRequestPage():
-    qry = "SELECT * FROM `employee`"
-    res = select(qry)
-    return render_template("employee/ViewLeaveRequest.html", val=res)
+    return render_template("employee/ViewLeaveRequest.html")
 
 
 @ app.route("/GetViewLeaveRequestPage", methods=['post'])
@@ -357,6 +360,7 @@ def GetViewLeaveRequestPage():
 
 
 @ app.route("/viewLeaveRequestPage")
+@login_required
 def viewLeaveRequestPage():
     qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE  `employee`.`loginid`= %s ORDER BY `leaverequest`.`LRid` DESC"
     res = selectall(qry, session['rid'])
@@ -364,6 +368,7 @@ def viewLeaveRequestPage():
 
 
 @ app.route("/StatusviewLeaveRequest")
+@login_required
 def StatusviewLeaveRequest():
     id = request.args.get('id')
     qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id`WHERE`leaverequest`.`LRid`=%s"
@@ -373,9 +378,7 @@ def StatusviewLeaveRequest():
 
 @ app.route("/SearchPymentPage")
 def SearchPymentPage():
-    qry = "SELECT * FROM `employee`"
-    res = select(qry)
-    return render_template("employee/SearchPyment.html", val=res)
+    return render_template("employee/SearchPyment.html")
 
 
 @ app.route("/GetSearchPymentPage", methods=['post'])
@@ -396,6 +399,7 @@ def GetSearchPymentPage():
 
 
 @ app.route("/PymentPage")
+@login_required
 def PymentPage():
     return render_template("employee/pymentPage.html")
 
@@ -466,10 +470,9 @@ def GetEditBranchEmployeePymentPage():
 
 
 @ app.route("/SearchViewPayment")
+@login_required
 def SearchViewPayment():
-    qry = "SELECT * FROM `employee`"
-    res = select(qry)
-    return render_template("employee/SearchViewPayment.html", val=res)
+    return render_template("employee/SearchViewPayment.html")
 
 
 @ app.route("/GetSearchViewPayment", methods=['post'])
@@ -490,6 +493,7 @@ def GetSearchViewPayment():
 
 
 @ app.route("/listPymentListseployee")
+@login_required
 def listPymentListseployee():
     qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE `employee`.`loginid`=%s ORDER BY `pyment`.`pid` DESC"
     res = selectall(qry, session['rid'])
@@ -497,6 +501,7 @@ def listPymentListseployee():
 
 
 @ app.route("/StatusviewlistPymentListseployee")
+@login_required
 def StatusviewlistPymentListseployee():
     id = request.args.get('id')
     qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `pyment`.`pid`=%s WHERE `pyment`.`status`='accept' OR `pyment`.`status`='reject'OR `pyment`.`status`='pending' "
@@ -577,6 +582,7 @@ def download_file():
 
 
 @ app.route("/memo_list_employee")
+@login_required
 def memo_list_employee():
     qry = "Select * From memo ORDER BY `memoid` DESC"
     res = select(qry)
