@@ -21,9 +21,9 @@
             <th scope="col" style="color: #632343;">Employee Name </th>
             <th scope="col" style="color: #632343;">E-Code</th>
             <th scope="col" style="color: #632343;">Branch</th>
-            <th scope="col" style="color: #632343;">Gold Target</th>
+            <th scope="col" style="color: #632343;">Gold Target (grams)</th>
             <th scope="col" style="color: #632343;">Diamond Target</th>
-            <th scope="col" style="color: #632343;">Gold Target Achived</th>
+            <th scope="col" style="color: #632343;">Gold Target Achived (grams)</th>
             <th scope="col" style="color: #632343;">Diamond Target Achived</th>
           </tr>
           {% for i in val%}
@@ -32,9 +32,9 @@
             <td>&nbsp;{{i[2]}}</td>
             <td>&nbsp;{{i[3]}}</td>
             <td>&nbsp;{{i[6]}}</td>
-            <td>&nbsp;{{i[9]}}</td>
+            <td>&nbsp;₹ {{i[9]}}</td>
             <td>&nbsp;{{i[8]}}</td>
-            <td>&nbsp;{{i[10]}}</td>
+            <td>&nbsp;₹ {{i[10]}}</td>
             <td>
               <a href="/updateEmployeestarget?id={{i[5]}}" class="btn " style="background-color:#632343;"> <span
                   style="color: white;">Update Target </span></button>

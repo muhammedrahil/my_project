@@ -152,7 +152,7 @@ def GetLeaveRequest():
     test_time = datetime.strptime(t, '%H:%M:%S')
     current_time = datetime.now().strftime("%H:%M:%S")
     current_time = datetime.strptime(current_time, "%H:%M:%S")
-    if(test_time.time() > current_time.time()):
+    if(test_time.time() < current_time.time()):
         LRid = session['eid']
         reason = request.form['reason']
         date = request.form['date']
@@ -397,9 +397,7 @@ def GetSearchPymentPage():
 
 @ app.route("/PymentPage")
 def PymentPage():
-    qry = "SELECT * FROM `employee`"
-    res = select(qry)
-    return render_template("employee/PymentPage.html", val=res)
+    return render_template("employee/pymentPage.html")
 
 
 @ app.route("/GetPymentPage", methods=['post'])

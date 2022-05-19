@@ -23,11 +23,17 @@
       background-size: contain;
       background-position: center;
     }
-
-    #printBtn {
-      visibility: hidden !important; 
-    }
   </style>
+
+
+<style type="text/css" media="print">
+  @page {
+    size: auto;
+    /* auto is the initial value */
+    margin: 0;
+    /* this affects the margin in the printer settings */
+  }
+</style>
 
  <script>
   function pdfGanerator() {
@@ -69,7 +75,7 @@
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
               <b> Catogary :</b> </span> {{val[6]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b>Payment :</b> </span> {{val[7]}}</li>
+              <b>Payment : ₹</b> </span> {{val[7]}} </li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
               <b> Payment Status :</b> </span>{{val[9]}}</li>
 
