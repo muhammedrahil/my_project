@@ -127,13 +127,13 @@ insert  into `employee`(`emp_id`,`emp_name`,`e-code`,`branch`,`loginid`) values
 (93,'SAILAJA C','1036','Pattambi',95),
 (94,'VINOD U','1047','Pattambi',96),
 (95,'ASIYA P K','1048','Pattambi',97),
-(96,'SUBRAMANIAN P',' 1054','Pattambi',98),
+(96,'SUBRAMANIAN P','1054','Pattambi',98),
 (97,'SHAMEER P','1094','Pattambi',99),
-(98,'SHARFUDHEEN V',' 1073','Pattambi',100),
+(98,'SHARFUDHEEN V','1073','Pattambi',100),
 (99,'NOUFAL S','1128','Pattambi',101),
 (100,'AMEER MALIK M','1102','Pattambi',102),
 (101,'SHARAFUDHEEN','1141','Pattambi',103),
-(102,'SHAMEER K',' 1105','Pattambi',104),
+(102,'SHAMEER K','1105','Pattambi',104),
 (103,'MUHAMMED ANSHAF','1157','Pattambi',105),
 (104,'MANOJ ','1162','Pattambi',106),
 (105,'ABDUL SALAM','1126','Pattambi',107),
@@ -184,8 +184,8 @@ CREATE TABLE `login` (
 /*Data for the table `login` */
 
 insert  into `login`(`loginid`,`username`,`ecode`,`usertype`) values 
-(1,'director','123','director'),
-(2,'manager','123','manager'),
+(1,'director','dgold@2022','director'),
+(2,'manager','dgold@M','manager'),
 (3,'ALI AKBAR MV','1072','employee'),
 (4,'MUHAMMED JAFAR','1085','employee'),
 (5,'MUHAMMED ADIL','1113','employee'),
@@ -281,13 +281,13 @@ insert  into `login`(`loginid`,`username`,`ecode`,`usertype`) values
 (95,'SAILAJA C','1036','employee'),
 (96,'VINOD U','1047','employee'),
 (97,'ASIYA P K','1048','employee'),
-(98,'SUBRAMANIAN P',' 1054','employee'),
+(98,'SUBRAMANIAN P','1054','employee'),
 (99,'SHAMEER P','1094','employee'),
-(100,'SHARFUDHEEN V',' 1073','employee'),
+(100,'SHARFUDHEEN V','1073','employee'),
 (101,'NOUFAL S','1128','employee'),
 (102,'AMEER MALIK M','1102','employee'),
 (103,'SHARAFUDHEEN','1141','employee'),
-(104,'SHAMEER K',' 1105','employee'),
+(104,'SHAMEER K','1105','employee'),
 (105,'MUHAMMED ANSHAF','1157','employee'),
 (106,'MANOJ ','1162','employee'),
 (107,'ABDUL SALAM','1126','employee'),
@@ -305,7 +305,7 @@ insert  into `login`(`loginid`,`username`,`ecode`,`usertype`) values
 (119,'KUNJU MUHAMMED ','1144','employee'),
 (120,'ANJALI  P','1170','employee'),
 (121,'NISHAD K','1129','employee'),
-(125,'coo','123','coo');
+(125,'coo','dgold@coo','coo');
 
 /*Table structure for table `memo` */
 
