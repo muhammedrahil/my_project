@@ -27,7 +27,7 @@ CREATE TABLE `employee` (
   `branch` varchar(50) DEFAULT NULL,
   `loginid` int(10) DEFAULT NULL,
   PRIMARY KEY (`emp_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=latin1;
 
 /*Data for the table `employee` */
 
@@ -179,7 +179,7 @@ CREATE TABLE `login` (
   `ecode` varchar(50) DEFAULT NULL,
   `usertype` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`loginid`)
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=latin1;
 
 /*Data for the table `login` */
 
@@ -304,7 +304,8 @@ insert  into `login`(`loginid`,`username`,`ecode`,`usertype`) values
 (118,'PRAVEEN MS ','1168','employee'),
 (119,'KUNJU MUHAMMED ','1144','employee'),
 (120,'ANJALI  P','1170','employee'),
-(121,'NISHAD K','1129','employee');
+(121,'NISHAD K','1129','employee'),
+(125,'coo','123','coo');
 
 /*Table structure for table `memo` */
 
