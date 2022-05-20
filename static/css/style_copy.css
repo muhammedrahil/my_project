@@ -9,11 +9,7 @@
 # General
 --------------------------------------------------------------*/
 
-body {
-  /* background: rgb(245, 238, 238);
-  color: #666666;
-  font-family: "Open Sans", sans-serif; */
-}
+
 
 .logo {
   background-image: url("{{url_for('static',filename='main.png')}}");
@@ -135,21 +131,24 @@ h6 {
 --------------------------------------------------------------*/
 
 #header {
-  padding: 30px 0;
-  height: 92px;
+  padding: 0px 0;
+  height: 100px;
   position: fixed;
   left: 0;
   top: 0;
   right: 0;
   transition: all 0.5s;
   z-index: 997;
+  margin-left: -50px;
+  
 }
 
 #header.header-scrolled {
   background: rgba(0, 0, 0, 0.9);
-  padding: 20px 0;
-  height: 72px;
+  padding: 0px 0;
+  height: 100px;
   transition: all 0.5s;
+  
 }
 
 #header #logo {
@@ -385,6 +384,7 @@ h6 {
 #nav-menu-container {
   float: right;
   margin: 0;
+  margin-top: -15px;
 }
 
 /* Nav Meu Styling */
@@ -403,7 +403,7 @@ h6 {
 
 .nav-menu li:hover > a,
 .nav-menu > .menu-active > a {
-  color: #18d26e;
+  color: #C0A786;
 }
 
 .nav-menu > li {

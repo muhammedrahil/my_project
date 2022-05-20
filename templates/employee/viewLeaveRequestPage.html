@@ -6,17 +6,22 @@
 
       <table class="table mt-5">
         <tr>
+          <th scope="col"></th>
           <th scope="col" style="color: #632343;">Date</th>
           <th scope="col" style="color: #632343;">Employee Name </th>
           <th scope="col" style="color: #632343;">Ecode</th>
           <th scope="col" style="color: #632343;">Branch</th>
           <th scope="col" style="color: #632343;">Reason</th>
           <th scope="col" style="color: #632343;">Leave Date</th>
-          <th scope="col" style="color: #632343;">Expair Date</th>
+          <th scope="col" style="color: #632343;">Expiry Date</th>
         </tr>
         
         {% for i in val%}
         <tr>
+          <td>&nbsp; {% if i[7] == 'Accept' %}
+            <span>&#10003;</span>
+            {% endif %}
+          </td>
           <td>&nbsp;{{i[11]}}</td>
           <td>&nbsp;{{i[1]}}</td>
           <td>&nbsp;{{i[2]}}</td>

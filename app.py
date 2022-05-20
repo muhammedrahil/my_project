@@ -14,15 +14,7 @@ app.secret_key = "key"
 def login_required(func):
     @functools.wraps(func)
     def secure_function():
-        if "emid"  not in session:
-            return redirect("/")
-        return func()
-    return secure_function
-
-def director_and_manager_login_required(func):
-    @functools.wraps(func)
-    def secure_function():
-        if ("lid" or "mid")  not in session:
+        if "lid"  not in session:
             return redirect("/")
         return func()
     return secure_function
@@ -44,36 +36,43 @@ def getLogin():
     if result is None:
         return '''<script>alert ("Invalid User Name OR Password");window.location="/"</script>'''
     elif result[3] == 'director':
-        session['lid'] = True
+        session['lid'] = 'director'
         return '''<script>alert("Director Login Successfully");window.location="/admins"</script>'''
     elif result[3] == 'manager':
-        session['mid'] = True
+        session['lid'] = 'manager'
         return '''<script>alert(" Maneger Login Successfully");window.location="/admins"</script>'''
     elif result[3] == "employee":
-        session['emid'] = True
+        session['lid'] = 'employee'
         return '''<script>alert("Login Successfully");window.location="/employeepage"</script>'''
+    elif result[3] == "coo":
+        session['lid'] = 'coo'
+        return '''<script>alert("Login Successfully");window.location="/home_coo"</script>'''    
     else:
         return '''<script>alert("invalid");window.location="/"</script>'''
 
 
 @app.route("/logout")
+@login_required
 def logout():
     session.clear()
     return redirect('/')
 
 
 @app.route("/admins")
+@login_required
 def admins():
     return render_template("admin/home.html")
 
 
 
 @app.route("/addEmployee")
+@login_required
 def addEmployee():
     return render_template("admin/addEmployee.html")
 
 
 @app.route("/GetaddEmployee", methods=['post'])
+@login_required
 def GetaddEmployee():
     ename = request.form['ename']
     ecode = request.form['ecode']
@@ -88,6 +87,7 @@ def GetaddEmployee():
 
 
 @app.route("/ViewEmployee")
+@login_required
 def ViewEmployee():
     qry = "SELECT * FROM `employee` ORDER BY emp_id DESC"
     res = select(qry)
@@ -95,6 +95,7 @@ def ViewEmployee():
 
 
 @app.route("/Search_branch", methods=['post'])
+@login_required
 def Search_branch():
     branch = request.form['branch']
     qry = "SELECT * FROM `employee` WHERE `branch`=%s ORDER BY `employee`.`emp_id` DESC"
@@ -103,9 +104,10 @@ def Search_branch():
 
 
 @app.route("/DeleteEmployee")
+@login_required
 def DeleteEmployee():
     id = request.args.get('id')
-    qry = "DELETE FROM `employee` WHERE `loginid`=%s "
+    qry = "DELETE employee ,login FROM `employee` join login on employee.loginid = login.loginid WHERE login.`loginid`=%s "
     iud(qry, id)
     return '''<script>alert("Delete Succussfull");window.location="/ViewEmployee"</script>'''
 
@@ -127,6 +129,7 @@ def SearchEmployee():
 
 
 @app.route("/getvalSearchEmployee", methods=['post'])
+@login_required
 def getvalSearchEmployee():
     ename = request.form['ename']
     ecode = request.form['ecode']
@@ -151,12 +154,13 @@ def leaveRequestPage():
 
 
 @app.route("/GetLeaveRequest", methods=['post'])
+@login_required
 def GetLeaveRequest():
     t = "17:00:00"
     test_time = datetime.strptime(t, '%H:%M:%S')
     current_time = datetime.now().strftime("%H:%M:%S")
     current_time = datetime.strptime(current_time, "%H:%M:%S")
-    if(test_time.time() < current_time.time()):
+    if(test_time.time() > current_time.time()):
         LRid = session['eid']
         reason = request.form['reason']
         date = request.form['date']
@@ -166,12 +170,13 @@ def GetLeaveRequest():
         qry = "INSERT INTO `leaverequest` VALUES (NULL,%s,'pending',%s,%s,%s,CURDATE())"
         val = (reason, LRid, date, expdate)
         iud(qry, val)
-        return '''<script>alert("leave reaquest succussfull");window.location="/employee"</script>'''
+        return '''<script>alert("leave reaquest succussfull");window.location="/leaveRequestPage"</script>'''
     else:
-        return '''<script>alert("Not Approved");window.location="/employee"</script>'''
+        return '''<script>alert("Not Approved");window.location="/employeepage"</script>'''
 
 
 @ app.route("/ViewReaqusetEmployee")
+@login_required
 def ViewReaqusetEmployee():
     qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='pending'  ORDER BY `leaverequest`.`LRid` DESC"
     res = select(qry)
@@ -179,6 +184,7 @@ def ViewReaqusetEmployee():
 
 
 @ app.route("/Search_branch_Leave", methods=['post'])
+@login_required
 def Search_branch_Leave():
     branch = request.form['branch']
     qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='pending' AND `employee`.`branch`=%s ORDER BY `leaverequest`.`LRid` DESC"
@@ -186,9 +192,18 @@ def Search_branch_Leave():
     return render_template("admin/Search_branch_Leave.html", val=res)
 
 
+@ app.route("/Search_branch_Leave_accepted", methods=['post'])
+@login_required
+def Search_branch_Leave_accepted():
+    branch = request.form['branch']
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s ORDER BY `leaverequest`.`LRid` DESC"
+    res = selectall(qry, branch)
+    return render_template("admin/accept_list.html", val=res)
+
 @ app.route("/AcceptReaqusetEmployee")
+@login_required
 def AcceptReaqusetEmployee():
-    accept = "Accept"
+    accept = "Accepted"
     id = request.args.get('id')
     session['id'] = id
     qry = "update`leaverequest` set `status`=%s WHERE LRid =%s"
@@ -198,15 +213,17 @@ def AcceptReaqusetEmployee():
 
 
 @ app.route("/accept_list_leave")
+@login_required
 def accept_list_leave():
-    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='accept'  ORDER BY `leaverequest`.`LRid` DESC"
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted'  ORDER BY `leaverequest`.`LRid` DESC"
     res = select(qry)
     return render_template("admin/accept_list.html", val=res)
 
 
 @ app.route("/rejectReaqusetEmployee")
+@login_required
 def rejectReaqusetEmployee():
-    reject = "Reject"
+    reject = "Rejected"
     id = request.args.get('id')
     session['id'] = id
     qry = "update`leaverequest` set `status`=%s WHERE LRid =%s"
@@ -216,6 +233,7 @@ def rejectReaqusetEmployee():
 
 
 @ app.route("/SetEmployeestarget")
+@login_required
 def SetEmployeestarget():
     qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` ORDER BY `employee`.`emp_id` DESC"
     res = select(qry)
@@ -223,6 +241,7 @@ def SetEmployeestarget():
 
 
 @ app.route("/Search_branch_SetTarget", methods=['post'])
+@login_required
 def Search_branch_SetTarget():
     branch = request.form['branch']
     qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
@@ -231,6 +250,7 @@ def Search_branch_SetTarget():
 
 
 @ app.route("/SettargetEmployees")
+@login_required
 def SettargetEmployees():
     id = request.args.get('id')
     session['id'] = id
@@ -243,6 +263,7 @@ def SettargetEmployees():
 
 
 @ app.route("/GettargetEmployees", methods=['post'])
+@login_required
 def GettargetEmployees():
     Gold = request.form['Gold']
     Diamond = request.form['Diamond']
@@ -253,6 +274,7 @@ def GettargetEmployees():
 
 
 @ app.route("/viewupdatetargetEmployees")
+@login_required
 def viewupdatetargetEmployees():
     qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` ORDER BY `employee`.`emp_id` DESC"
     res = select(qry)
@@ -260,6 +282,7 @@ def viewupdatetargetEmployees():
 
 
 @ app.route("/Search_viewupdatetargetEmployees", methods=['post'])
+@login_required
 def Search_viewupdatetargetEmployees():
     branch = request.form['branch']
     qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
@@ -268,6 +291,7 @@ def Search_viewupdatetargetEmployees():
 
 
 @ app.route("/updateEmployeestarget")
+@login_required
 def updateEmployeestarget():
     id = request.args.get('id')
     session['tid'] = id
@@ -277,6 +301,7 @@ def updateEmployeestarget():
 
 
 @ app.route("/GetupdatetargetEmployees", methods=['post'])
+@login_required
 def GetupdatetargetEmployees():
     Gold = request.form['Gold']
     Diamond = request.form['Diamond']
@@ -287,6 +312,7 @@ def GetupdatetargetEmployees():
 
 
 @ app.route("/AchiveEmployeestarget")
+@login_required
 def AchiveEmployeestarget():
     id = request.args.get('id')
     session['tid'] = id
@@ -296,6 +322,7 @@ def AchiveEmployeestarget():
 
 
 @ app.route("/GetAchiveEmployeestarget", methods=['post'])
+@login_required
 def GetAchiveEmployeestarget():
     Gold = request.form['Gold']
     Diamond = request.form['Diamond']
@@ -312,6 +339,7 @@ def SearchTargetEmployeeView():
 
 
 @ app.route("/getvalTargetSearchEmployee", methods=['post'])
+@login_required
 def getvalTargetSearchEmployee():
     ename = request.form['ename']
     ecode = request.form['ecode']
@@ -320,12 +348,12 @@ def getvalTargetSearchEmployee():
     val = (ename, ecode, branch)
     result = selectone(qry, val)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/SearchEmployee"</script>'''
+        return '''<script>alert ("invalid");window.location="/SearchTargetEmployeeView"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
         return '''<script>alert("Thank you , Please View Your Target And Achive Target ");window.location="/ViewEmployeeTargetList"</script>'''
     else:
-        return '''<script>alert("invalid ");window.location="/SearchEmployee"</script>'''
+        return '''<script>alert("invalid ");window.location="/SearchTargetEmployeeView"</script>'''
 
 
 @ app.route("/ViewEmployeeTargetList")
@@ -336,13 +364,14 @@ def ViewEmployeeTargetList():
     return render_template("employee/ViewEmployeeTargetList.html", val=res)
 
 
-@ app.route("/ViewLeaveRequestPage")
+@ app.route("/ViewLeaveRequestPages")
 @login_required
-def ViewLeaveRequestPage():
+def ViewLeaveRequestPages():
     return render_template("employee/ViewLeaveRequest.html")
 
 
 @ app.route("/GetViewLeaveRequestPage", methods=['post'])
+@login_required
 def GetViewLeaveRequestPage():
     ename = request.form['ename']
     ecode = request.form['ecode']
@@ -351,12 +380,12 @@ def GetViewLeaveRequestPage():
     val = (ename, ecode, branch)
     result = selectone(qry, val)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
+        return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPages"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
         return '''<script>alert("Thank you,Please View Your Leave Request Status");window.location="/viewLeaveRequestPage"</script>'''
     else:
-        return '''<script>alert("invalid ");window.location="/ViewLeaveRequestPage"</script>'''
+        return '''<script>alert("invalid ");window.location="/ViewLeaveRequestPages"</script>'''
 
 
 @ app.route("/viewLeaveRequestPage")
@@ -377,11 +406,13 @@ def StatusviewLeaveRequest():
 
 
 @ app.route("/SearchPymentPage")
+@login_required
 def SearchPymentPage():
     return render_template("employee/SearchPyment.html")
 
 
 @ app.route("/GetSearchPymentPage", methods=['post'])
+@login_required
 def GetSearchPymentPage():
     ename = request.form['ename']
     ecode = request.form['ecode']
@@ -390,12 +421,12 @@ def GetSearchPymentPage():
     val = (ename, ecode, branch)
     result = selectone(qry, val)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
+        return '''<script>alert ("invalid");window.location="/SearchPymentPage"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
         return '''<script>alert("Thank you,Please Request Your Pyment");window.location="/PymentPage"</script>'''
     else:
-        return '''<script>alert("invalid ");window.location="/ViewLeaveRequestPage"</script>'''
+        return '''<script>alert("invalid ");window.location="/SearchPymentPage"</script>'''
 
 
 @ app.route("/PymentPage")
@@ -405,6 +436,7 @@ def PymentPage():
 
 
 @ app.route("/GetPymentPage", methods=['post'])
+@login_required
 def GetPymentPage():
     PymentOption = request.form['PymentOption']
     pyment = request.form['pyment']
@@ -413,27 +445,40 @@ def GetPymentPage():
     qry = "INSERT INTO `pyment` VALUES (NULL,%s,%s,%s,'pending',CURDATE())"
     val = (PymentOption, pyment, session['rid'])
     iud(qry, val)
-    return '''<script>alert("Pyment Request Succesfully");window.location="/employee"</script>'''
+    return '''<script>alert("Pyment Request Succesfully");window.location="/employeepage"</script>'''
 
 
 @ app.route("/BranchEmployeePymentPage")
+@login_required
 def BranchEmployeePymentPage():
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' ORDER BY `pyment`.`pid` DESC"
-    res = select(qry)
-    return render_template("maneger/viewPymentEmployee.html", val=res)
+    if(session['lid']== 'director'):
+        qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' ORDER BY `pyment`.`pid` DESC"
+        res = select(qry)
+        return render_template("maneger/viewPymentEmployee.html", val=res)
+    else:
+        return '''<script>alert("Unavailabe");window.history.back()</script>'''
 
 
 @ app.route("/Search_branch_Pyment", methods=['post'])
+@login_required
 def Search_branch_Pyment():
     branch = request.form['branch']
     qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='pending' AND `employee`.`branch`=%s ORDER BY `pyment`.`pid` DESC"
     res = selectall(qry, branch)
     return render_template("maneger/Search_branch_Pyment.html", val=res)
 
+@ app.route("/Search_branch_Pyment_accepted", methods=['post'])
+@login_required
+def Search_branch_Pyment_accepted():
+    branch = request.form['branch']
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='Accepted' AND `employee`.`branch`=%s ORDER BY `pyment`.`pid` DESC"
+    res = selectall(qry, branch)
+    return render_template("maneger/accept_list.html", val=res)
 
 @ app.route("/AcceptBranchEmployeePymentPage")
+@login_required
 def AcceptBranchEmployeePymentPage():
-    accept = "Accept"
+    accept = "Accepted"
     id = request.args.get('id')
     qry = "update pyment set `status`=%s WHERE pid =%s"
     val = (accept, id)
@@ -442,8 +487,9 @@ def AcceptBranchEmployeePymentPage():
 
 
 @ app.route("/rejectBranchEmployeePymentPage")
+@login_required
 def rejectBranchEmployeePymentPage():
-    reject = "Reject"
+    reject = "Rejected"
     id = request.args.get('id')
     qry = "update pyment set `status`=%s WHERE pid =%s"
     val = (reject, id)
@@ -452,6 +498,7 @@ def rejectBranchEmployeePymentPage():
 
 
 @ app.route("/EditBranchEmployeePymentPage")
+@login_required
 def EditBranchEmployeePymentPage():
     id = request.args.get('id')
     session['pid'] = id
@@ -461,6 +508,7 @@ def EditBranchEmployeePymentPage():
 
 
 @ app.route("/GetEditBranchEmployeePymentPage", methods=['post'])
+@login_required
 def GetEditBranchEmployeePymentPage():
     money = request.form['number']
     qry = "update pyment set `moneny`=%s WHERE pid =%s"
@@ -476,6 +524,7 @@ def SearchViewPayment():
 
 
 @ app.route("/GetSearchViewPayment", methods=['post'])
+@login_required
 def GetSearchViewPayment():
     ename = request.form['ename']
     ecode = request.form['ecode']
@@ -484,12 +533,12 @@ def GetSearchViewPayment():
     val = (ename, ecode, branch)
     result = selectone(qry, val)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/ViewLeaveRequestPage"</script>'''
+        return '''<script>alert ("invalid");window.location="/SearchViewPayment"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
         return '''<script>alert("Thank you,Please View Your Pyment Status");window.location="/listPymentListseployee"</script>'''
     else:
-        return '''<script>alert("invalid");window.location="/ViewLeaveRequestPage"</script>'''
+        return '''<script>alert("invalid");window.location="/SearchViewPayment"</script>'''
 
 
 @ app.route("/listPymentListseployee")
@@ -504,19 +553,21 @@ def listPymentListseployee():
 @login_required
 def StatusviewlistPymentListseployee():
     id = request.args.get('id')
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `pyment`.`pid`=%s WHERE `pyment`.`status`='accept' OR `pyment`.`status`='reject'OR `pyment`.`status`='pending' "
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `pyment`.`pid`=%s WHERE `pyment`.`status`='Accepted' OR `pyment`.`status`='reject'OR `pyment`.`status`='pending' "
     res = selectone(qry, id)
     return render_template("employee/SearchViewPaymentList.html", val=res)
 
 
 @ app.route("/accept_list")
+@login_required
 def accept_list():
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='accept' ORDER BY `pyment`.`pid` DESC"
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`status`='Accepted' ORDER BY `pyment`.`pid` DESC"
     res = select(qry)
     return render_template("maneger/accept_list.html", val=res)
 
 
 @ app.route("/memo_page")
+@login_required
 def memo_page():
     return render_template("admin/memo.html")
 
@@ -529,6 +580,7 @@ def convertToBinaryData(filename):
 
 
 @ app.route("/Get_memo_page", methods=['GET', 'POST'])
+@login_required
 def Get_memo_page():
     upload_file = request.files['files']
     file_name = upload_file.filename
@@ -542,6 +594,7 @@ def Get_memo_page():
 
 
 @ app.route("/memo_list")
+@login_required
 def memo_list():
     qry = "Select * From memo ORDER BY `memoid` DESC"
     res = select(qry)
@@ -549,6 +602,7 @@ def memo_list():
 
 
 @ app.route("/Delete_memo")
+@login_required
 def Delete_memo():
     id = request.args.get('id')
     qry = "DELETE FROM `memo` WHERE `memoid`=%s"
@@ -566,6 +620,7 @@ def Remove(filename):
 
 
 @app.route("/download_file")
+@login_required
 def download_file():
     id = request.args.get('id')
     qry = "select * from memo WHERE `memoid`=%s"
@@ -588,6 +643,43 @@ def memo_list_employee():
     res = select(qry)
     return render_template("employee/Memo_List.html", val=res)
 
+
+@ app.route("/home_coo")
+@login_required
+def home_coo():
+    return render_template("coo/home.html")
+
+@ app.route("/accept_list_leave_coo")
+@login_required
+def accept_list_leave_coo():
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted'  ORDER BY `leaverequest`.`LRid` DESC"
+    res = select(qry)
+    return render_template("coo/accept_list.html", val=res)
+
+@ app.route("/Search_branch_Leave_coo", methods=['post'])
+@login_required
+def Search_branch_Leave_coo():
+    branch = request.form['branch']
+    qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s ORDER BY `leaverequest`.`LRid` DESC"
+    res = selectall(qry, branch)
+    return render_template("coo/Search_branch_Leave.html", val=res)
+
+@ app.route("/viewupdatetargetEmployees_coo")
+@login_required
+def viewupdatetargetEmployees_coo():
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` ORDER BY `employee`.`emp_id` DESC"
+    res = select(qry)
+    print(res)
+    return render_template("coo/ViewtargetEmp.html", val=res)
+
+
+@ app.route("/Search_viewupdatetargetEmployees_coo", methods=['post'])
+@login_required
+def Search_viewupdatetargetEmployees_coo():
+    branch = request.form['branch']
+    qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
+    res = selectall(qry, branch)
+    return render_template("coo/Search_viewupdatetargetEmployees.html", val=res)
 
 if __name__ == "__main__":
     app.run(debug=True)

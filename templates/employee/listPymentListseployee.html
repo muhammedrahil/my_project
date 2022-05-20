@@ -1,21 +1,28 @@
 {% extends '/employee/layout.html' %}
 {% block content %}
-  <div class="row">
-    <div class="col-md-12 m-auto">
-      <div class="container ">
-        <h3 class="text-center  font-weight-bold" style="color: #632343;">Payment Status</h3>
+<div class="row">
+  <div class="col-md-12 m-auto">
+    <div class="container ">
+      <h3 class="text-center  font-weight-bold" style="color: #632343;">Payment Status</h3>
 
-      <table class="table mt-5 pt-5"> 
+      <table class="table mt-5 pt-5">
         <tr>
-
+          <th scope="col"> </th>
           <th scope="col" style="color: #632343;">Employee Name </th>
           <th scope="col" style="color: #632343;">E-Code</th>
           <th scope="col" style="color: #632343;">Branch</th>
           <th scope="col" style="color: #632343;">Catogary</th>
           <th scope="col" style="color: #632343;">Payment</th>
         </tr>
+
         {% for i in val%}
+
+
         <tr>
+          <td>&nbsp; {% if i[9] == 'Accept' %}
+            <span>&#10003;</span>
+            {% endif %}
+          </td>
           <td>&nbsp;{{i[1]}}</td>
           <td>&nbsp;{{i[2]}}</td>
           <td>&nbsp;{{i[3]}}</td>

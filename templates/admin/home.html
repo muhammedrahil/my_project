@@ -2,9 +2,9 @@
 
 <head>
   <meta charset="utf-8">
-  {% if session['lid'] %}
+  {% if session['lid'] == 'director' %}
   <title>Dubai gold and Diamond director</title>
-  {% else %}
+  {% elif session['lid'] == 'manager'  %}
   <title>Dubai gold and Diamond manager</title>
   {% endif %}
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -33,6 +33,12 @@
   <link href="../static/css/style.css" rel="stylesheet">
   <link rel="icon" href="/static/bookmarkLogo.png" type="image/x-icon">
 
+<script>
+  function onchange(){
+
+  }
+</script>
+
 </head>
 
 <body>
@@ -40,26 +46,25 @@
   <!--==========================
       Header
     ============================-->
-  <header id="header">
-    <div class="container-fluid">
-
-      <div id="logo" class="pull-left">
-        <h1><a href="#intro" class="scrollto" style="color: gold;">DUBAI GOLD AND DIAMOND</a></h1>
-
-      </div>
+    <header id="header" class="">
+      <div class="mt-3">
+        <div id="" class="pull-left">
+          <h2 class="font-weight-bold" style="margin-left:80px;"><a href="#intro" class="scrollto" style="color: #C0A786;">DUBAI GOLD & DIAMONDS</a></h1>
+        </div>
 
       <nav id="nav-menu-container">
         <ul class="nav-menu">
-          {% if session['lid'] %}
+          {% if session['lid'] == 'director' %}
           <li class="menu-active"><a href="/admins">Home</a></li>
-          <li><a href="/addEmployee">Add Employee</a></li>
+          <li><a href="/addEmployee" onclick="onchange()">Add Employee</a></li>
           <li><a href="/ViewEmployee">view employee</a></li>
           <li><a href="/ViewReaqusetEmployee">view Leave request</a></li>
           <li><a href="/SetEmployeestarget">Set Target</a></li>
           <li><a href="/viewupdatetargetEmployees">update Target</a></li>
+          <li><a href="/BranchEmployeePymentPage">Payment</a></li>
           <li><a href="/memo_page">MEMO</a></li>
           <li><a href="logout" onclick="return confirm('Are you sure?')" role="button">logout</a></li>
-           {% elif session['mid']  %} 
+           {% elif session['lid'] == 'manager'  %} 
           <li class="menu"><a href="/admins">Home</a></li>
           <li><a href="/addEmployee">Add Employee</a></li>
           <li><a href="/ViewEmployee">view employee</a></li>
@@ -67,7 +72,6 @@
           <li><a href="/SetEmployeestarget">Set Target</a></li>
           <li><a href="/viewupdatetargetEmployees">update Target</a></li>
           <li><a href="/memo_page">MEMO</a></li>
-          <li><a href="/BranchEmployeePymentPage">Payment</a></li>
           <li><a href="logout" onclick="return confirm('Are you sure?')" role="button">logout</a></li>
           {% endif %}
 
@@ -109,7 +113,7 @@
           </div>
 
           <div class="carousel-item">
-            <div class="carousel-background"><img src="../static/img/1.png" alt=""></div>
+            <div class="carousel-background"><img src="../static/img/12.jpeg" alt=""></div>
             <div class="carousel-container">
               <div class="carousel-content">
 
