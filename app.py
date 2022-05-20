@@ -553,7 +553,7 @@ def listPymentListseployee():
 @login_required
 def StatusviewlistPymentListseployee():
     id = request.args.get('id')
-    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `pyment`.`pid`=%s WHERE `pyment`.`status`='Accepted' OR `pyment`.`status`='reject'OR `pyment`.`status`='pending' "
+    qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id`  WHERE `pyment`.`pid`=%s"
     res = selectone(qry, id)
     return render_template("employee/SearchViewPaymentList.html", val=res)
 
@@ -680,6 +680,32 @@ def Search_viewupdatetargetEmployees_coo():
     qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
     res = selectall(qry, branch)
     return render_template("coo/Search_viewupdatetargetEmployees.html", val=res)
+
+@ app.route("/manager_leave_Request")
+@login_required
+def manager_leave_Request():
+    return render_template("maneger/leaveRequest.html")
+
+
+@ app.route("/get_manager_leave_Request", methods=['GET', 'POST'])
+@login_required
+def get_manager_leave_Request():
+    ename = request.form['ename']
+    ecode = request.form['ecode']
+    branch = request.form['branch']
+    reason = request.form['reason']
+    date = request.form['date']
+    expdate = request.form['expdate']
+    if(reason == 'others'):
+        reason = request.form['discription']
+    qry = "SELECT `employee`.* FROM `employee`  WHERE `emp_name`=%s AND `e-code`=%s AND `branch`=%s"
+    val=(ename,ecode,branch)  
+    res=selectone(qry,val)
+    id=res[4] 
+    qry1 = "INSERT INTO `leaverequest` VALUES (NULL,%s,'Accepted',%s,%s,%s,CURDATE())"
+    val1 = (reason, id, date, expdate)
+    iud(qry1, val1)
+    return '''<script>alert(" Succussfull");window.location="/manager_leave_Request"</script>'''
 
 if __name__ == "__main__":
     app.run(debug=True)
