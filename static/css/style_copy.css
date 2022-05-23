@@ -9,6 +9,55 @@
 # General
 --------------------------------------------------------------*/
 
+  #employee {
+   font-size:110%;
+   vertical-align:middle;
+  }
+  .suggestionsBox {
+   width: 500px;
+   color: #fff;
+   margin-bottom:10px;
+   padding:0;
+   background:#86BAC7;
+   top:0;
+   left:0;
+  }
+  .suggestionList {
+   margin: 0px;
+   padding: 0px;
+  }
+  .suggestionList ul li {
+   list-style:none;
+   margin: 0px;
+   padding: 6px;
+   border-bottom:1px dotted #98BE56;
+   cursor: pointer;
+  }
+  .suggestionList ul li:hover {
+   background-color: #006E89;
+   color:#000;text-align: left;
+  }
+  ul {
+   font-family:Arial, Helvetica, sans-serif;
+   font-size:11px;
+   color:#FFF;
+   padding:0;
+   margin:0;
+  }
+  .load{
+  background-image:url(img/loader.gif);
+  background-position:right;
+  background-repeat:no-repeat;
+  }
+  #suggest {
+   position:relative;
+  }
+  .sf_active{
+   border:2px #8BB544 solid;
+   background:#fff;
+   color:#333;
+  }
+ 
 
 
 .logo {
@@ -456,7 +505,7 @@ h6 {
 }
 
 #mobile-nav-toggle i {
-  color: #fff;
+  color: #C0A786;
 }
 
 /* Mobile Nav Styling */
@@ -1525,6 +1574,17 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #ddd;
 }
 
+
+.img{
+  background-image:url(../img/5.jpg);
+  width: 100%;
+   height: 260px;
+   background-size: contain;
+   background-color: black;
+  background-repeat: no-repeat;
+  background-size: fill;
+}
+
 /*--------------------------------------------------------------
 # Responsive Media Queries
 --------------------------------------------------------------*/
@@ -1535,6 +1595,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   #contact .contact-email {
     padding: 20px 0;
   }
+
 
   #contact .contact-phone {
     border-left: 1px solid #ddd;
@@ -1565,6 +1626,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   #nav-menu-container {
     padding-right: 60px;
   }
+
 }
 
 @media (max-width: 768px) {
@@ -1591,4 +1653,25 @@ body.mobile-nav-active #mobile-nav-toggle {
   #mobile-nav-toggle {
     display: inline;
   }
+
+  @media only screen and (max-device-width: 480px) {
+    .img{
+      background-image:url();
+      width: 0%;
+      height: 0;
+      display: none;
+    }
+
+    #about{
+      margin-top: 100px;
+    }
+
+    #header{
+      margin-right: 100px;
+    }
+
+  }
+
+
+
 }

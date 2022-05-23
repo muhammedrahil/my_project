@@ -1,11 +1,15 @@
 {% extends '/employee/layout.html' %}
 {% block content %}
+
   <div class="row">
     <div class="col-md-6 m-auto">
       <div class="container ">
         <form action="/getvalTargetSearchEmployee" method="post">
           <label for="" class="font-weight-bold" style="color: #632343;">Employee Name</label>
-          <input type="text" class="form-control "required name="ename" placeholder="Enter Your Name"></input><br>
+          <input type="text" class="form-control "required name="ename" placeholder="Enter Your Name"id="employee" onkeyup="suggest(this.value);"  onblur="fill();"></input><br>
+          <div class="suggestionsBox" id="suggestions">
+            <div class="suggestionList" id="suggestionsList">   </div>
+         </div>
           <label for="" class="font-weight-bold" style="color: #632343;">E-Code</label>
           <input type="text" class="form-control " required name="ecode" placeholder="Enter Your Employee Code"></input><br>
           <label for="" class="font-weight-bold" style="color: #632343;">Branch</label><br>

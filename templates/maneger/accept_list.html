@@ -23,7 +23,7 @@
           <th scope="col" style="color: #632343;">Employee Name </th>
           <th scope="col" style="color: #632343;">E-Code</th>
           <th scope="col" style="color: #632343;">Branch </th>
-          <th scope="col" style="color: #632343;">Catogary</th>
+          <th scope="col" style="color: #632343;">Category</th>
           <th scope="col" style="color: #632343;">Payment </th>
         </tr>
         {% for i in val%}
@@ -34,7 +34,7 @@
           <td>{{i[3]}}</td>
           <td>{{i[6]}}</td>
           <td>{{i[7]}}</td>
-          <!-- <td><a href="" class="btn btn-primary  ">Generate PDF</a></td> -->
+          <td><a href="/StatusviewlistPymentListsmanager?id={{i[5]}}" class="btn btn-primary  ">Print</a></td>
 
         </tr>
         {% endfor %}

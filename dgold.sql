@@ -179,7 +179,7 @@ CREATE TABLE `login` (
   `ecode` varchar(50) DEFAULT NULL,
   `usertype` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`loginid`)
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=latin1;
 
 /*Data for the table `login` */
 
@@ -305,7 +305,11 @@ insert  into `login`(`loginid`,`username`,`ecode`,`usertype`) values
 (119,'KUNJU MUHAMMED ','1144','employee'),
 (120,'ANJALI P','1170','employee'),
 (121,'NISHAD K','1129','employee'),
-(125,'coo','dgold@coo','coo');
+(125,'COO','dgold@coo','coo'),
+(126,'PMNEMP','PMN916','employee'),
+(127,'RMKEMP','RMK916','employee'),
+(128,'VLCEMP','VLC916','employee'),
+(129,'PTBEMP','PTB916','employee');
 
 /*Table structure for table `memo` */
 

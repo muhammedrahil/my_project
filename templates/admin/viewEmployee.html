@@ -25,10 +25,10 @@
           </tr>
           {% for i in val%}
           <tr>
-            <td>&nbsp;{{i[1]}}</td>
-            <td>&nbsp;{{i[2]}}</td>
-            <td>&nbsp;{{i[3]}}</td>
-            <td>&nbsp; <a href="/DeleteEmployee?id={{i[4]}}" class="btn btn-danger float-right mr-5" onclick="return confirm('Are you sure?')">Remove Employee</a>
+            <td>{{i[1]}}</td>
+            <td>{{i[2]}}</td>
+            <td>{{i[3]}}</td>
+            <td id="remove-button"> <a href="/DeleteEmployee?id={{i[4]}}" class="btn btn-danger  mr-5" onclick="return confirm('Are you sure?')" >Remove Employee</a>
             </td>
           </tr>
           {% endfor %}

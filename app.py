@@ -34,19 +34,19 @@ def getLogin():
     vals = (uname, pwd)
     result = selectone(qry, vals)
     if result is None:
-        return '''<script>alert ("Invalid User Name OR Password");window.location="/"</script>'''
+        return '''<script>alert ("Invalid UserName OR Password");window.location="/"</script>'''
     elif result[3] == 'director':
         session['lid'] = 'director'
-        return '''<script>alert("Director Login Successfully");window.location="/admins"</script>'''
+        return '''<script>alert("Director Login Successfull");window.location="/admins"</script>'''
     elif result[3] == 'manager':
         session['lid'] = 'manager'
-        return '''<script>alert("Maneger Login Successfully");window.location="/admins"</script>'''
+        return '''<script>alert("Manager Login Successfull");window.location="/admins"</script>'''
     elif result[3] == "employee":
         session['lid'] = 'employee'
-        return '''<script>alert("Login Successfully");window.location="/employeepage"</script>'''
+        return '''<script>alert("Login Successfull");window.location="/employeepage"</script>'''
     elif result[3] == "coo":
         session['lid'] = 'coo'
-        return '''<script>alert("Coo Login Successfully");window.location="/home_coo"</script>'''    
+        return '''<script>alert("Coo Login Successfull");window.location="/home_coo"</script>'''    
     else:
         return '''<script>alert("invalid");window.location="/"</script>'''
 
@@ -64,7 +64,7 @@ def admins():
     if(session['lid']== 'manager' or session['lid']== 'director'):
         return render_template("admin/home.html")
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 
@@ -74,7 +74,7 @@ def addEmployee():
     if(session['lid']== 'manager' or session['lid']== 'director'):
         return render_template("admin/addEmployee.html")
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @app.route("/GetaddEmployee", methods=['post'])
@@ -100,7 +100,7 @@ def ViewEmployee():
         res = select(qry)
         return render_template("admin/viewEmployee.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @app.route("/Search_branch", methods=['post'])
@@ -112,7 +112,7 @@ def Search_branch():
         res = selectall(qry, branch)
         return render_template("admin/SearchViewEmployee.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 
@@ -122,7 +122,7 @@ def DeleteEmployee():
     id = request.args.get('id')
     qry = "DELETE employee ,login FROM `employee` join login on employee.loginid = login.loginid WHERE login.`loginid`=%s "
     iud(qry, id)
-    return '''<script>alert("Delete Succussfull");window.location="/ViewEmployee"</script>'''
+    return '''<script>alert("Deleted Successfully");window.location="/ViewEmployee"</script>'''
 
 
 @app.route("/employeepage")
@@ -131,7 +131,7 @@ def employeepage():
     if(session['lid']== 'employee'):
         return render_template("employee/home.html")
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 
@@ -143,7 +143,19 @@ def SearchEmployee():
         res = select(qry)
         return render_template("employee/SearchEmployye.html", val=res)
     else :
-         return '''<script>alert("Unavailabe");window.history.back()</script>'''
+         return '''<script>alert("Unavailable");window.history.back()</script>'''
+
+ 
+@app.route("/ajaxpost",methods=["POST","GET"])
+def ajaxpost():    
+    if request.method == 'POST':
+        queryString = request.form['queryString']
+        query = "SELECT emp_name from employee WHERE emp_name LIKE '{}%' LIMIT 10".format(queryString)
+        employee = select(query)
+        employee = list(employee[0])
+        
+    return jsonify({'htmlresponse': render_template('employee/response.html', employee=employee)})
+
 
 
 @app.route("/getvalSearchEmployee", methods=['post'])
@@ -159,7 +171,7 @@ def getvalSearchEmployee():
         return '''<script>alert ("Invalid ");window.location="/SearchEmployee"</script>'''
     elif result[8] == "employee":
         session['eid'] = result[4]
-        return '''<script>alert("Thank you,Please Request Your Leave");window.location="/leaveRequestPage"</script>'''
+        return '''<script>alert("Thank you! Please Request Your Leave");window.location="/leaveRequestPage"</script>'''
     else:
         return '''<script>alert("invalid ");window.location="/SearchEmployee"</script>'''
 
@@ -170,7 +182,7 @@ def leaveRequestPage():
     if(session['lid']== 'employee'):
         return render_template("employee/leaveRequest.html")
     else :
-         return '''<script>alert("Unavailabe");window.history.back()</script>'''
+         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 
@@ -191,7 +203,7 @@ def GetLeaveRequest():
         qry = "INSERT INTO `leaverequest` VALUES (NULL,%s,'pending',%s,%s,%s,CURDATE())"
         val = (reason, LRid, date, expdate)
         iud(qry, val)
-        return '''<script>alert("leave reaquest succussfull");window.location="/employeepage"</script>'''
+        return '''<script>alert("leave request successfull");window.location="/employeepage"</script>'''
     else:
         return '''<script>alert("Not Approved");window.location="/employeepage"</script>'''
 
@@ -204,7 +216,7 @@ def ViewReaqusetEmployee():
         res = select(qry)
         return render_template("admin/viewLeaveRequest.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/Search_branch_Leave", methods=['post'])
@@ -216,7 +228,7 @@ def Search_branch_Leave():
         res = selectall(qry, branch)
         return render_template("admin/Search_branch_Leave.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/Search_branch_Leave_accepted", methods=['post'])
@@ -228,7 +240,7 @@ def Search_branch_Leave_accepted():
         res = selectall(qry, branch)
         return render_template("admin/accept_list.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/AcceptReaqusetEmployee")
@@ -251,7 +263,7 @@ def accept_list_leave():
         res = select(qry)
         return render_template("admin/accept_list.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/rejectReaqusetEmployee")
 @login_required
@@ -262,7 +274,7 @@ def rejectReaqusetEmployee():
     qry = "update`leaverequest` set `status`=%s WHERE LRid =%s"
     val = (reject, session['id'])
     iud(qry, val)
-    return '''<script>alert("reject successfully");window.location="/ViewReaqusetEmployee"</script>'''
+    return '''<script>alert("rejected successfully");window.location="/ViewReaqusetEmployee"</script>'''
 
 
 @ app.route("/SetEmployeestarget")
@@ -273,7 +285,7 @@ def SetEmployeestarget():
         res = select(qry)
         return render_template("admin/setTarget.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/Search_branch_SetTarget", methods=['post'])
 @login_required
@@ -284,7 +296,7 @@ def Search_branch_SetTarget():
         res = selectall(qry, branch)
         return render_template("admin/Search_branch_SetTarget.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/SettargetEmployees")
@@ -298,9 +310,9 @@ def SettargetEmployees():
         if(res == None):
             return render_template("admin/target.html", val=res)
         else:
-            return '''<script>alert("already set ,Please update employee target");window.location="/viewupdatetargetEmployees"</script>'''
+            return '''<script>alert("already set, Please update employee target");window.location="/viewupdatetargetEmployees"</script>'''
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
         
 
 @ app.route("/GettargetEmployees", methods=['post'])
@@ -322,7 +334,7 @@ def viewupdatetargetEmployees():
         res = select(qry)
         return render_template("admin/ViewtargetEmp.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/Search_viewupdatetargetEmployees", methods=['post'])
@@ -334,7 +346,7 @@ def Search_viewupdatetargetEmployees():
         res = selectall(qry, branch)
         return render_template("admin/Search_viewupdatetargetEmployees.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/updateEmployeestarget")
 @login_required
@@ -346,7 +358,7 @@ def updateEmployeestarget():
         res = selectone(qry, id)
         return render_template("admin/updateTarget.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/GetupdatetargetEmployees", methods=['post'])
 @login_required
@@ -369,7 +381,7 @@ def AchiveEmployeestarget():
         res = selectone(qry, id)
         return render_template("admin/Achive.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/GetAchiveEmployeestarget", methods=['post'])
@@ -389,7 +401,7 @@ def SearchTargetEmployeeView():
     if(session['lid']== 'employee'):
         return render_template("employee/SearchTargetEmployeeView.html")
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 
@@ -406,7 +418,7 @@ def getvalTargetSearchEmployee():
         return '''<script>alert ("invalid");window.location="/SearchTargetEmployeeView"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
-        return '''<script>alert("Thank you , Please View Your Target And Achive Target ");window.location="/ViewEmployeeTargetList"</script>'''
+        return '''<script>alert("Thank you , Please View Your Target And Achived Target ");window.location="/ViewEmployeeTargetList"</script>'''
     else:
         return '''<script>alert("invalid ");window.location="/SearchTargetEmployeeView"</script>'''
 
@@ -419,7 +431,7 @@ def ViewEmployeeTargetList():
         res = selectone(qry, session['rid'])
         return render_template("employee/ViewEmployeeTargetList.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/ViewLeaveRequest_statusPages")
@@ -428,7 +440,7 @@ def ViewLeaveRequest_statusPages():
     if(session['lid']== 'employee'):
         return render_template("employee/ViewLeaveRequest.html")
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/GetViewLeaveRequestPage", methods=['post'])
@@ -441,10 +453,10 @@ def GetViewLeaveRequestPage():
     val = (ename, ecode, branch)
     result = selectone(qry, val)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/ViewLeaveRequest_statusPages"</script>'''
+        return '''<script>alert ("Invalid");window.location="/ViewLeaveRequest_statusPages"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
-        return '''<script>alert("Thank you,Please View Your Leave Request Status");window.location="/viewLeaveRequestPage"</script>'''
+        return '''<script>alert("Thank you, Please View Your Leave Request Status");window.location="/viewLeaveRequestPage"</script>'''
     else:
         return '''<script>alert("invalid ");window.location="/ViewLeaveRequest_statusPages"</script>'''
 
@@ -457,7 +469,7 @@ def viewLeaveRequestPage():
         res = selectall(qry, session['rid'])
         return render_template("employee/viewLeaveRequestPage.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/StatusviewLeaveRequest")
@@ -475,7 +487,7 @@ def SearchPymentPage():
     if(session['lid']== 'employee'):
         return render_template("employee/SearchPyment.html")
     else :
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/GetSearchPymentPage", methods=['post'])
@@ -488,12 +500,12 @@ def GetSearchPymentPage():
     val = (ename, ecode, branch)
     result = selectone(qry, val)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/SearchPymentPage"</script>'''
+        return '''<script>alert ("Invalid");window.location="/SearchPymentPage"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
         return '''<script>alert("Thank you,Please Request Your Pyment");window.location="/PymentPage"</script>'''
     else:
-        return '''<script>alert("invalid ");window.location="/SearchPymentPage"</script>'''
+        return '''<script>alert("Invalid ");window.location="/SearchPymentPage"</script>'''
 
 
 @ app.route("/PymentPage")
@@ -502,7 +514,7 @@ def PymentPage():
     if(session['lid']== 'employee'):
         return render_template("employee/pymentPage.html")
     else:
-         return '''<script>alert("Unavailabe");window.history.back()</script>'''
+         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/GetPymentPage", methods=['post'])
@@ -515,7 +527,7 @@ def GetPymentPage():
     qry = "INSERT INTO `pyment` VALUES (NULL,%s,%s,%s,'pending',CURDATE())"
     val = (PymentOption, pyment, session['rid'])
     iud(qry, val)
-    return '''<script>alert("Pyment Request Succesfully");window.location="/employeepage"</script>'''
+    return '''<script>alert("Payment Request Succesfully");window.location="/employeepage"</script>'''
 
 
 @ app.route("/BranchEmployeePymentPage")
@@ -526,7 +538,7 @@ def BranchEmployeePymentPage():
         res = select(qry)
         return render_template("maneger/viewPymentEmployee.html", val=res)
     else:
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/Search_branch_Pyment", methods=['post'])
@@ -538,7 +550,7 @@ def Search_branch_Pyment():
         res = selectall(qry, branch)
         return render_template("maneger/Search_branch_Pyment.html", val=res)
     else:
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/Search_branch_Pyment_accepted", methods=['post'])
 @login_required
@@ -549,7 +561,7 @@ def Search_branch_Pyment_accepted():
         res = selectall(qry, branch)
         return render_template("maneger/accept_list.html", val=res)
     else:
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/AcceptBranchEmployeePymentPage")
 @login_required
@@ -559,7 +571,7 @@ def AcceptBranchEmployeePymentPage():
     qry = "update pyment set `status`=%s WHERE pid =%s"
     val = (accept, id)
     iud(qry, val)
-    return '''<script>alert("accept successfully");window.location="/BranchEmployeePymentPage"</script>'''
+    return '''<script>alert("accepted successfully");window.location="/BranchEmployeePymentPage"</script>'''
 
 
 @ app.route("/rejectBranchEmployeePymentPage")
@@ -570,7 +582,7 @@ def rejectBranchEmployeePymentPage():
     qry = "update pyment set `status`=%s WHERE pid =%s"
     val = (reject, id)
     iud(qry, val)
-    return '''<script>alert("reject successfully");window.location="/BranchEmployeePymentPage"</script>'''
+    return '''<script>alert("rejected successfully");window.location="/BranchEmployeePymentPage"</script>'''
 
 
 @ app.route("/EditBranchEmployeePymentPage")
@@ -583,7 +595,7 @@ def EditBranchEmployeePymentPage():
         res = selectone(qry, id)
         return render_template("maneger/EditPyment.html", val=res)
     else:
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/GetEditBranchEmployeePymentPage", methods=['post'])
@@ -602,7 +614,7 @@ def SearchViewPayment_Status():
     if(session['lid']== 'employee'):
         return render_template("employee/SearchViewPayment.html")
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/GetSearchViewPayment", methods=['post'])
@@ -615,12 +627,12 @@ def GetSearchViewPayment():
     val = (ename, ecode, branch)
     result = selectone(qry, val)
     if result is None:
-        return '''<script>alert ("invalid");window.location="/SearchViewPayment_Status"</script>'''
+        return '''<script>alert ("Invalid");window.location="/SearchViewPayment_Status"</script>'''
     elif result[8] == "employee":
         session['rid'] = result[4]
-        return '''<script>alert("Thank you,Please View Your Pyment Status");window.location="/listPymentListseployee"</script>'''
+        return '''<script>alert("Thank you, Please View Your Payment Status");window.location="/listPymentListseployee"</script>'''
     else:
-        return '''<script>alert("invalid");window.location="/SearchViewPayment_Status"</script>'''
+        return '''<script>alert("Invalid");window.location="/SearchViewPayment_Status"</script>'''
 
 
 @ app.route("/listPymentListseployee")
@@ -631,7 +643,7 @@ def listPymentListseployee():
         res = selectall(qry, session['rid'])
         return render_template("employee/listPymentListseployee.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/StatusviewlistPymentListseployee")
@@ -643,7 +655,20 @@ def StatusviewlistPymentListseployee():
         res = selectone(qry, id)
         return render_template("employee/SearchViewPaymentList.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
+
+
+@ app.route("/StatusviewlistPymentListsmanager")
+@login_required
+def StatusviewlistPymentListsmanager():
+    if(session['lid']== 'director'):
+        id = request.args.get('id')
+        qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id`  WHERE `pyment`.`pid`=%s"
+        res = selectone(qry, id)
+        return render_template("maneger/SearchViewPaymentList.html", val=res)
+    else : 
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
+
 
 @ app.route("/accept_list")
 @login_required
@@ -677,7 +702,7 @@ def Get_memo_page():
     qry = "INSERT INTO `memo` VALUES(NULL,%s,%s,%s)"
     val = (Discription, file, file_name)
     iud(qry, val)
-    return '''<script>alert("Memo Add Successfully");window.location="/memo_page"</script>'''
+    return '''<script>alert("Memo Added Successfully");window.location="/memo_page"</script>'''
 
 
 @ app.route("/memo_list")
@@ -694,7 +719,7 @@ def Delete_memo():
     id = request.args.get('id')
     qry = "DELETE FROM `memo` WHERE `memoid`=%s"
     res = iud(qry, id)
-    return '''<script>alert("Delete Succussfull");window.location="/memo_list"</script>'''
+    return '''<script>alert("Deleted Successfully");window.location="/memo_list"</script>'''
 
 
 def write_file(data, filename):
@@ -731,7 +756,7 @@ def memo_list_employee():
         res = select(qry)
         return render_template("employee/Memo_List.html", val=res)
     else : 
-         return '''<script>alert("Unavailabe");window.history.back()</script>'''
+         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/home_coo")
 @login_required
@@ -739,7 +764,7 @@ def home_coo():
     if(session['lid']== 'coo'):
         return render_template("coo/home.html")
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/accept_list_leave_coo")
 @login_required
@@ -749,7 +774,7 @@ def accept_list_leave_coo():
         res = select(qry)
         return render_template("coo/accept_list.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/Search_branch_Leave_coo", methods=['post'])
 @login_required
@@ -760,7 +785,7 @@ def Search_branch_Leave_coo():
         res = selectall(qry, branch)
         return render_template("coo/Search_branch_Leave.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/viewupdatetargetEmployees_coo")
 @login_required
@@ -771,7 +796,7 @@ def viewupdatetargetEmployees_coo():
         print(res)
         return render_template("coo/ViewtargetEmp.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/Search_viewupdatetargetEmployees_coo", methods=['post'])
@@ -783,7 +808,7 @@ def Search_viewupdatetargetEmployees_coo():
         res = selectall(qry, branch)
         return render_template("coo/Search_viewupdatetargetEmployees.html", val=res)
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/manager_leave_Request")
 @login_required
@@ -791,7 +816,7 @@ def manager_leave_Request():
     if(session['lid']== 'manager'):
         return render_template("maneger/leaveRequest.html")
     else : 
-        return '''<script>alert("Unavailabe");window.history.back()</script>'''
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
 @ app.route("/get_manager_leave_Request", methods=['GET', 'POST'])
@@ -812,7 +837,7 @@ def get_manager_leave_Request():
     qry1 = "INSERT INTO `leaverequest` VALUES (NULL,%s,'Accepted',%s,%s,%s,CURDATE())"
     val1 = (reason, id, date, expdate)
     iud(qry1, val1)
-    return '''<script>alert(" Succussfull");window.location="/manager_leave_Request"</script>'''
+    return '''<script>alert(" Successfull");window.location="/manager_leave_Request"</script>'''
 
 if __name__ == "__main__":
     app.run(debug=True)

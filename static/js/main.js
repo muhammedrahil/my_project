@@ -1,3 +1,24 @@
+
+
+function suggest(inputString){
+    if(inputString.length == 0) {
+        $('#suggestions').fadeOut();
+    } else {
+        $('#employee').addClass('load');
+        $.post("/ajaxpost", {queryString: ""+inputString+""}, function(data){
+                $('#suggestions').fadeIn();
+                $('#suggestionsList').html(data); 
+                $('#suggestionsList').append(data.htmlresponse);
+                $('#employee').removeClass('load');
+        });
+  }
+}
+function fill(thisValue) {
+  $('#employee').val(thisValue);
+  setTimeout("$('#suggestions').fadeOut();", 600);
+}
+
+
 (function ($) {
   "use strict";
 
