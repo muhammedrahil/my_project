@@ -265,8 +265,8 @@ def rejectReaqusetEmployee():
 @login_required
 def SetEmployeestarget():
     if(session['lid']== 'manager' or session['lid']== 'director'):
-        qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` ORDER BY `employee`.`emp_id` DESC"
-        res = select(qry)
+        qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
+        res = selectall(qry,session['branch'])
         return render_template("admin/setTarget.html", val=res)
     else : 
         return '''<script>alert("Unavailable");window.history.back()</script>'''
@@ -277,9 +277,9 @@ def SetEmployeestarget():
 @login_required
 def Search_branch_SetTarget():
     if(session['lid']== 'manager' or session['lid']== 'director'):
-        branch = request.form['branch']
-        qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
-        res = selectall(qry, branch)
+        department = request.form['department']
+        qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`department`=%s ORDER BY `employee`.`emp_id` DESC"
+        res = selectall(qry, department)
         return render_template("admin/Search_branch_SetTarget.html", val=res)
     else : 
         return '''<script>alert("Unavailable");window.history.back()</script>'''
@@ -295,8 +295,11 @@ def SettargetEmployees():
         session['id'] = id
         qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`loginid`=`target`.`lg_id` WHERE `employee`.`loginid`=%s"
         res = selectone(qry, id)
+        qry1="SELECT `employee`.`emp_name` FROM `employee` JOIN `login` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`branch`='Ramanatukara' AND `employee`.`loginid`=%s"
+        res1 =selectone(qry1,id)
+        print(res1)
         if(res == None):
-            return render_template("admin/target.html", val=res)
+            return render_template("admin/target.html",val=res1)
         else:
             return '''<script>alert("already set, Please update employee target");window.location="/viewupdatetargetEmployees"</script>'''
     else : 
@@ -309,8 +312,8 @@ def SettargetEmployees():
 def GettargetEmployees():
     Gold = request.form['Gold']
     Diamond = request.form['Diamond']
-    qry = "INSERT INTO `target` VALUES (NULL,%s,%s,%s,%s,%s)"
-    val = (Gold, session['id'], 00, Diamond, 00)
+    qry = "INSERT INTO `target` VALUES (NULL,%s,%s,%s,%s,%s,%s,%s)"
+    val = (Gold, session['id'],00, Diamond,00,00,00)
     iud(qry, val)
     return '''<script>window.location="/SetEmployeestarget"</script>'''
 
@@ -327,8 +330,8 @@ def GettargetEmployees():
 @login_required
 def viewupdatetargetEmployees():
     if(session['lid']== 'manager' or session['lid']== 'director'):
-        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` ORDER BY `target`.`trid` DESC"
-        res = select(qry)
+        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` WHERE `employee`.`branch`=%s ORDER BY `target`.`trid` DESC"
+        res = selectall(qry,session['branch'])
         return render_template("admin/ViewtargetEmp.html", val=res)
     else : 
         return '''<script>alert("Unavailable");window.history.back()</script>'''
@@ -339,9 +342,9 @@ def viewupdatetargetEmployees():
 @login_required
 def Search_viewupdatetargetEmployees():
     if(session['lid']== 'manager' or session['lid']== 'director'):
-        branch = request.form['branch']
-        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
-        res = selectall(qry, branch)
+        department = request.form['department']
+        qry ="SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`department`=%s ORDER BY `employee`.`emp_id` DESC"
+        res = selectall(qry, department)
         return render_template("admin/Search_viewupdatetargetEmployees.html", val=res)
     else : 
         return '''<script>alert("Unavailable");window.history.back()</script>'''
@@ -387,8 +390,18 @@ def AchiveEmployeestarget():
 def GetAchiveEmployeestarget():
     Gold = request.form['Gold']
     Diamond = request.form['Diamond']
-    qry = "UPDATE target SET `achive_gold`=%s,`achive_diamond`=%s WHERE trid =%s"
-    val = (Gold, Diamond, session['tid'])
+    qry1="SELECT * FROM `target` WHERE `trid` =%s"
+    res=selectone(qry1,session['tid'])
+    cur_gold=res[1]
+    achive_gold=res[3]
+    cur_dimond=res[4]
+    achive_dimond=res[5]
+    gold_totel_achive=float(achive_gold)+float(Gold)
+    Diamond_totel_achive=float(achive_dimond)+float(Diamond)
+    perse_gold_totel_achive=(gold_totel_achive / float(cur_gold) ) * 100
+    perse_Diamond_totel_achive=(Diamond_totel_achive / float(cur_dimond)) * 100
+    qry = "UPDATE target SET `achive_gold`=%s,`achive_diamond`=%s ,`gold_achive_pers`=%s ,`dmn__achive_perse`=%s WHERE trid =%s"
+    val = (gold_totel_achive, Diamond_totel_achive,perse_gold_totel_achive,perse_Diamond_totel_achive, session['tid'])
     iud(qry, val)
     return '''<script>window.location="/viewupdatetargetEmployees"</script>'''
 

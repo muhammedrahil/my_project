@@ -6,13 +6,11 @@
       <div class="container ">
 
         <form action="/Search_branch_SetTarget" method="post">
-          <label for="" class="font-weight-bold">Branch </label>
-          <select class="form-select " aria-label="Default select example" name="branch">
-            <option value="Valanchery">Valanchery</option>
-            <option value="Ramanatukara">Ramanatukara</option>
-            <option value="Perinthalmanna">Perinthalmanna</option>
-            <option value="Pattambi">Pattambi</option>
-          </select>
+          <label for="" class="font-weight-bold">Department &nbsp </label>
+          <select class="form-select " aria-label="Default select example" name="department">
+            <option value="Sales">&nbsp;Sales</option>
+            <option value="abc">&nbsp;abc</option>
+          </select>&nbsp;
           <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
         </form>
 
@@ -21,12 +19,14 @@
             <th scope="col" style="color: #632343;">Employee Name </th>
             <th scope="col" style="color: #632343;">E-Code</th>
             <th scope="col" style="color: #632343;">Branch</th>
+            <th scope="col" style="color: #632343;">Department</th>
           </tr>
           {% for i in val%}
           <tr>
             <td>&nbsp;{{i[5]}}</td>
             <td>&nbsp;{{i[6]}}</td>
             <td>&nbsp;{{i[7]}}</td>
+            <td>&nbsp;{{i[9]}}</td>
             <td>
               <a href="/SettargetEmployees?id={{i[8]}}" class="btn " style="background-color:#632343;"> <span
                   style="color: white;">Set Target</span></button>
