@@ -2,32 +2,34 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-md-12 m-auto">
+    <div class="col-md-12 col-sm-12 col-lg-12 m-auto">
       <div class="container ">
-<form action="/Search_branch" method="post">
-  <label for="" class="font-weight-bold">Branch </label>
-  <select class="form-select " aria-label="Default select example" name="branch">
-    <option value="Valanchery">Valanchery</option>
-    <option value="Ramanatukara">Ramanatukara</option>
-    <option value="Perinthalmanna">Perinthalmanna</option>
-    <option value="Pattambi">Pattambi</option>
-  </select>
+
+
+<form action="/Search_department" method="post">
+  <label for="" class="font-weight-bold">Department &nbsp </label>
+  <select class="form-select " aria-label="Default select example" name="department">
+    <option value="Sales">&nbsp;Sales</option>
+    <option value="abc">&nbsp;abc</option>
+  </select>&nbsp;
   <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
 
+
 </form>
-
-
-        <table class="table mt-5 pt-5">
+  <table class="table mt-5 pt-5">
           <tr>
             <th scope="col" style="color: #632343;">Employee Name </th>
             <th scope="col" style="color: #632343;">E-Code</th>
             <th scope="col" style="color: #632343;">Branch </th>
+            <th scope="col" style="color: #632343;">Department </th>
+
           </tr>
           {% for i in val%}
           <tr>
             <td>{{i[1]}}</td>
             <td>{{i[2]}}</td>
             <td>{{i[3]}}</td>
+            <td>{{i[5]}}</td>
             <td id="remove-button"> <a href="/DeleteEmployee?id={{i[4]}}" class="btn btn-danger  mr-5" onclick="return confirm('Are you sure?')" >Remove Employee</a>
             </td>
           </tr>

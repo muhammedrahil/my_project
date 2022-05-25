@@ -1,52 +1,56 @@
 {% extends '/admin/layout.html' %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-12 col-sm-12 m-auto">
-      <div class="container ">
+<div class="row">
+  <div class="col-md-12 col-sm-12 m-auto">
+    <div class="container ">
 
-        <form action="/Search_branch_Leave" method="post">
-          <label for="" class="font-weight-bold">Branch </label>
-          <select class="form-select " aria-label="Default select example" name="branch">
-            <option value="Valanchery">Valanchery</option>
-            <option value="Ramanatukara">Ramanatukara</option>
-            <option value="Perinthalmanna">Perinthalmanna</option>
-            <option value="Pattambi">Pattambi</option>
-          </select>
-          <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
-          <a href="/accept_list_leave" class="btn btn-primary float-right"> Accepted List</a>
-        </form>
-        
-  <table class="table mt-5">
-    <tr>
-      <th scope="col" style="color: #632343;">Date</th>
-      <th scope="col" style="color: #632343;">Employee Name </th>
-      <th scope="col" style="color: #632343;">E-Code</th>
-      <th scope="col" style="color: #632343;">Branch</th>
-      <th scope="col" style="color: #632343;">Reason</th>
-      <th scope="col" style="color: #632343;">Leave Date</th>
-      <th scope="col" style="color: #632343;">Leave Expiry Date</th>
-    </tr>
-    {% for i in val%}
-    <tr>
-      <td>{{i[11]}}</td>
-      <td>&nbsp;{{i[1]}}</td>
-      <td>&nbsp;{{i[2]}}</td>
-      <td>&nbsp;{{i[3]}}</td>
-      <td>&nbsp;{{i[6]}}</td>
-      <td>&nbsp;{{i[9]}}</td>
-      <td>&nbsp;{{i[10]}}</td>
-      <td>
-        <a href="/AcceptReaqusetEmployee?id={{i[5]}}" onclick="return confirm('Are you sure?') "
-          class="btn btn-primary">Accept</a>
-        <a href="/rejectReaqusetEmployee?id={{i[5]}}" onclick="return confirm('Are you sure?') "
-          class="btn btn-danger">Reject</a>
-        
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+      <form action="/Search_branch_Leave" method="post">
+        <label for="" class="font-weight-bold">Department &nbsp </label>
+        <select class="form-select " aria-label="Default select example" name="department">
+          <option value="Sales">&nbsp;Sales</option>
+          <option value="abc">&nbsp;abc</option>
+        </select>&nbsp;
+        <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
+      </form>
+
+      <a href="/accept_list_leave" class="btn btn-primary float-right"> Accepted List</a>
+
+      <table class="table mt-5">
+        <tr>
+          <th scope="col" style="color: #632343;">Date</th>
+          <th scope="col" style="color: #632343;">Employee Name </th>
+          <th scope="col" style="color: #632343;">E-Code</th>
+          <th scope="col" style="color: #632343;">Branch</th>
+          <th scope="col" style="color: #632343;">Department</th>
+          <th scope="col" style="color: #632343;">Reason</th>
+          <th scope="col" style="color: #632343;">Leave Date</th>
+          <th scope="col" style="color: #632343;">Leave Expiry Date</th>
+        </tr>
+        {% for i in val%}
+        <tr>
+          <td>{{i[12]}}</td>
+          <td>{{i[1]}}</td>
+          <td>{{i[2]}}</td>
+          <td>{{i[3]}}</td>
+          <td>{{i[5]}}</td>
+          <td>{{i[7]}}</td>
+          <td>{{i[10]}}</td>
+          <td>{{i[11]}}</td>
+          <td>
+            <a href="/AcceptReaqusetEmployee?id={{i[6]}}" onclick="return confirm('Are you sure?') "
+              class="btn btn-primary">Accept</a>
+          </td>
+          <td>
+            <a href="/rejectReaqusetEmployee?id={{i[6]}}" onclick="return confirm('Are you sure?') "
+              class="btn btn-danger">Reject</a>
+
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
   </div>
-
-</div></div>
+</div>
 {% endblock %}
