@@ -1,20 +1,36 @@
 {% extends '/admin/layout.html' %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-12 m-auto">
-      <div class="container pt-5">
 
-        <form action="/Search_branch_Leave_accepted" method="post">
-          <label for="" class="font-weight-bold">Department &nbsp </label>
-        <select class="form-select " aria-label="Default select example" name="department">
-          <option value="Sales">&nbsp;Sales</option>
-          <option value="abc">&nbsp;abc</option>
-        </select>&nbsp;
-        <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
-      </form>
+<div class="row">
+  <div class="col-md-12 m-auto">
+    <div class="container pt-3">
 
-  <table class="table mt-5">
+      <div class="row">
+
+        <div class="col-3">
+          <form action="/datefilter" method="post">
+            <input type="date" name="date"></input>
+            <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
+          </form>
+        </div>
+
+        <div class="col-md-9">
+          <form action="/Search_branch_Leave_accepted" method="post">
+            <label for="" class="font-weight-bold">Department &nbsp </label>
+            <select class="form-select " aria-label="Default select example" name="department">
+              <option value="Sales">&nbsp;Sales</option>
+              <option value="abc">&nbsp;abc</option>
+            </select>&nbsp;
+            <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
+          </form>
+        </div>
+
+      </div>
+
+
+
+      <table class="table mt-5">
         <tr>
           <th scope="col" style="color: #632343;">Date</th>
           <th scope="col" style="color: #632343;">Employee Name </th>
@@ -38,7 +54,8 @@
         </tr>
         {% endfor %}
       </table>
-  </div>
+    </div>
 
-</div></div>
+  </div>
+</div>
 {% endblock %}

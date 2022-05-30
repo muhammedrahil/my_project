@@ -11,6 +11,7 @@
           <th scope="col" style="color: #632343;">Employee Name </th>
           <th scope="col" style="color: #632343;">Ecode</th>
           <th scope="col" style="color: #632343;">Branch</th>
+          <th scope="col" style="color: #632343;">Department</th>
           <th scope="col" style="color: #632343;">Reason</th>
           <th scope="col" style="color: #632343;">Leave Date</th>
           <th scope="col" style="color: #632343;">Expiry Date</th>
@@ -18,19 +19,20 @@
         
         {% for i in val%}
         <tr>
-          <td>&nbsp; {% if i[7] == 'Accepted' %}
+          <td>&nbsp; {% if i[8] == 'Accepted' %}
             <span>&#10003;</span>
             {% endif %}
           </td>
-          <td>&nbsp;{{i[11]}}</td>
+          <td>&nbsp;{{i[12]}}</td>
           <td>&nbsp;{{i[1]}}</td>
           <td>&nbsp;{{i[2]}}</td>
           <td>&nbsp;{{i[3]}}</td>
-          <td>&nbsp;{{i[6]}}</td>
-          <td>&nbsp;{{i[9]}}</td>
+          <td>&nbsp;{{i[5]}}</td>
+          <td>&nbsp;{{i[7]}}</td>
           <td>&nbsp;{{i[10]}}</td>
+          <td>&nbsp;{{i[11]}}</td>
           <td>
-            <a href="/StatusviewLeaveRequest?id={{i[5]}}" class="btn  " style="background-color:#632343;"> <span
+            <a href="/StatusviewLeaveRequest?id={{i[6]}}" class="btn  " style="background-color:#632343;"> <span
                 style="color: white;">Status</span></a>
           </td>
         </tr>

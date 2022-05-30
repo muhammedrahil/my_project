@@ -26,23 +26,23 @@
   </style>
 
 
-<style type="text/css" media="print">
-  @page {
-    size: auto;
-    /* auto is the initial value */
-    margin: 0;
-    /* this affects the margin in the printer settings */
-  }
-</style>
+  <style type="text/css" media="print">
+    @page {
+      size: auto;
+      /* auto is the initial value */
+      margin: 0;
+      /* this affects the margin in the printer settings */
+    }
+  </style>
 
- <script>
-  function pdfGanerator() {
-    document.getElementById('button').style.display = 'none';
-    window.print();
-    document.getElementById('button').style.display = 'block';
-  }
+  <script>
+    function pdfGanerator() {
+      document.getElementById('button').style.display = 'none';
+      window.print();
+      document.getElementById('button').style.display = 'block';
+    }
 
-</script>
+  </script>
 
 </head>
 
@@ -64,7 +64,8 @@
         </header>
 
         <ul class="list-group mt-5 pt-5 ">
-
+          <li class="list-group-item"> <span class="text-center font-weight-bold" style="color: #632343;">
+            <b> Date :</b> </span> {{val[11]}}</li>
           <li class="list-group-item"> <span class="text-center font-weight-bold" style="color: #632343;">
               <b>Employee Name :</b> </span> {{val[1]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
@@ -72,15 +73,19 @@
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
               <b> Employee Branch :</b> </span> {{val[3]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b> Category :</b> </span> {{val[6]}}</li>
+              <b> Employee Department :</b> </span> {{val[5]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b>Payment : ₹</b> </span> {{val[7]}} </li>
+              <b> Category :</b> </span> {{val[7]}}</li>
           <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
-              <b> Payment Status :</b> </span>{{val[9]}}</li>
+              <b>Payment : ₹</b> </span> {{val[8]}} </li>
+          <li class="list-group-item"><span class="text-center font-weight-bold" style="color: #632343;">
+              <b> Payment Status :</b> </span>{{val[10]}}</li>
 
         </ul><br>
-        <input type="button" onclick="pdfGanerator();"  value="Generate PDF" id="button" class="btn btn-primary  float-right">
-        <br><br><br><p class="text-center"><b>Director Signature :</b></p>
+        <input type="button" onclick="pdfGanerator();" value="Generate PDF" id="button"
+          class="btn btn-primary  float-right">
+        <br><br><br>
+        <p class="text-center"><b>Director Signature :</b></p>
       </div>
     </div>
 

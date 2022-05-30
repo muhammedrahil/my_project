@@ -7,10 +7,12 @@
 
       <table class="table mt-5 pt-5">
         <tr>
-          <th scope="col"> </th>
+          <th scope="col" style="color: #632343;"></th>
+          <th scope="col" style="color: #632343;">Date</th>
           <th scope="col" style="color: #632343;">Employee Name </th>
           <th scope="col" style="color: #632343;">E-Code</th>
           <th scope="col" style="color: #632343;">Branch</th>
+          <th scope="col" style="color: #632343;">Department</th>
           <th scope="col" style="color: #632343;">Catogary</th>
           <!-- <th scope="col" style="color: #632343;">Payment</th> -->
         </tr>
@@ -19,17 +21,19 @@
 
 
         <tr>
-          <td>&nbsp; {% if i[9] == 'Accepted' %}
+          <td>&nbsp; {% if i[10] == 'Accepted' %}
             <span>&#10003;</span>
             {% endif %}
           </td>
+          <td>&nbsp;{{i[11]}}</td>
           <td>&nbsp;{{i[1]}}</td>
           <td>&nbsp;{{i[2]}}</td>
           <td>&nbsp;{{i[3]}}</td>
-          <td>&nbsp;{{i[6]}}</td>
+          <td>&nbsp;{{i[5]}}</td>
+          <td>&nbsp;{{i[7]}}</td>
           <!-- <td>&nbsp;₹ {{i[7]}}</td> -->
           <td>
-            <a href="/StatusviewlistPymentListseployee?id={{i[5]}}" class="btn  " style="background-color:#632343;">
+            <a href="/StatusviewlistPymentListseployee?id={{i[6]}}" class="btn  " style="background-color:#632343;">
               <span style="color: white;">Status</span></a>
           </td>
         </tr>
