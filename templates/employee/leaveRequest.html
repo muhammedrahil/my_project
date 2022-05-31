@@ -1,42 +1,47 @@
 {% extends '/employee/layout.html' %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-6 m-auto">
-      <div class="container ">
-  
-  <script type="text/javascript">
-    function CheckColors(val) {
-      var element = document.getElementById('color');
-      if (val == 'others')
-        element.style.display = 'block';
-      else
-        element.style.display = 'none';
-    }
-  </script>
+<div class="row">
+  <div class="col-md-6 m-auto">
+    <div class="container ">
 
- 
-  <form id="form1" name="form1" method="post" action="/GetLeaveRequest">
-          <label class="font-weight-bold" style="color: #632343;">Date</label><br>
-          <input type="date" class="form-control" required name="date" placeholder="DD-MM-YYYY"></input><br>
-          <label class="font-weight-bold" style="color: #632343;">Expiry Date</label><br>
-          <input type="date" class="form-control" required name="expdate" placeholder="DD-MM-YYYY"></input><br>
+      <script type="text/javascript">
+        function CheckColors(val) {
+          var element = document.getElementById('color');
+          if (val == 'others')
+            element.style.display = 'block';
+          else
+            element.style.display = 'none';
+        }
+      </script>
 
-          <select name="reason" class="form-select col-md-12" onchange='CheckColors(this.value);'>
-            <option value="Medical" style="color: #632343;">Medical</option>
-            <option value="Marriage" style="color: #632343;">Marriage</option>
-            <option value="Weekly Off" style="color: #632343;">Weekly Off</option>
-            <option value="others" style="color: #632343;">Others</option>
-          </select>
-          <br><br>
-          <input type="text" class="form-control" name="discription" placeholder="Enter Your Reason" id="color"
-            style="display:none;"></input>
-          <br><button type="submit" onclick="" name="submit" class="btn  float-right"
-            style="background-color:#632343;"> <span style="color: white;">Submit</span></button>
-  </form>
-  </div>
-  </div>
-  </div>
-  </form>
 
-  {% endblock %}
+      <form id="form1" name="form1" method="post" action="/GetLeaveRequest">
+        <label class="font-weight-bold" style="color: #632343;">Date</label><br>
+        <input type="date" class="form-control" required name="date" placeholder="DD-MM-YYYY"></input><br>
+        <label class="font-weight-bold" style="color: #632343;">Expiry Date</label><br>
+        <input type="date" class="form-control" required name="expdate" id="expdate"
+          onchange="suggest_leave(this.value);" onblur="fill_leave();"></input><br>
+        <div class="suggestionsBox" id="suggestions">
+          <div class="suggestionList" id="suggestionsList">
+          </div>
+        </div>
+
+        <select name="reason" class="form-select col-md-12" onchange='CheckColors(this.value);'>
+          <option value="Medical" style="color: #632343;">Medical</option>
+          <option value="Marriage" style="color: #632343;">Marriage</option>
+          <option value="Weekly Off" style="color: #632343;">Weekly Off</option>
+          <option value="others" style="color: #632343;">Others</option>
+        </select>
+        <br><br>
+        <input type="text" class="form-control" name="discription" placeholder="Enter Your Reason" id="color"
+          style="display:none;"></input>
+        <br><button type="submit" onclick="" name="submit" class="btn  float-right" style="background-color:#632343;">
+          <span style="color: white;">Submit</span></button>
+      </form>
+    </div>
+  </div>
+</div>
+</form>
+
+{% endblock %}

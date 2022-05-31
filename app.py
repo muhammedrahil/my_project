@@ -268,11 +268,11 @@ def rejectReaqusetEmployee():
 @login_required
 def datefilter():
     if(session['lid'] == 'manager' or session['lid'] == 'director'):
-        date=request.form['date']
+        date = request.form['date']
         query = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s  AND DATE(`leaverequest`.`date`)=%s ORDER BY `leaverequest`.`LRid` DESC"
-        val = (session['branch'],date)
+        val = (session['branch'], date)
         res = selectall(query, val)
-        return render_template("admin/accept_list.html",val=res)
+        return render_template("admin/accept_list.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 #  employee leave request view manger and director end..................########################################
@@ -726,7 +726,25 @@ def ajaxpost():
 
     return jsonify({'htmlresponse': render_template('employee/response.html', employee=employee)})
 
+# SELECT emp_name from employee WHERE loginid in (SELECT lg_id from leaverequest WHERE date >= '{}%' and expDate <= '{}%')  LIMIT 10".format(
+#             date, expdate)AND `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s
 
+
+@app.route("/ajaxpost_leave", methods=["POST", "GET"])
+def ajaxpost_leave():
+    if request.method == 'POST':
+        date = request.form['date']
+        expdate = request.form['expdate']
+        query = "SELECT `emp_name` FROM `employee` JOIN `leaverequest` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`date`>='{}%'  AND `leaverequest`.`expDate`<='{}%'  LIMIT 10".format(date, expdate)
+        employee = select(query)
+        list_employee = [list(i) for i in employee]
+        length = len(list_employee)
+        list_final = []
+        print(list_employee)
+        for i in list_employee:
+            for j in i:
+                list_final.append(j)
+    return jsonify({'htmlresponse': render_template('employee/response.html', employee=list_final)})
 # auto suggection end..................................################################################
 
 
@@ -762,7 +780,7 @@ def getvalSearchEmployee():
     ecode = request.form['ecode']
     department = request.form['department']
     qry = "SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s AND `employee`.`department`=%s"
-    val = (ename, ecode,session['EmpBranch'], department)
+    val = (ename, ecode, session['EmpBranch'], department)
     result = selectone(qry, val)
     if result is None:
         return '''<script>alert ("Invalid ");window.location="/SearchEmployee"</script>'''
@@ -822,7 +840,7 @@ def getvalTargetSearchEmployee():
     ecode = request.form['ecode']
     department = request.form['department']
     qry = "SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s AND `employee`.`department`=%s"
-    val = (ename, ecode,session['EmpBranch'], department)
+    val = (ename, ecode, session['EmpBranch'], department)
     result = selectone(qry, val)
     if result is None:
         return '''<script>alert ("invalid");window.location="/SearchTargetEmployeeView"</script>'''
@@ -839,7 +857,7 @@ def ViewEmployeeTargetList():
     if(session['lid'] == 'employees'):
         qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON `employee`.`loginid`=`target`.`lg_id` WHERE `employee`.`loginid`=%s"
         res = selectone(qry, session['rid'])
-        return render_template("employee/ViewEmployeeTargetList.html",val=res)
+        return render_template("employee/ViewEmployeeTargetList.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
@@ -863,7 +881,7 @@ def GetViewLeaveRequestPage():
     ecode = request.form['ecode']
     department = request.form['department']
     qry = "SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s AND `employee`.`department`=%s"
-    val = (ename, ecode, session['EmpBranch'],department)
+    val = (ename, ecode, session['EmpBranch'], department)
     result = selectone(qry, val)
     if result is None:
         return '''<script>alert ("Invalid");window.location="/ViewLeaveRequest_statusPages"</script>'''
@@ -912,7 +930,7 @@ def GetSearchPymentPage():
     ecode = request.form['ecode']
     department = request.form['department']
     qry = "SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s AND `employee`.`department`=%s"
-    val = (ename, ecode,session['EmpBranch'], department)
+    val = (ename, ecode, session['EmpBranch'], department)
     result = selectone(qry, val)
     if result is None:
         return '''<script>alert ("Invalid");window.location="/SearchPymentPage"</script>'''
@@ -964,7 +982,7 @@ def GetSearchViewPayment():
     ecode = request.form['ecode']
     department = request.form['department']
     qry = "SELECT `employee`.*,`login`.* FROM `login` JOIN `employee` ON `employee`.`loginid`=`login`.`loginid` WHERE `employee`.`emp_name`=%s AND `employee`.`e-code`=%s AND `employee`.`branch`=%s AND `employee`.`department`=%s"
-    val = (ename, ecode,session['EmpBranch'], department)
+    val = (ename, ecode, session['EmpBranch'], department)
     result = selectone(qry, val)
     if result is None:
         return '''<script>alert ("Invalid");window.location="/SearchViewPayment_Status"</script>'''
