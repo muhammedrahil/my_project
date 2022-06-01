@@ -65,7 +65,7 @@ def getLogin():
 
         if result[1] == 'PMNEMP':
             session['EmpBranch'] = 'Perinthalmanna'
-        elif result[1] == 'RMNEMP':
+        elif result[1] == 'RMKEMP':
             session['EmpBranch'] = 'Ramanatukara'
         elif result[1] == 'PTBEMP':
             session['EmpBranch'] = 'Pattambi'
@@ -155,7 +155,7 @@ def DeleteEmployee():
     id = request.args.get('id')
     qry = "DELETE employee ,login FROM `employee` join login on employee.loginid = login.loginid WHERE login.`loginid`=%s "
     iud(qry, id)
-    return '''<script>alert("Deleted Successfully");window.location="/ViewEmployee"</script>'''
+    return '''<script>window.location="/ViewEmployee"</script>'''
 
 
 # search employee view manger and director..................
@@ -165,8 +165,9 @@ def DeleteEmployee():
 def Search_branch():
     if(session['lid'] == 'manager' or session['lid'] == 'director'):
         department = request.form['department']
-        qry = "SELECT * FROM `employee` WHERE `department`=%s ORDER BY `employee`.`emp_id` DESC"
-        res = selectall(qry, department)
+        qry = "SELECT * FROM `employee` WHERE `department`=%s AND branch=%s     ORDER BY `employee`.`emp_id` DESC"
+        val=(department,session['branch'])
+        res = selectall(qry, val)
         return render_template("admin/SearchViewEmployee.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
@@ -259,7 +260,7 @@ def rejectReaqusetEmployee():
     qry = "update`leaverequest` set `status`=%s WHERE LRid =%s"
     val = (reject, session['id'])
     iud(qry, val)
-    return '''<script>alert("rejected successfully");window.location="/ViewReaqusetEmployee"</script>'''
+    return '''<script>window.location="/ViewReaqusetEmployee"</script>'''
 
 # date filter code......................................................
 
@@ -300,8 +301,9 @@ def SetEmployeestarget():
 def Search_branch_SetTarget():
     if(session['lid'] == 'manager' or session['lid'] == 'director'):
         department = request.form['department']
-        qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`department`=%s ORDER BY `employee`.`emp_id` DESC"
-        res = selectall(qry, department)
+        qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`department`=%s AND `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
+        val=(department,session['branch'])
+        res = selectall(qry, val)
         return render_template("admin/Search_branch_SetTarget.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
@@ -366,8 +368,9 @@ def viewupdatetargetEmployees():
 def Search_viewupdatetargetEmployees():
     if(session['lid'] == 'manager' or session['lid'] == 'director'):
         department = request.form['department']
-        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`department`=%s ORDER BY `employee`.`emp_id` DESC"
-        res = selectall(qry, department)
+        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`department`=%s AND employee.branch=%s ORDER BY `employee`.`emp_id` DESC"
+        val=(department,session['branch'])
+        res = selectall(qry,val)
         return render_template("admin/Search_viewupdatetargetEmployees.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
@@ -601,7 +604,7 @@ def AcceptBranchEmployeePymentPage():
     qry = "update pyment set `status`=%s WHERE pid =%s"
     val = (accept, id)
     iud(qry, val)
-    return '''<script>alert("accepted successfully");window.location="/BranchEmployeePymentPage"</script>'''
+    return '''<script>window.location="/BranchEmployeePymentPage"</script>'''
 
 
 @ app.route("/rejectBranchEmployeePymentPage")
@@ -612,7 +615,7 @@ def rejectBranchEmployeePymentPage():
     qry = "update pyment set `status`=%s WHERE pid =%s"
     val = (reject, id)
     iud(qry, val)
-    return '''<script>alert("rejected successfully");window.location="/BranchEmployeePymentPage"</script>'''
+    return '''<script>window.location="/BranchEmployeePymentPage"</script>'''
 
 
 @ app.route("/EditBranchEmployeePymentPage")
@@ -635,7 +638,7 @@ def GetEditBranchEmployeePymentPage():
     qry = "update pyment set `moneny`=%s WHERE pid =%s"
     val = (money, session['pid'])
     iud(qry, val)
-    return '''<script>alert("Edit successfully");window.location="/BranchEmployeePymentPage"</script>'''
+    return '''<script>window.location="/BranchEmployeePymentPage"</script>'''
 
 
 @ app.route("/StatusviewlistPymentListsmanager")

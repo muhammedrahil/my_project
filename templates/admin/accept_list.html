@@ -8,20 +8,33 @@
 
       <div class="row">
 
-        <div class="col-3">
-          <form action="/datefilter" method="post">
-            <input type="date" name="date"></input>
+        <div class="col-md-6">
+          <form action="/Search_branch_Leave_accepted" method="post">
+            <label for="" class="font-weight-bold">Department &nbsp </label>
+            <select class="form-select " aria-label="Default select example" name="department">
+              <option value="COO">&nbsp;Chief operating officer</option>
+              <option value="DIR">&nbsp;Director</option>
+              <option value="MNGR">&nbsp;Manager</option>
+              <option value="ACC">&nbsp;Accounts</option>
+              <option value="PUR">&nbsp;Purchase</option>
+              <option value="CSH">&nbsp;Cashier</option>
+              <option value="SAL">&nbsp;Salesman</option>
+              <option value="MKT">&nbsp;Marketing</option>
+              <option value="DSNR">&nbsp;Disigner</option>
+              <option value="REC">&nbsp;Reception</option>
+              <option value="OBY">&nbsp;Office Boy</option>
+              <option value="SMT">&nbsp;Smith</option>
+              <option value="CLN">&nbsp;Cleaning</option>
+
+            </select>&nbsp;
             <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
           </form>
         </div>
 
-        <div class="col-md-9">
-          <form action="/Search_branch_Leave_accepted" method="post">
-            <label for="" class="font-weight-bold">Department &nbsp </label>
-            <select class="form-select " aria-label="Default select example" name="department">
-              <option value="Sales">&nbsp;Sales</option>
-              <option value="abc">&nbsp;abc</option>
-            </select>&nbsp;
+        <div class="col-md-6">
+          <form action="/datefilter" method="post">
+            <label for="" class="font-weight-bold">Leave Date &nbsp </label>
+            <input type="date" name="date"></input>
             <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
           </form>
         </div>
