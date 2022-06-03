@@ -667,6 +667,7 @@ def home_coo():
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
+
 @ app.route("/accept_list_leave_coo")
 @login_required
 def accept_list_leave_coo():
@@ -676,6 +677,7 @@ def accept_list_leave_coo():
         return render_template("coo/accept_list.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
+
 
 
 @ app.route("/Search_branch_Leave_coo", methods=['post'])
@@ -694,7 +696,7 @@ def Search_branch_Leave_coo():
 @login_required
 def viewupdatetargetEmployees_coo():
     if(session['lid'] == 'coo'):
-        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` ORDER BY `employee`.`emp_id` DESC"
+        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` ORDER BY `target`.`trid` DESC"
         res = select(qry)
         print(res)
         return render_template("coo/ViewtargetEmp.html", val=res)
@@ -707,7 +709,7 @@ def viewupdatetargetEmployees_coo():
 def Search_viewupdatetargetEmployees_coo():
     if(session['lid'] == 'coo'):
         branch = request.form['branch']
-        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
+        qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `target`.`trid` DESC"
         res = selectall(qry, branch)
         return render_template("coo/Search_viewupdatetargetEmployees.html", val=res)
     else:
@@ -741,7 +743,6 @@ def ajaxpost_leave():
         query = "SELECT `emp_name` FROM `employee` JOIN `leaverequest` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`date`>='{}%'  AND `leaverequest`.`expDate`<='{}%'  LIMIT 10".format(date, expdate)
         employee = select(query)
         list_employee = [list(i) for i in employee]
-        length = len(list_employee)
         list_final = []
         print(list_employee)
         for i in list_employee:

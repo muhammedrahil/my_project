@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.0.1 (64 bit)
-MySQL - 5.5.20-log : Database - dgold
+MySQL - 10.4.24-MariaDB : Database - dgold
 *********************************************************************
 */
 
@@ -28,7 +28,7 @@ CREATE TABLE `employee` (
   `loginid` int(10) DEFAULT NULL,
   `department` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`emp_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
 
 /*Data for the table `employee` */
 
@@ -76,7 +76,6 @@ insert  into `employee`(`emp_id`,`emp_name`,`e-code`,`branch`,`loginid`,`departm
 (41,'NIDHEESH','1148','Ramanatukara',43,NULL),
 (42,'MUSTAK','1150','Ramanatukara',44,NULL),
 (43,'BINSHAD AHAMMED ALI','1151','Ramanatukara',45,'sales'),
-(44,'ARSHAD KV','1155','Ramanatukara',46,'sales'),
 (45,'MUHAMMED SWADIK A','1158','Ramanatukara',47,'sales'),
 (46,'SHAHINA PA','1159','Ramanatukara',48,NULL),
 (47,'AMITH','1160','Ramanatukara',49,NULL),
@@ -150,8 +149,7 @@ insert  into `employee`(`emp_id`,`emp_name`,`e-code`,`branch`,`loginid`,`departm
 (115,'SMITHA','1158','Pattambi',117,NULL),
 (116,'PRAVEEN MS ','1168','Pattambi',118,NULL),
 (117,'KUNJU MUHAMMED ','1144','Pattambi',119,NULL),
-(118,'ANJALI P','1170','Pattambi',120,NULL),
-(119,'NISHAD K','1129','Pattambi',121,NULL);
+(123,'SUHAIL','1158','Ramanatukara',144,'COO');
 
 /*Table structure for table `leaverequest` */
 
@@ -166,14 +164,18 @@ CREATE TABLE `leaverequest` (
   `expDate` date DEFAULT NULL,
   `applyDate` date DEFAULT NULL,
   PRIMARY KEY (`LRid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `leaverequest` */
 
 insert  into `leaverequest`(`LRid`,`reason`,`status`,`lg_id`,`date`,`expDate`,`applyDate`) values 
 (1,'Medical','pending',56,'2022-05-25','2022-05-21','2022-05-24'),
-(2,'Medical','pending',121,'2022-05-18','2022-05-21','2022-05-24'),
-(3,'Medical','Accepted',55,'2022-05-28','2022-05-28','2022-05-24');
+(2,'Medical','Accepted',121,'2022-05-18','2022-05-21','2022-05-24'),
+(3,'Medical','Accepted',55,'2022-05-28','2022-05-28','2022-05-24'),
+(4,'Medical','Accepted',121,'2022-05-28','2022-05-28','2022-05-27'),
+(5,'death','Accepted',120,'2022-05-28','2022-05-31','2022-05-27'),
+(6,'Medical','Accepted',121,'2022-05-29','2022-05-30','2022-05-29'),
+(7,'Medical','Rejected',47,'2022-05-29','2022-05-27','2022-05-31');
 
 /*Table structure for table `login` */
 
@@ -185,7 +187,7 @@ CREATE TABLE `login` (
   `ecode` varchar(50) DEFAULT NULL,
   `usertype` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`loginid`)
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=latin1;
 
 /*Data for the table `login` */
 
@@ -235,7 +237,6 @@ insert  into `login`(`loginid`,`username`,`ecode`,`usertype`) values
 (43,'NIDHEESH','1148','employee'),
 (44,'MUSTAK','1150','employee'),
 (45,'BINSHAD AHAMMED ALI','1151','employee'),
-(46,'ARSHAD KV','1155','employee'),
 (47,'MUHAMMED SWADIK A','1158','employee'),
 (48,'SHAHINA PA','1159','employee'),
 (49,'AMITH','1160','employee'),
@@ -309,19 +310,21 @@ insert  into `login`(`loginid`,`username`,`ecode`,`usertype`) values
 (117,'SMITHA','1158','employee'),
 (118,'PRAVEEN MS ','1168','employee'),
 (119,'KUNJU MUHAMMED ','1144','employee'),
-(120,'ANJALI P','1170','employee'),
-(121,'NISHAD K','1129','employee'),
 (125,'COO','dgold@coo','coo'),
-(126,'PMNEMP','PMN916','employee'),
-(127,'RMKEMP','RMK916','employee'),
-(128,'VLCEMP','VLC916','employee'),
-(129,'PTBEMP','PTB916','employee'),
+(126,'PMNEMP','PMN916','employees'),
+(127,'RMKEMP','RMK916','employees'),
+(128,'VLCEMP','VLC916','employees'),
+(129,'PTBEMP','PTB916','employees'),
 (130,'RMND','RMND1','director'),
-(131,'PTMD','PTMD1','director'),
+(131,'PTBD','PTBD1','director'),
 (132,'VLCD','VLCD1','director'),
 (133,'PMND','PMND1','director'),
-(134,'rahil','111','employee'),
-(135,'rahil','1111','employee');
+(137,'PMNM','PMNM1','manager'),
+(138,'PTBM','PTBM1','manager'),
+(139,'VLCM','VLCM1','manager'),
+(140,'RMNM','RMNM1','manager'),
+(141,NULL,NULL,NULL),
+(144,'SUHAIL','1158','employee');
 
 /*Table structure for table `memo` */
 
@@ -330,7 +333,7 @@ DROP TABLE IF EXISTS `memo`;
 CREATE TABLE `memo` (
   `memoid` int(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) DEFAULT NULL,
-  `memo` longblob,
+  `memo` longblob DEFAULT NULL,
   `file_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`memoid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -349,9 +352,19 @@ CREATE TABLE `pyment` (
   `status` varchar(100) DEFAULT NULL,
   `date` date DEFAULT NULL,
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pyment` */
+
+insert  into `pyment`(`pid`,`catogary`,`moneny`,`lg_id`,`status`,`date`) values 
+(1,'TA/FA','30000',56,'Accepted','2022-05-26'),
+(2,'TA/FA','200',121,'pending','2022-05-26'),
+(3,'Salary Advance','40900',121,'Accepted','2022-05-27'),
+(4,'TA/FA','50000',120,'Accepted','2022-05-27'),
+(5,'TA/FA','4000',121,'pending','2022-05-29'),
+(6,'Salary Advance','4000',121,'pending','2022-05-29'),
+(7,'TA/FA','78',47,'Rejected','2022-05-31'),
+(8,'TA/FA','7868',47,'Accepted','2022-05-31');
 
 /*Table structure for table `target` */
 
@@ -367,14 +380,15 @@ CREATE TABLE `target` (
   `gold_achive_pers` varchar(15) DEFAULT NULL,
   `dmn__achive_perse` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`trid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `target` */
 
 insert  into `target`(`trid`,`gold`,`lg_id`,`achive_gold`,`Diamond`,`achive_diamond`,`gold_achive_pers`,`dmn__achive_perse`) values 
 (1,'200',56,'5.5','12.34','0.5','2.75','4.0518638573744'),
 (2,'200',55,'44','3000000','200200.5','22','6.67335'),
-(3,'500',32,'5478','10000','94536','1095.6','945.36');
+(3,'5007',32,'6025','10000','189072','120.33153584981','1890.72'),
+(4,'10',121,'0','20000','0','0','0');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
