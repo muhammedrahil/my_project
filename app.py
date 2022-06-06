@@ -735,10 +735,7 @@ def ajaxpost():
 #             date, expdate)AND `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 3f7c09feb35a981141b33ae4c36ceeb1177cbe5b
 @app.route("/ajaxpost_leave",methods=["POST","GET"])
 def ajaxpost_leave():   
     if request.method == 'POST':
