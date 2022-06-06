@@ -34,10 +34,18 @@ function suggest_leave(inputString){
 
 
 function fill_leave(thisValue) {
+<<<<<<< HEAD
 setTimeout("$('#suggestions').fadeOut();", 8000);
 }
 
 
+=======
+setTimeout("$('#suggestions').fadeOut();", 5000);
+}
+
+
+
+>>>>>>> 3f7c09feb35a981141b33ae4c36ceeb1177cbe5b
 (function ($) {
   "use strict";
 
