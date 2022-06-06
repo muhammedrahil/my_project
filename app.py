@@ -34,33 +34,33 @@ def getLogin():
     result = selectone(qry, vals)
     if result is None:
         return '''<script>alert ("Invalid UserName OR Password");window.location="/"</script>'''
-    elif result[3] == 'director':
+    elif result[3] == 'DIRECTOR':
         session['lid'] = 'director'
 
-        if result[1] == 'PMND':
+        if result[1] == 'PMNDIR':
             session['branch'] = 'Perinthalmanna'
-        elif result[1] == 'RMND':
+        elif result[1] == 'RMKDIR':
             session['branch'] = 'Ramanatukara'
-        elif result[1] == 'PTBD':
+        elif result[1] == 'PTBDIR':
             session['branch'] = 'Pattambi'
-        elif result[1] == 'VLCD':
+        elif result[1] == 'VLCDIR':
             session['branch'] = 'Valanchery'
 
         return '''<script>alert("Director Login Successfull");window.location="/admins"</script>'''
-    elif result[3] == 'manager':
+    elif result[3] == 'MANAGER':
         session['lid'] = 'manager'
 
-        if result[1] == 'PMNM':
+        if result[1] == 'PMNMNGR':
             session['branch'] = 'Perinthalmanna'
-        elif result[1] == 'RMNM':
+        elif result[1] == 'RMKMNGR':
             session['branch'] = 'Ramanatukara'
-        elif result[1] == 'PTBM':
+        elif result[1] == 'PTBMNGR':
             session['branch'] = 'Pattambi'
-        elif result[1] == 'VLCM':
+        elif result[1] == 'VLCMNGR':
             session['branch'] = 'Valanchery'
 
         return '''<script>alert("Manager Login Successfull");window.location="/admins"</script>'''
-    elif result[3] == "employees":
+    elif result[3] == "EMPLOYEES":
         session['lid'] = 'employees'
 
         if result[1] == 'PMNEMP':
@@ -73,7 +73,7 @@ def getLogin():
             session['EmpBranch'] = 'Valanchery'
 
         return '''<script>alert("Login Successfull");window.location="/employeepage"</script>'''
-    elif result[3] == "coo":
+    elif result[3] == "COO":
         session['lid'] = 'coo'
         return '''<script>alert("Coo Login Successfull");window.location="/home_coo"</script>'''
     else:
@@ -624,7 +624,7 @@ def EditBranchEmployeePymentPage():
     if(session['lid'] == 'director'):
         id = request.args.get('id')
         session['pid'] = id
-        qry = "SELECT * FROM `pyment` WHERE`pid`=%s"
+        qry = "SELECT `employee`.*,`pyment`.* FROM `pyment` JOIN `employee` ON `employee`.`loginid`=`pyment`.`lg_id` WHERE`pyment`.`pid`=%s"
         res = selectone(qry, id)
         return render_template("maneger/EditPyment.html", val=res)
     else:
@@ -735,14 +735,18 @@ def ajaxpost():
 #             date, expdate)AND `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s
 
 
-@app.route("/ajaxpost_leave", methods=["POST", "GET"])
-def ajaxpost_leave():
+@app.route("/ajaxpost_leave",methods=["POST","GET"])
+def ajaxpost_leave():   
     if request.method == 'POST':
+        
         date = request.form['date']
         expdate = request.form['expdate']
-        query = "SELECT `emp_name` FROM `employee` JOIN `leaverequest` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`date`>='{}%'  AND `leaverequest`.`expDate`<='{}%'  LIMIT 10".format(date, expdate)
+        
+        query = "SELECT emp_name from employee WHERE loginid in (SELECT lg_id from leaverequest WHERE date >= '{}%' and expDate <= '{}%')  LIMIT 10".format(date,expdate)
+       
         employee = select(query)
         list_employee = [list(i) for i in employee]
+        length = len(list_employee)
         list_final = []
         print(list_employee)
         for i in list_employee:
@@ -811,7 +815,7 @@ def GetLeaveRequest():
     test_time = datetime.strptime(t, '%H:%M:%S')
     current_time = datetime.now().strftime("%H:%M:%S")
     current_time = datetime.strptime(current_time, "%H:%M:%S")
-    if(test_time.time() < current_time.time()):
+    if(test_time.time() > current_time.time()):
         LRid = session['eid']
         reason = request.form['reason']
         date = request.form['date']
@@ -890,7 +894,7 @@ def GetViewLeaveRequestPage():
     if result is None:
         return '''<script>alert ("Invalid");window.location="/ViewLeaveRequest_statusPages"</script>'''
     elif result[9] == "employee":
-        session['rid'] = result[4]
+        session['rlid'] = result[4]
         return '''<script>alert("Thank you, Please View Your Leave Request Status");window.location="/viewLeaveRequestPage"</script>'''
     else:
         return '''<script>alert("invalid ");window.location="/ViewLeaveRequest_statusPages"</script>'''
@@ -900,8 +904,8 @@ def GetViewLeaveRequestPage():
 @login_required
 def viewLeaveRequestPage():
     if(session['lid'] == 'employees'):
-        qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE  `employee`.`loginid`= %s ORDER BY `leaverequest`.`LRid` DESC"
-        res = selectall(qry, session['rid'])
+        qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE  `employee`.`loginid`= %s  ORDER BY `leaverequest`.`LRid` DESC"
+        res = selectall(qry, session['rlid'])
         return render_template("employee/viewLeaveRequestPage.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
