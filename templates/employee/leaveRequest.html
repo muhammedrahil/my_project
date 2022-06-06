@@ -18,7 +18,7 @@
 
       <form id="form1" name="form1" method="post" action="/GetLeaveRequest">
         <label class="font-weight-bold" style="color: #632343;">Date</label><br>
-        <input type="date" class="form-control" required name="date" placeholder="DD-MM-YYYY"></input><br>
+        <input type="date" class="form-control" required name="date" placeholder="DD-MM-YYYY" id = "date"></input><br>
         <label class="font-weight-bold" style="color: #632343;">Expiry Date</label><br>
         <input type="date" class="form-control" required name="expdate" id="expdate"
           onchange="suggest_leave(this.value);" onblur="fill_leave();"></input><br>

@@ -20,22 +20,24 @@ function fill(thisValue) {
 
 // @pushppan code
 
-function suggest_leave(inputString) {
-
+function suggest_leave(inputString){
+  console.log("entered funtion");
   var date = document.getElementById('date').value
   $('#expdate').addClass('load');
-  $.post("/ajaxpost_leave", { expdate: "" + inputString + "", date: "" + date + "" }, function (data) {
-    $('#suggestions').fadeIn();
-    $('#suggestionsList').html(data);
-    $('#suggestionsList').append(data.htmlresponse);
-    $('#leave_date').removeClass('load');
+  $.post("/ajaxpost_leave", {expdate: ""+inputString+"",date:""+date+""}, function(data){
+          $('#suggestions').fadeIn();
+          $('#suggestionsList').html(data); 
+          $('#suggestionsList').append(data.htmlresponse);
+          $('#leave_date').removeClass('load');
   });
 }
 
 
 function fill_leave(thisValue) {
-  setTimeout("$('#suggestions').fadeOut();", 5000);
+setTimeout("$('#suggestions').fadeOut();", 5000);
 }
+
+
 
 (function ($) {
   "use strict";

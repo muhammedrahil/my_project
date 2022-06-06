@@ -735,14 +735,19 @@ def ajaxpost():
 #             date, expdate)AND `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s
 
 
-@app.route("/ajaxpost_leave", methods=["POST", "GET"])
-def ajaxpost_leave():
+
+@app.route("/ajaxpost_leave",methods=["POST","GET"])
+def ajaxpost_leave():   
     if request.method == 'POST':
+        
         date = request.form['date']
         expdate = request.form['expdate']
-        query = "SELECT `emp_name` FROM `employee` JOIN `leaverequest` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`date`>='{}%'  AND `leaverequest`.`expDate`<='{}%'  LIMIT 10".format(date, expdate)
+        
+        query = "SELECT emp_name from employee WHERE loginid in (SELECT lg_id from leaverequest WHERE date >= '{}%' and expDate <= '{}%')  LIMIT 10".format(date,expdate)
+       
         employee = select(query)
         list_employee = [list(i) for i in employee]
+        length = len(list_employee)
         list_final = []
         print(list_employee)
         for i in list_employee:
