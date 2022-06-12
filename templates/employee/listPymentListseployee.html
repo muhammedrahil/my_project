@@ -36,6 +36,12 @@
             <a href="/StatusviewlistPymentListseployee?id={{i[6]}}" class="btn  " style="background-color:#632343;">
               <span style="color: white;">Status</span></a>
           </td>
+          {% if i[10] != 'Accepted' %}
+          <td>
+            <a href="/RemovePaymentstatuslist?id={{i[6]}}" class="btn btn-primary " > <span
+                style="color: white;">Remove</span></a>
+          </td>
+          {% endif %}
         </tr>
         {% endfor %}
       </table>

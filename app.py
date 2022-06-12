@@ -394,7 +394,7 @@ def updateEmployeestarget():
 def GetupdatetargetEmployees():
     Gold = request.form['Gold']
     Diamond = request.form['Diamond']
-    qry = "UPDATE `target` SET `gold`=%s ,`Diamond`=%s WHERE trid =%s"
+    qry = "UPDATE `target` SET `gold`=%s ,`Diamond`=%s,`achive_gold`='0',`achive_diamond`='0',`gold_achive_pers`='0',`dmn__achive_perse`='0' WHERE trid =%s"
     val = (Gold, Diamond, session['tid'])
     iud(qry, val)
     return '''<script>window.location="/viewupdatetargetEmployees"</script>'''
@@ -427,11 +427,13 @@ def GetAchiveEmployeestarget():
     gold_totel_achive = float(achive_gold)+float(Gold)
     Diamond_totel_achive = float(achive_dimond)+float(Diamond)
     perse_gold_totel_achive = (gold_totel_achive / float(cur_gold)) * 100
+    roundNogold=round(perse_gold_totel_achive,2)
     perse_Diamond_totel_achive = (
         Diamond_totel_achive / float(cur_dimond)) * 100
+    roundNodimond=round(perse_Diamond_totel_achive,2)
     qry = "UPDATE target SET `achive_gold`=%s,`achive_diamond`=%s ,`gold_achive_pers`=%s ,`dmn__achive_perse`=%s WHERE trid =%s"
     val = (gold_totel_achive, Diamond_totel_achive,
-           perse_gold_totel_achive, perse_Diamond_totel_achive, session['tid'])
+           roundNogold,roundNodimond, session['tid'])
     iud(qry, val)
     return '''<script>window.location="/viewupdatetargetEmployees"</script>'''
 
@@ -737,14 +739,14 @@ def ajaxpost():
 
 
 @app.route("/ajaxpost_leave",methods=["POST","GET"])
-def ajaxpost_leave():   
+def ajaxpost_leave():
     if request.method == 'POST':
-        
+
         date = request.form['date']
         expdate = request.form['expdate']
-        
+
         query = "SELECT emp_name from employee WHERE loginid in (SELECT lg_id from leaverequest WHERE date >= '{}%' and expDate <= '{}%')  LIMIT 10".format(date,expdate)
-       
+
         employee = select(query)
         list_employee = [list(i) for i in employee]
         length = len(list_employee)
@@ -912,6 +914,14 @@ def viewLeaveRequestPage():
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
+@ app.route("/RemoveLeaveRequestEmployee")
+@login_required
+def RemoveLeaveRequestEmployee():
+    id = request.args.get('id')
+    qry = "DELETE FROM leaverequest WHERE LRid =%s"
+    iud(qry, id)
+    return '''<script>window.location="/viewLeaveRequestPage"</script>'''
+
 @ app.route("/StatusviewLeaveRequest")
 @login_required
 def StatusviewLeaveRequest():
@@ -1012,6 +1022,16 @@ def listPymentListseployee():
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
+@ app.route("/RemovePaymentstatuslist")
+@login_required
+def RemovePaymentstatuslist():
+    if(session['lid'] == 'employees'):
+        id = request.args.get('id')
+        qry="DELETE FROM pyment WHERE pid=%s"
+        iud(qry,id)
+        return '''<script>window.location="/listPymentListseployee"</script>'''
+    else:
+        return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 @ app.route("/StatusviewlistPymentListseployee")
 @login_required

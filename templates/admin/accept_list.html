@@ -62,6 +62,11 @@
           <td>{{i[7]}}</td>
           <td>{{i[10]}}</td>
           <td>{{i[11]}}</td>
+             <td>
+            <a href="/rejectReaqusetEmployee?id={{i[6]}}" onclick="return confirm('Are you sure?') "
+              class="btn btn-danger">Reject</a>
+
+          </td>
         </tr>
         {% endfor %}
       </table>
