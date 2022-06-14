@@ -6,7 +6,7 @@ import functools
 from datetime import datetime
 import time
 import os
-
+import pytz
 app = Flask(__name__)
 app.secret_key = "key"
 
@@ -166,7 +166,7 @@ def Search_branch():
     if(session['lid'] == 'manager' or session['lid'] == 'director'):
         department = request.form['department']
         qry = "SELECT * FROM `employee` WHERE `department`=%s AND branch=%s     ORDER BY `employee`.`emp_id` DESC"
-        val=(department,session['branch'])
+        val = (department, session['branch'])
         res = selectall(qry, val)
         return render_template("admin/SearchViewEmployee.html", val=res)
     else:
@@ -302,7 +302,7 @@ def Search_branch_SetTarget():
     if(session['lid'] == 'manager' or session['lid'] == 'director'):
         department = request.form['department']
         qry = "SELECT `login`.*,`employee`.* FROM `login`JOIN`employee`ON`login`.`loginid`=`employee`.`loginid` WHERE `employee`.`department`=%s AND `employee`.`branch`=%s ORDER BY `employee`.`emp_id` DESC"
-        val=(department,session['branch'])
+        val = (department, session['branch'])
         res = selectall(qry, val)
         return render_template("admin/Search_branch_SetTarget.html", val=res)
     else:
@@ -369,8 +369,8 @@ def Search_viewupdatetargetEmployees():
     if(session['lid'] == 'manager' or session['lid'] == 'director'):
         department = request.form['department']
         qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`department`=%s AND employee.branch=%s ORDER BY `employee`.`emp_id` DESC"
-        val=(department,session['branch'])
-        res = selectall(qry,val)
+        val = (department, session['branch'])
+        res = selectall(qry, val)
         return render_template("admin/Search_viewupdatetargetEmployees.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
@@ -427,13 +427,13 @@ def GetAchiveEmployeestarget():
     gold_totel_achive = float(achive_gold)+float(Gold)
     Diamond_totel_achive = float(achive_dimond)+float(Diamond)
     perse_gold_totel_achive = (gold_totel_achive / float(cur_gold)) * 100
-    roundNogold=round(perse_gold_totel_achive,2)
+    roundNogold = round(perse_gold_totel_achive, 2)
     perse_Diamond_totel_achive = (
         Diamond_totel_achive / float(cur_dimond)) * 100
-    roundNodimond=round(perse_Diamond_totel_achive,2)
+    roundNodimond = round(perse_Diamond_totel_achive, 2)
     qry = "UPDATE target SET `achive_gold`=%s,`achive_diamond`=%s ,`gold_achive_pers`=%s ,`dmn__achive_perse`=%s WHERE trid =%s"
     val = (gold_totel_achive, Diamond_totel_achive,
-           roundNogold,roundNodimond, session['tid'])
+           roundNogold, roundNodimond, session['tid'])
     iud(qry, val)
     return '''<script>window.location="/viewupdatetargetEmployees"</script>'''
 
@@ -669,7 +669,6 @@ def home_coo():
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
 
-
 @ app.route("/accept_list_leave_coo")
 @login_required
 def accept_list_leave_coo():
@@ -679,7 +678,6 @@ def accept_list_leave_coo():
         return render_template("coo/accept_list.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
-
 
 
 @ app.route("/Search_branch_Leave_coo", methods=['post'])
@@ -737,17 +735,15 @@ def ajaxpost():
 #             date, expdate)AND `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s
 
 
-
-@app.route("/ajaxpost_leave",methods=["POST","GET"])
+@app.route("/ajaxpost_leave", methods=["POST", "GET"])
 def ajaxpost_leave():
     if request.method == 'POST':
-
         date = request.form['date']
         expdate = request.form['expdate']
-
-        query = "SELECT emp_name from employee WHERE loginid in (SELECT lg_id from leaverequest WHERE date >= '{}%' and expDate <= '{}%')  LIMIT 10".format(date,expdate)
-
-        employee = select(query)
+        query = "SELECT emp_name FROM employee WHERE `branch`=%s AND loginid IN (SELECT lg_id FROM leaverequest WHERE DATE >=%s AND expDate <=%s )  LIMIT 10"
+        val = (session['EmpBranch'], date, expdate)
+        employee = selectall(query, val)
+        print(employee)
         list_employee = [list(i) for i in employee]
         length = len(list_employee)
         list_final = []
@@ -816,8 +812,10 @@ def leaveRequestPage():
 def GetLeaveRequest():
     t = "17:00:00"
     test_time = datetime.strptime(t, '%H:%M:%S')
-    current_time = datetime.now().strftime("%H:%M:%S")
-    current_time = datetime.strptime(current_time, "%H:%M:%S")
+    country_time_zone = pytz.timezone('Asia/Calcutta')
+    country_time = datetime.now(country_time_zone)
+    country_time = country_time.strftime("%H:%M:%S")
+    current_time = datetime.strptime(country_time, "%H:%M:%S")
     if(test_time.time() > current_time.time()):
         LRid = session['eid']
         reason = request.form['reason']
@@ -922,6 +920,7 @@ def RemoveLeaveRequestEmployee():
     iud(qry, id)
     return '''<script>window.location="/viewLeaveRequestPage"</script>'''
 
+
 @ app.route("/StatusviewLeaveRequest")
 @login_required
 def StatusviewLeaveRequest():
@@ -1022,16 +1021,18 @@ def listPymentListseployee():
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
+
 @ app.route("/RemovePaymentstatuslist")
 @login_required
 def RemovePaymentstatuslist():
     if(session['lid'] == 'employees'):
         id = request.args.get('id')
-        qry="DELETE FROM pyment WHERE pid=%s"
-        iud(qry,id)
+        qry = "DELETE FROM pyment WHERE pid=%s"
+        iud(qry, id)
         return '''<script>window.location="/listPymentListseployee"</script>'''
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
+
 
 @ app.route("/StatusviewlistPymentListseployee")
 @login_required
