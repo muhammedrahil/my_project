@@ -6,7 +6,7 @@ import functools
 from datetime import datetime
 import time
 import os
-
+import pytz
 app = Flask(__name__)
 app.secret_key = "key"
 
@@ -738,16 +738,15 @@ def ajaxpost():
 
 
 
-@app.route("/ajaxpost_leave",methods=["POST","GET"])
+@app.route("/ajaxpost_leave", methods=["POST", "GET"])
 def ajaxpost_leave():
     if request.method == 'POST':
-
         date = request.form['date']
         expdate = request.form['expdate']
-
-        query = "SELECT emp_name from employee WHERE loginid in (SELECT lg_id from leaverequest WHERE date >= '{}%' and expDate <= '{}%')  LIMIT 10".format(date,expdate)
-
-        employee = select(query)
+        query = "SELECT emp_name FROM employee WHERE `branch`=%s AND loginid IN (SELECT lg_id FROM leaverequest WHERE DATE >=%s AND expDate <=%s )  LIMIT 10"
+        val = (session['EmpBranch'], date, expdate)
+        employee = selectall(query, val)
+        print(employee)
         list_employee = [list(i) for i in employee]
         length = len(list_employee)
         list_final = []
@@ -816,8 +815,10 @@ def leaveRequestPage():
 def GetLeaveRequest():
     t = "17:00:00"
     test_time = datetime.strptime(t, '%H:%M:%S')
-    current_time = datetime.now().strftime("%H:%M:%S")
-    current_time = datetime.strptime(current_time, "%H:%M:%S")
+    country_time_zone = pytz.timezone('Asia/Calcutta')
+    country_time = datetime.now(country_time_zone)
+    country_time = country_time.strftime("%H:%M:%S")
+    current_time = datetime.strptime(country_time, "%H:%M:%S")
     if(test_time.time() > current_time.time()):
         LRid = session['eid']
         reason = request.form['reason']
