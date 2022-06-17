@@ -40,6 +40,19 @@
 
           </tr>
           {% endfor %}
+          <tr>
+            <th scope="col" style="color: #632343;">Gold Target Total</th>
+            <th scope="col" style="color: #632343;">Diamond Target Total</th>
+            <th scope="col" style="color: #632343;">Gold Target Total Achived</th>
+            <th scope="col" style="color: #632343;">Diamond Target Total Achived</th>
+          </tr>
+          <tr>
+            <td>&nbsp;{{dict.gold_target}}</td>
+            <td>&nbsp;{{dict.diamond_target}}</td>
+            <td>&nbsp;{{dict.gold_achived}}({{dict.gold_percentage}}%)</td>
+            <td>&nbsp;{{dict.diamond_achived}}({{dict.diamond_percentage}}%)</td>
+
+          </tr>
         </table>
       </div>
     </div>
