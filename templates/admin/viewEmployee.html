@@ -1,49 +1,52 @@
 {% extends '/admin/layout.html' %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-12 col-sm-12 col-lg-12 m-auto">
-      <div class="container ">
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-lg-12 m-auto">
+    <div class="container ">
 
 
-<form action="/Search_department" method="post">
-  <label for="" class="font-weight-bold">Department &nbsp </label>
-  <select class="form-select " aria-label="Default select example" name="department">
+      <form action="/Search_department" method="post">
+        <label for="" class="font-weight-bold">Department &nbsp </label>
+        <select class="form-select " aria-label="Default select example" name="department">
 
-    <option value="ACC">&nbsp;Accounts</option>
-    <option value="PUR">&nbsp;Purchase</option>
-    <option value="CSH">&nbsp;Cashier</option>
-    <option value="SAL">&nbsp;Salesman</option>
-    <option value="MKT">&nbsp;Marketing</option>
-    <option value="DSNR">&nbsp;Disigner</option>
-    <option value="REC">&nbsp;Reception</option>
-    <option value="OBY">&nbsp;Office Boy</option>
-    <option value="SMT">&nbsp;Smith</option>
-    <option value="CLN">&nbsp;Cleaning</option>
-  </select>&nbsp;
-  <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
+          <option value="ACC">&nbsp;Accounts</option>
+          <option value="PUR">&nbsp;Purchase</option>
+          <option value="CSH">&nbsp;Cashier</option>
+          <option value="SAL">&nbsp;Salesman</option>
+          <option value="MKT">&nbsp;Marketing</option>
+          <option value="DSNR">&nbsp;Disigner</option>
+          <option value="REC">&nbsp;Reception</option>
+          <option value="OBY">&nbsp;Office Boy</option>
+          <option value="SMT">&nbsp;Smith</option>
+          <option value="CLN">&nbsp;Cleaning</option>
+        </select>&nbsp;
+        <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
 
 
-</form>
-  <table class="table mt-5 pt-5">
-          <tr>
-            <th scope="col" style="color: #632343;">Employee Name </th>
-            <th scope="col" style="color: #632343;">E-Code</th>
-            <th scope="col" style="color: #632343;">Branch </th>
-            <th scope="col" style="color: #632343;">Department </th>
+      </form>
+      <table class="table mt-5 pt-5">
+        <tr class="fixed">
+          <th scope="col">Employee Name </th>
+          <th scope="col">E-Code</th>
+          <th scope="col">Branch </th>
+          <th scope="col">Department </th>
+          <th scope="col"></th>
 
-          </tr>
-          {% for i in val%}
-          <tr>
-            <td>{{i[1]}}</td>
-            <td>{{i[2]}}</td>
-            <td>{{i[3]}}</td>
-            <td>{{i[5]}}</td>
-            <td id="remove-button"> <a href="/DeleteEmployee?id={{i[4]}}" class="btn btn-danger  mr-5" onclick="return confirm('Are you sure?')" >Remove Employee</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
-    </div></div>
-      {% endblock %}
+        </tr>
+        {% for i in val%}
+        <tr>
+          <td>{{i[1]}}</td>
+          <td>{{i[2]}}</td>
+          <td>{{i[3]}}</td>
+          <td>{{i[5]}}</td>
+          <td id="remove-button"> <a href="/DeleteEmployee?id={{i[4]}}" class="btn btn-danger  mr-5"
+              onclick="return confirm('Are you sure?')">Remove Employee</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

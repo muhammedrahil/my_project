@@ -1,50 +1,73 @@
 {% extends '/coo/layout.html' %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-12 m-auto">
-      <div class="container ">
+<div class="row">
+  <div class="col-md-12 m-auto">
+    <div class="container ">
 
-        <form action="/Search_viewupdatetargetEmployees_coo" method="post">
-          <label for="" class="font-weight-bold">Branch </label>
-          <select class="form-select " aria-label="Default select example" name="branch">
-            <option value="Valanchery">Valanchery</option>
-            <option value="Ramanatukara">Ramanatukara</option>
-            <option value="Perinthalmanna">Perinthalmanna</option>
-            <option value="Pattambi">Pattambi</option>
-          </select>
-          <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
-        </form>
+      <form action="/Search_viewupdatetargetEmployees_coo" method="post">
+        <label for="" class="font-weight-bold">Branch </label>
+        <select class="form-select " aria-label="Default select example" name="branch">
+          <option value="Valanchery">Valanchery</option>
+          <option value="Ramanatukara">Ramanatukara</option>
+          <option value="Perinthalmanna">Perinthalmanna</option>
+          <option value="Pattambi">Pattambi</option>
+        </select>
+        <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
+      </form>
 
-        <table class="table mt-5">
-          <tr>
-            <th scope="col" style="color: #632343;">Employee Name </th>
-            <th scope="col" style="color: #632343;">E-Code</th>
-            <th scope="col" style="color: #632343;">Branch</th>
-            <th scope="col" style="color: #632343;">Department</th>
-            <th scope="col" style="color: #632343;">Gold Target (grams)</th>
-            <th scope="col" style="color: #632343;">Diamond Target</th>
-            <th scope="col" style="color: #632343;">Gold Target Achived (grams)</th>
-            <th scope="col" style="color: #632343;">Diamond Target Achived</th>
-          </tr>
-          {% for i in val%}
-          <tr>
-            <td>&nbsp;{{i[1]}}</td>
-            <td>&nbsp;{{i[2]}}</td>
-            <td>&nbsp;{{i[3]}}</td>
-            <td>&nbsp;{{i[5]}}</td>
-            <td>&nbsp;{{i[7]}}</td>
-            <td>&nbsp;₹ {{i[10]}}</td>
-            <td>&nbsp;{{i[9]}}({{i[12]}}%)</td>
-            <td>&nbsp;₹ {{i[11]}}({{i[13]}}%)</td>
+      <table class="table mt-5">
+        <tr class="fixed">
+          <th scope="col">Employee Name </th>
+          <th scope="col">E-Code</th>
+          <th scope="col">Branch</th>
+          <th scope="col">Department</th>
+          <th scope="col">Gold Target (grams)</th>
+          <th scope="col">Diamond Target</th>
+          <th scope="col">Gold Target Achived (grams)</th>
+          <th scope="col">Diamond Target Achived</th>
+        </tr>
+        {% for i in val%}
+        <tr>
+          <td>&nbsp;{{i[1]}}</td>
+          <td>&nbsp;{{i[2]}}</td>
+          <td>&nbsp;{{i[3]}}</td>
+          <td>&nbsp;{{i[5]}}</td>
+          <td>&nbsp;{{i[7]}}</td>
+          <td>&nbsp;₹ {{i[10]}}</td>
+          <td>&nbsp;{{i[9]}}({{i[12]}}%)</td>
+          <td>&nbsp;₹ {{i[11]}}({{i[13]}}%)</td>
 
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
+        </tr>
+        {% endfor %}
+
+        <tr class="headdata">
+          <th scope="col" style="color: #632343;"></th>
+          <th scope="col" style="color: #632343;"></th>
+          <th scope="col" style="color: #632343;"></th>
+          <th scope="col" style="color: #632343;"></th>
+          <th scope="col" style="color: #632343;">Gold Target Total</th>
+          <th scope="col" style="color: #632343;">Diamond Target Total</th>
+          <th scope="col" style="color: #632343;">Gold Target Total Achived</th>
+          <th scope="col" style="color: #632343;">Diamond Target Total Achived</th>
+        </tr>
+        <tr class="datatable">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>&nbsp;{{dict.gold_target}}</td>
+          <td>&nbsp;₹ {{dict.diamond_target}}</td>
+          <td>&nbsp;{{dict.gold_achived}}({{dict.gold_percentage}}%)</td>
+          <td>&nbsp;₹ {{dict.diamond_achived}}({{dict.diamond_percentage}}%)</td>
+        </tr>
+
+
+      </table>
     </div>
   </div>
-  </div>
+</div>
+</div>
 
 
-  {% endblock %}
+{% endblock %}

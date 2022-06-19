@@ -58,10 +58,7 @@
         background-image: url(../static/img/3.jpg);
       }
 
-      #heading {
-        font-size: 22px;
-        margin-left: 35px;
-      }
+
     }
   </style>
 </head>
@@ -72,7 +69,7 @@
   <header id="header" class="fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
 
-      <h1 class="logo"><img src="../static/logo.png" alt="DUBAI GOLD & DIAMONDS" ></h1>
+      <h1 class="logo"><img src="../static/logo.png" alt="DUBAI GOLD & DIAMONDS"></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -81,9 +78,9 @@
           <!-- <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
           <li><a class="nav-link scrollto" href="#login">login</a></li> -->
           <li class="menu"><a href="/home_coo">Home</a></li>
-          <li><a  href="/accept_list_leave_coo">Leave Request </a></li>
-          <li><a  href="/viewupdatetargetEmployees_coo">Target Achivement </a></li>
-          <li><a  href="logout"  onclick="return confirm('Are you sure?')" role="button">logout</a></li>
+          <li><a href="/accept_list_leave_coo">Leave Request </a></li>
+          <li><a href="/viewupdatetargetEmployees_coo">Target Achivement </a></li>
+          <li><a href="logout" onclick="return confirm('Are you sure?')" role="button">logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -154,10 +151,14 @@
       <div class="container">
 
         <div class="row no-gutters">
-          <div class="image col-xl-5 d-flex align-items-stretch justify-content-center justify-content-lg-start"></div>
+          <div class=" col-xl-5 ">
+            <div class="image">
+              <img src="../static/main.png" alt="" class="dgimage ">
+            </div>
+          </div>
           <div class="col-xl-7 ps-0 ps-lg-5 pe-lg-1 d-flex align-items-stretch">
             <div class="content d-flex flex-column justify-content-center">
-              <h2 style="color: #632343;font-weight: bold;" id="heading">WELCOME TO DUBAI GOLD & DIAMONDS</h2>
+              <h2 class="welcometext" id="heading">WELCOME TO DUBAI GOLD & DIAMONDS</h2>
 
               <div class="row">
                 <div class=" icon-box">
@@ -182,11 +183,14 @@
   <footer id="footer">
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong><span>swynfords</span></strong>. All Rights Reserved
+        &copy; Copyright <strong>
+          <a href="http://swynfords.com/"><span style="color: white;">swynf<span
+                style="color: rgb(16, 228, 150);">o</span>rds</span> </a></strong>. All Rights Reserved
       </div>
       <div class="credits">
 
-        Designed by <a href="http://swynfords.com/">swynfords</a>
+        <a href="https://dubaigoldanddiamond.com/"><span style="color: #C0A786;">DUBAI GOLD & DIAMONDS</span>
+        </a>
       </div>
     </div>
   </footer><!-- End Footer -->

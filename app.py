@@ -424,15 +424,20 @@ def GetAchiveEmployeestarget():
     achive_gold = res[3]
     cur_dimond = res[4]
     achive_dimond = res[5]
+
     gold_totel_achive = float(achive_gold)+float(Gold)
+    twodecimal_gold_totel_achive = round(gold_totel_achive, 2)
     Diamond_totel_achive = float(achive_dimond)+float(Diamond)
+
     perse_gold_totel_achive = (gold_totel_achive / float(cur_gold)) * 100
     roundNogold = round(perse_gold_totel_achive, 2)
+
     perse_Diamond_totel_achive = (
         Diamond_totel_achive / float(cur_dimond)) * 100
     roundNodimond = round(perse_Diamond_totel_achive, 2)
+
     qry = "UPDATE target SET `achive_gold`=%s,`achive_diamond`=%s ,`gold_achive_pers`=%s ,`dmn__achive_perse`=%s WHERE trid =%s"
-    val = (gold_totel_achive, Diamond_totel_achive,
+    val = (twodecimal_gold_totel_achive, Diamond_totel_achive,
            roundNogold, roundNodimond, session['tid'])
     iud(qry, val)
     return '''<script>window.location="/viewupdatetargetEmployees"</script>'''
@@ -673,7 +678,7 @@ def home_coo():
 @login_required
 def accept_list_leave_coo():
     if(session['lid'] == 'coo'):
-        qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted'  ORDER BY `leaverequest`.`LRid` DESC"
+        qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted'  ORDER BY `leaverequest`.`date` DESC"
         res = select(qry)
         return render_template("coo/accept_list.html", val=res)
     else:
@@ -685,7 +690,7 @@ def accept_list_leave_coo():
 def Search_branch_Leave_coo():
     if(session['lid'] == 'coo'):
         branch = request.form['branch']
-        qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s ORDER BY `leaverequest`.`LRid` DESC"
+        qry = "SELECT `employee`.*,`leaverequest`.* FROM `leaverequest` JOIN `employee` ON `employee`.`loginid`=`leaverequest`.`lg_id` WHERE `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s ORDER BY `leaverequest`.`date` DESC"
         res = selectall(qry, branch)
         return render_template("coo/Search_branch_Leave.html", val=res)
     else:
@@ -698,8 +703,25 @@ def viewupdatetargetEmployees_coo():
     if(session['lid'] == 'coo'):
         qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` ORDER BY `target`.`trid` DESC"
         res = select(qry)
-        print(res)
-        return render_template("coo/ViewtargetEmp.html", val=res)
+        list_employee = [list(i) for i in res]
+        dict_target = {"gold_target": 0, "diamond_target": 0, "gold_achived": 0,
+                       "diamond_achived": 0, "gold_percentage": 0, "diamond_percentage": 0}
+        for i in range(len(list_employee)):
+            for j in range(len(list_employee[i])):
+                print(i, j)
+                if(j == 7):
+                    dict_target["gold_target"] += float(list_employee[i][j])
+                elif(j == 10):
+                    dict_target["diamond_target"] += int(list_employee[i][j])
+                elif(j == 9):
+                    dict_target["gold_achived"] += float(list_employee[i][j])
+                elif(j == 11):
+                    dict_target["diamond_achived"] += int(list_employee[i][j])
+        dict_target["gold_percentage"] = "{0:.2f}".format(
+            (dict_target['gold_achived']/dict_target['gold_target']) * 100)
+        dict_target["diamond_percentage"] = "{0:.2f}".format(
+            (dict_target['diamond_achived']/dict_target['diamond_target']) * 100)
+        return render_template("coo/ViewtargetEmp.html", val=res, dict=dict_target)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
@@ -711,7 +733,30 @@ def Search_viewupdatetargetEmployees_coo():
         branch = request.form['branch']
         qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `target`.`trid` DESC"
         res = selectall(qry, branch)
-        return render_template("coo/Search_viewupdatetargetEmployees.html", val=res)
+
+        list_employee = [list(i) for i in res]
+        print(list_employee)
+        dict_target = {"gold_target" : 0 , "diamond_target" : 0, "gold_achived": 0 , "diamond_achived":0 , "gold_percentage":0 , "diamond_percentage":0}
+        for i in range(len(list_employee)):
+            for j in range(len(list_employee[i])):
+                print(i,j)
+                if(j==7):
+                    dict_target["gold_target"] += float(list_employee[i][j])
+                elif(j==10):
+                    dict_target["diamond_target"] += int(list_employee[i][j])
+                elif(j==9):
+                    dict_target["gold_achived"] += float(list_employee[i][j])
+                elif(j==11):
+                    dict_target["diamond_achived"] += int(list_employee[i][j])
+
+            try :
+                dict_target["gold_percentage"] = "{0:.2f}".format((dict_target['gold_achived']/dict_target['gold_target']) * 100)
+                dict_target["diamond_percentage"] = "{0:.2f}".format((dict_target['diamond_achived']/dict_target['diamond_target']) * 100)
+            except ZeroDivisionError:
+                '''<script>alert("No value");window.history.back()</script>'''
+
+
+        return render_template("coo/Search_viewupdatetargetEmployees.html", val=res,dict=dict_target)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
@@ -735,10 +780,6 @@ def ajaxpost():
 #             date, expdate)AND `leaverequest`.`status`='Accepted' AND `employee`.`branch`=%s
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> b64ac6c814434f87da861a8cf7fc944020186a04
 @app.route("/ajaxpost_leave", methods=["POST", "GET"])
 def ajaxpost_leave():
     if request.method == 'POST':

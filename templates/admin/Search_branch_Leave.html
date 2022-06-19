@@ -21,19 +21,22 @@
             <option value="CLN">&nbsp;Cleaning</option>
           </select>&nbsp;
           <button type="submit" class="btn  btn-primary  "> <span style="color: white;">Search </span></button>
+          <a href="/accept_list_leave" class="btn btn-primary float-right"> Accepted List</a>
         </form>
-        <a href="/accept_list_leave" class="btn btn-primary float-right"> Accepted List</a>
+       
 
         <table class="table mt-5">
-          <tr>
-            <th scope="col" style="color: #632343;">Date</th>
-            <th scope="col" style="color: #632343;">Employee Name </th>
-            <th scope="col" style="color: #632343;">E-Code</th>
-            <th scope="col" style="color: #632343;">Branch</th>
-            <th scope="col" style="color: #632343;">Department</th>
-            <th scope="col" style="color: #632343;">Reason</th>
-            <th scope="col" style="color: #632343;">Leave Date</th>
-            <th scope="col" style="color: #632343;">Leave Expiry Date</th>
+          <tr class="fixed">
+            <th scope="col" >Date</th>
+            <th scope="col" >Employee Name </th>
+            <th scope="col" >E-Code</th>
+            <th scope="col" >Branch</th>
+            <th scope="col" >Department</th>
+            <th scope="col" >Reason</th>
+            <th scope="col" >Leave Date</th>
+            <th scope="col" >Leave Expiry Date</th>
+            <th></th>
+            <th></th>
           </tr>
           {% for i in val%}
           <tr>
