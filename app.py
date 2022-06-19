@@ -695,15 +695,13 @@ def Search_branch_Leave_coo():
         return render_template("coo/Search_branch_Leave.html", val=res)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
-
-
+    
 @ app.route("/viewupdatetargetEmployees_coo")
 @login_required
 def viewupdatetargetEmployees_coo():
     if(session['lid'] == 'coo'):
         qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id` ORDER BY `target`.`trid` DESC"
         res = select(qry)
-<<<<<<< HEAD
         list_employee = [list(i) for i in res]
         dict_target = {"gold_target": 0, "diamond_target": 0, "gold_achived": 0,
                        "diamond_achived": 0, "gold_percentage": 0, "diamond_percentage": 0}
@@ -718,31 +716,11 @@ def viewupdatetargetEmployees_coo():
                     dict_target["gold_achived"] += float(list_employee[i][j])
                 elif(j == 11):
                     dict_target["diamond_achived"] += int(list_employee[i][j])
-        dict_target["gold_percentage"] = "{0:.2f}".format(
-            (dict_target['gold_achived']/dict_target['gold_target']) * 100)
-        dict_target["diamond_percentage"] = "{0:.2f}".format(
-            (dict_target['diamond_achived']/dict_target['diamond_target']) * 100)
+
+            dict_target["gold_percentage"] = "{0:.2f}".format((dict_target['gold_achived']/dict_target['gold_target']) * 100)
+            dict_target["diamond_percentage"] = "{0:.2f}".format( (dict_target['diamond_achived']/dict_target['diamond_target']) * 100)
+
         return render_template("coo/ViewtargetEmp.html", val=res, dict=dict_target)
-=======
-        print(res)
-        list_employee = [list(i) for i in res]
-        print(list_employee)
-        dict_target = {"gold_target" : 0 , "diamond_target" : 0, "gold_achived": 0 , "diamond_achived":0 , "gold_percentage":0 , "diamond_percentage":0}
-        for i in range(len(list_employee)):
-            for j in range(len(list_employee[i])):
-                print(i,j)
-                if(j==7):
-                    dict_target["gold_target"] += int(list_employee[i][j])
-                elif(j==10):
-                    dict_target["diamond_target"] += int(list_employee[i][j])
-                elif(j==9):
-                    dict_target["gold_achived"] += int(list_employee[i][j])
-                elif(j==11):
-                    dict_target["diamond_achived"] += int(list_employee[i][j])
-        dict_target["gold_percentage"] = "{0:.2f}".format((dict_target['gold_achived']/dict_target['gold_target']) * 100)
-        dict_target["diamond_percentage"] = "{0:.2f}".format((dict_target['diamond_achived']/dict_target['diamond_target']) * 100)
-        return render_template("coo/ViewtargetEmp.html", val=res,dict=dict_target)
->>>>>>> e30228b7b16c0778608e1c76b2262589826d6373
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
@@ -754,45 +732,30 @@ def Search_viewupdatetargetEmployees_coo():
         branch = request.form['branch']
         qry = "SELECT `employee`.*,`target`.* FROM `target` JOIN `employee` ON employee.`loginid`=`target`.`lg_id`  WHERE `employee`.`branch`=%s ORDER BY `target`.`trid` DESC"
         res = selectall(qry, branch)
-<<<<<<< HEAD
-
-=======
->>>>>>> e30228b7b16c0778608e1c76b2262589826d6373
         list_employee = [list(i) for i in res]
         print(list_employee)
-        dict_target = {"gold_target" : 0 , "diamond_target" : 0, "gold_achived": 0 , "diamond_achived":0 , "gold_percentage":0 , "diamond_percentage":0}
+        dict_target = {"gold_target": 0, "diamond_target": 0, "gold_achived": 0,
+                       "diamond_achived": 0, "gold_percentage": 0, "diamond_percentage": 0}
         for i in range(len(list_employee)):
             for j in range(len(list_employee[i])):
-                print(i,j)
-                if(j==7):
-<<<<<<< HEAD
+                print(i, j)
+                if(j == 7):
                     dict_target["gold_target"] += float(list_employee[i][j])
-                elif(j==10):
+                elif(j == 10):
                     dict_target["diamond_target"] += int(list_employee[i][j])
-                elif(j==9):
+                elif(j == 9):
                     dict_target["gold_achived"] += float(list_employee[i][j])
-                elif(j==11):
+                elif(j == 11):
                     dict_target["diamond_achived"] += int(list_employee[i][j])
-
-            try :
-                dict_target["gold_percentage"] = "{0:.2f}".format((dict_target['gold_achived']/dict_target['gold_target']) * 100)
-                dict_target["diamond_percentage"] = "{0:.2f}".format((dict_target['diamond_achived']/dict_target['diamond_target']) * 100)
+            try:
+                dict_target["gold_percentage"] = "{0:.2f}".format(
+                    (dict_target['gold_achived']/dict_target['gold_target']) * 100)
+                dict_target["diamond_percentage"] = "{0:.2f}".format(
+                    (dict_target['diamond_achived']/dict_target['diamond_target']) * 100)
             except ZeroDivisionError:
                 '''<script>alert("No value");window.history.back()</script>'''
 
-
-=======
-                    dict_target["gold_target"] += int(list_employee[i][j])
-                elif(j==10):
-                    dict_target["diamond_target"] += int(list_employee[i][j])
-                elif(j==9):
-                    dict_target["gold_achived"] += int(list_employee[i][j])
-                elif(j==11):
-                    dict_target["diamond_achived"] += int(list_employee[i][j])
-        dict_target["gold_percentage"] = "{0:.2f}".format((dict_target['gold_achived']/dict_target['gold_target']) * 100)
-        dict_target["diamond_percentage"] = "{0:.2f}".format((dict_target['diamond_achived']/dict_target['diamond_target']) * 100)
->>>>>>> e30228b7b16c0778608e1c76b2262589826d6373
-        return render_template("coo/Search_viewupdatetargetEmployees.html", val=res,dict=dict_target)
+        return render_template("coo/Search_viewupdatetargetEmployees.html", val=res, dict=dict_target)
     else:
         return '''<script>alert("Unavailable");window.history.back()</script>'''
 
