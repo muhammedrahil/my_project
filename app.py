@@ -25,6 +25,9 @@ def login():
     return render_template("admin/login.html")
 
 
+
+
+# get login
 @app.route("/getLogin", methods=['post'])
 def getLogin():
     uname = request.form['uname']
